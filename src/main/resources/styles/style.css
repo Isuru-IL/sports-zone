@@ -1,0 +1,64 @@
+.loginBtn{
+    /*-fx-background-color: linear-gradient(to top right  , #1C82AD, #86E5FF);*/
+    /*-fx-background-color: linear-gradient(to top right  ,#000000 ,#FFFFFF);*/
+    -fx-background-color: linear-gradient(to top right  ,#b3b3b3 ,#000000);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 0, 0, 0, 0);
+    -fx-background-radius: 20px;
+    -fx-text-fill: #FFFFFF;
+}
+/*.loginCombx{*/
+/*    -fx-background-color: linear-gradient(to top right  ,#FFFFFF ,#000000);*/
+/*    -fx-background-radius: 20px;*/
+/*}*/
+.loginCombx {
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(to top right  ,#FFFFFF ,#000000);
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 20px;
+    -fx-text-fill: #000000;
+}
+
+.loginCombx.cell{
+    -fx-font-weight: bold;
+}
+.loginCombx .list-view .list-cell{
+    -fx-text-fill: #000000;
+    -fx-background-color: linear-gradient(to top right  ,#FFFFFF ,#000000);
+    -fx-font-weight: bold;
+}
+.loginCombx .cell:selected {
+    -fx-text-fill: #000000;
+}
+
+.txtUsername{
+    -fx-background-radius: 8px;
+    /*-fx-background-color: D9D9D9;*/
+    -fx-font-weight: bold;
+}
+
+.txtPassword{
+    -fx-background-radius: 8px;
+    /*-fx-background-color: D9D9D9;*/
+    -fx-font-weight: bold;
+}
+
+/*///////////////////////////////////////////////DASHBOARD///////////////////////////////////////////////////////////*/
+
+.btnHome{
+    -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 0, 0, 0, 0);
+    /*-fx-background-radius: 20px;*/
+    -fx-text-fill: #FFFFFF;
+}
+
+.btnEmployee{
+    -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 0, 0, 0, 0);
+    -fx-background-radius: 20px;
+    -fx-text-fill: #FFFFFF;
+}
+
+.buttonDashBoard{
+    -fx-background-radius: 0 0 80px 80px;
+    -fx-background-color: #000000;
+}

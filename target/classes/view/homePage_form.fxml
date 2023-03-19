@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchorpaneHomeMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1910.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.HomePageController">
+   <children>
+      <AnchorPane prefHeight="1040.0" prefWidth="310.0">
+         <children>
+            <ImageView fx:id="buttonDashBoard" fitHeight="1040.0" fitWidth="328.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 100px;">
+               <image>
+                  <Image url="@../assets/homeForm06.jpg" />
+               </image>
+            </ImageView>
+            <JFXButton fx:id="btnHome" buttonType="RAISED" layoutX="45.0" layoutY="330.0" onAction="#homeOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="Home" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <DropShadow radius="68.5" width="255.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </JFXButton>
+            <JFXButton fx:id="btnOrders" buttonType="RAISED" layoutX="45.0" layoutY="420.0" onAction="#ordersOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="  Orders" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnInventory" buttonType="RAISED" layoutX="45.0" layoutY="510.0" onAction="#inventoryOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="       Inventory" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="81.0" layoutY="339.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/homeIcon.png" />
+               </image>
+            </ImageView>
+            <JFXButton fx:id="btnEmployee" layoutX="45.0" layoutY="600.0" onAction="#employeeOnAction" prefHeight="50.0" prefWidth="220.0" styleClass="btnEmployee" stylesheets="@../styles/style.css" text="        Employees" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="btnSupplier" buttonType="RAISED" layoutX="45.0" layoutY="690.0" onAction="#suplierOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="      Suppliers" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="btnReports" buttonType="RAISED" layoutX="45.0" layoutY="780.0" onAction="#reportsOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="   Reports" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="81.0" layoutY="429.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/orderIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="26.0" layoutX="84.0" layoutY="522.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/inventoryIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="81.0" layoutY="609.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/employeeIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="81.0" layoutY="699.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/supplierIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="81.0" layoutY="789.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/reportsIcon.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblTime" layoutX="14.0" prefHeight="38.0" prefWidth="249.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman" size="16.0" />
+               </font></Label>
+            <Label fx:id="lblDate" layoutX="14.0" layoutY="28.0" prefHeight="32.0" prefWidth="249.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman" size="16.0" />
+               </font></Label>
+            <Label layoutX="14.0" layoutY="281.0" prefHeight="24.0" prefWidth="104.0" text="Hello! Admin" textFill="WHITE">
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="btnLogoutIcon" fitHeight="50.0" fitWidth="50.0" layoutX="26.0" layoutY="965.0" onMouseClicked="#logOutOnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/logOutIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="62.0" fitWidth="249.0" layoutX="32.0" layoutY="120.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/sportsZoneLogo.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchorpaneAdminHome" layoutX="309.0" prefHeight="1040.0" prefWidth="1600.0">
+         <children>
+            <Button layoutX="332.0" layoutY="262.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="297.0" text="Home">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

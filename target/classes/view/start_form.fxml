@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="acrLoading" prefHeight="512.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.StartFormController">
+   <children>
+      <ImageView fitHeight="514.0" fitWidth="855.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/StartForm.jpg" />
+         </image>
+      </ImageView>
+      <ProgressBar fx:id="loading" layoutX="181.0" layoutY="456.0" prefHeight="15.0" prefWidth="494.0" progress="0.0" style="-fx-accent:black;" />
+   </children>
+</AnchorPane>
