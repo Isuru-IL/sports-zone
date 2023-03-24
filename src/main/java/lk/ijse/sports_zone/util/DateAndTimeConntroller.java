@@ -1,4 +1,4 @@
-package lk.ijse.sports_zone.controller;
+package lk.ijse.sports_zone.util;
 
 import javafx.application.Platform;
 import javafx.scene.control.Label;

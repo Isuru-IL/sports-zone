@@ -11,9 +11,9 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorpaneCashierCustomer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1910.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierCustomerController">
+<AnchorPane fx:id="anchrpCashierCustomerMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1910.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierCustomerFormController">
    <children>
-      <AnchorPane prefHeight="1040.0" prefWidth="310.0">
+      <AnchorPane fx:id="anchrpCashierButton" prefHeight="1040.0" prefWidth="310.0">
          <children>
             <ImageView fx:id="buttonDashBoard" fitHeight="1040.0" fitWidth="328.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 100px;">
                <image>
@@ -74,19 +74,19 @@
                   <Image url="@../assets/orderIcon.png" />
                </image>
             </ImageView>
-            <Label fx:id="lblTime" layoutX="14.0" layoutY="8.0" prefHeight="32.0" prefWidth="249.0" text="Label" textFill="WHITE">
+            <Label fx:id="lblTime" layoutX="4.0" layoutY="-2.0" prefHeight="32.0" prefWidth="144.0" text="time" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman" size="16.0" />
+                  <Font name="Times New Roman Bold" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="lblDate" layoutX="14.0" layoutY="40.0" prefHeight="24.0" prefWidth="249.0" text="Label" textFill="WHITE">
+            <Label fx:id="lblDate" layoutX="5.0" layoutY="30.0" prefHeight="24.0" prefWidth="132.0" text="date" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman" size="16.0" />
+                  <Font name="Times New Roman Bold" size="16.0" />
                </font>
             </Label>
             <Label layoutX="5.0" layoutY="294.0" prefHeight="24.0" prefWidth="112.0" text="Hello! Cashier" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font name="Times New Roman Bold" size="18.0" />
                </font>
             </Label>
             <ImageView fx:id="btnCashierLogout" fitHeight="50.0" fitWidth="50.0" layoutX="26.0" layoutY="965.0" onMouseClicked="#logOutIconOnAction" pickOnBounds="true" preserveRatio="true">
@@ -116,7 +116,7 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpaneAdm" layoutX="309.0" prefHeight="1040.0" prefWidth="1600.0">
+      <AnchorPane fx:id="anchrpCustomer" layoutX="309.0" prefHeight="1040.0" prefWidth="1600.0">
          <children>
             <Button layoutX="332.0" layoutY="262.0" mnemonicParsing="false" prefHeight="112.0" prefWidth="297.0" text="Home">
                <font>

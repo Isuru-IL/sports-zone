@@ -15,8 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 
-public class HomePageController {
+public class HomePageFormController {
 
     @FXML
     private ResourceBundle resources;
@@ -91,13 +92,17 @@ public class HomePageController {
     }
 
     @FXML
-    void suplierOnAction(ActionEvent event) {
-
+    void suplierOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplier_form.fxml"));
+        anchorpaneAdminHome.getChildren().clear();
+        anchorpaneAdminHome.getChildren().add(load);
     }
 
     @FXML
-    void employeeOnAction(ActionEvent event) {
-
+    void employeeOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminEmployee_form.fxml"));
+        anchorpaneAdminHome.getChildren().clear();
+        anchorpaneAdminHome.getChildren().add(load);
     }
 
     @FXML

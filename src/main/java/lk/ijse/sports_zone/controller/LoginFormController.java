@@ -1,22 +1,29 @@
 package lk.ijse.sports_zone.controller;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.dto.User;
+import lk.ijse.sports_zone.model.UserModel;
 
 public class LoginFormController {
 
@@ -30,7 +37,13 @@ public class LoginFormController {
     private Button btnLogin;
 
     @FXML
-    private ComboBox cmbbxLoggin;
+    private ComboBox<String> cmbbxLoggin;
+
+    @FXML
+    private Group demoPasswordGroup;
+
+    @FXML
+    private Group originalPasswordGroup;
 
     @FXML
     private Label forgotPasswordLbl1;
@@ -48,7 +61,16 @@ public class LoginFormController {
     private ImageView google;
 
     @FXML
-    private ImageView hyprlnkForgotPassword;
+    private ImageView imageHideIcon;
+
+    @FXML
+    private ImageView imageUnHideIcon;
+
+    @FXML
+    private Hyperlink hyprlnkForgotPassword;
+
+    @FXML
+    private Hyperlink hyprlnkSignUp;
 
     @FXML
     private Label lblLogin;
@@ -65,28 +87,60 @@ public class LoginFormController {
     @FXML
     private TextField txtUsername;
 
+    @FXML
+    private TextField txtPasswordDemo;
+
     String sourceRoot;
+    User userCheckLogin = new User();
 
     @FXML
     void comboboxLoginOnAction(ActionEvent event) {
-        if(cmbbxLoggin.getValue().equals("Admin")){
-            sourceRoot = "/view/homePage_form.fxml";
-        }else{
-            sourceRoot = "/view/cashierCustomer_form.fxml";
-        }
+       userCheckLogin.setJobTitle(cmbbxLoggin.getValue());
 
     }
 
     @FXML
     void goDashBoard(ActionEvent event) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource(sourceRoot));
+        userCheckLogin.setUserName(txtUsername.getText());
+        userCheckLogin.setPassword(txtPassword.getText());
 
-        Scene scene = new Scene(anchorPane);
+        try {
+            User user = UserModel.checkLoginAccess(userCheckLogin);
+            String userName = user.getUserName();
+            String password = user.getPassword();
+            String jobTitle = user.getJobTitle();
 
-        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Home Page");
-        stage.centerOnScreen();
+            if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Admin")){
+                AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/homePage_form.fxml"));
+
+                Scene scene = new Scene(anchorPane);
+
+                Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Home Page");
+                stage.centerOnScreen();
+
+            }else if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Cashier")){
+                AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
+
+                Scene scene = new Scene(anchorPane);
+
+                Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Cashier Page");
+                stage.centerOnScreen();
+
+            }else{
+                new Alert(Alert.AlertType.ERROR,"invalid login details").show();
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            new Alert(Alert.AlertType.ERROR,"something went wrong").show();
+        }
+
+
+
     }
 
     @FXML
@@ -100,6 +154,32 @@ public class LoginFormController {
         stage.setTitle("Forgot Password Form");
         stage.centerOnScreen();
     }
+
+    @FXML
+    void signUpOnAction(ActionEvent event) throws IOException {
+        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/signUp_form.fxml"));
+
+        Scene scene = new Scene(anchorPane);
+        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Login Form");
+        stage.centerOnScreen();
+    }
+
+    @FXML
+    void passwordShowOnMouseEntered(MouseEvent event) {
+        demoPasswordGroup.setVisible(true);
+        txtPasswordDemo.setText(txtPassword.getText());
+        originalPasswordGroup.setVisible(false);
+
+    }
+
+    @FXML
+    void passwordHideOnMouseExited(MouseEvent event) {
+        demoPasswordGroup.setVisible(false);
+        originalPasswordGroup.setVisible(true);
+    }
+
 
     @FXML
     void initialize() {
@@ -120,4 +200,11 @@ public class LoginFormController {
         cmbbxLoggin.getItems().addAll("Admin", "Cashier");
     }
 
+    public void goToGoogleOnMousePressed(MouseEvent mouseEvent) throws URISyntaxException, IOException {
+        Desktop.getDesktop().browse(new URI("https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjj6fjShOb9AhX9XmwGHc_XAIEQPAgI"));
+    }
+
+    public void goToFacebookOnMousePressed(MouseEvent mouseEvent) throws URISyntaxException, IOException {
+        Desktop.getDesktop().browse(new URI("https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjj6fjShOb9AhX9XmwGHc_XAIEQPAgI"));
+    }
 }

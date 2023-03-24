@@ -15,8 +15,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 
-public class CashierCustomerController {
+public class CashierCustomerFormController {
 
     @FXML
     private ResourceBundle resources;
@@ -25,10 +26,13 @@ public class CashierCustomerController {
     private URL location;
 
     @FXML
-    private AnchorPane anchorpaneAdminHome;
+    private AnchorPane anchrpCashierButton;
 
     @FXML
-    private AnchorPane anchorpaneCashierCustomer;
+    private AnchorPane anchrpCashierCustomerMain;
+
+    @FXML
+    private AnchorPane anchrpCustomer;
 
     @FXML
     private JFXButton btnCashierInventory;
@@ -73,7 +77,10 @@ public class CashierCustomerController {
     }
 
     @FXML
-    void btnDeliveryOnAction(ActionEvent event) {
+    void btnDeliveryOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierDelivery_form.fxml"));
+        anchrpCustomer.getChildren().clear();
+        anchrpCustomer.getChildren().add(load);
 
     }
 
@@ -88,7 +95,7 @@ public class CashierCustomerController {
 
         Scene scene = new Scene(anchorPane);
 
-        Stage stage = (Stage)anchorpaneCashierCustomer.getScene().getWindow();
+        Stage stage = (Stage)anchrpCustomer.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login Form");
         stage.centerOnScreen();
@@ -96,8 +103,9 @@ public class CashierCustomerController {
 
     @FXML
     void initialize() {
-        assert anchorpaneAdminHome != null : "fx:id=\"anchorpaneAdminHome\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert anchorpaneCashierCustomer != null : "fx:id=\"anchorpaneCashierCustomer\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
+        assert anchrpCashierButton != null : "fx:id=\"anchrpCashierButton\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
+        assert anchrpCashierCustomerMain != null : "fx:id=\"anchrpCashierCustomerMain\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
+        assert anchrpCustomer != null : "fx:id=\"anchrpCustomer\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert btnCashierInventory != null : "fx:id=\"btnCashierInventory\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert btnCashierLogout != null : "fx:id=\"btnCashierLogout\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert btnCashierOrders != null : "fx:id=\"btnCashierOrders\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";

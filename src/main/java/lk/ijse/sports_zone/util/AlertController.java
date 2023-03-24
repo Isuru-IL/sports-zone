@@ -1,4 +1,4 @@
-package lk.ijse.sports_zone.controller;
+package lk.ijse.sports_zone.util;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;

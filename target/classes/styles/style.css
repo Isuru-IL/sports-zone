@@ -39,7 +39,7 @@
 .txtPassword{
     -fx-background-radius: 8px;
     /*-fx-background-color: D9D9D9;*/
-    -fx-font-weight: bold;
+    /*-fx-font-weight: bold;*/
 }
 
 /*///////////////////////////////////////////////DASHBOARD///////////////////////////////////////////////////////////*/
@@ -61,4 +61,26 @@
 .buttonDashBoard{
     -fx-background-radius: 0 0 80px 80px;
     -fx-background-color: #000000;
+}
+
+.anchorPane{
+    -fx-background-color: #000000;
+}
+
+/*//////////////////////////////////////////////////////admin Employeepage /////////////////////////////////////////////////*/
+
+.btnSave{
+    -fx-background-color:  #2ecc71;
+}
+
+.btnDelete{
+    -fx-background-color: #000000;
+}
+
+.btnUpdate{
+    -fx-background-color:  #3498db;
+}
+
+.column{
+    -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
 }

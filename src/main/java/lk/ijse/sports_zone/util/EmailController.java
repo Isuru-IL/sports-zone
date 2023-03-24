@@ -1,4 +1,4 @@
-package lk.ijse.sports_zone.controller;
+package lk.ijse.sports_zone.util;
 
 import java.util.Properties;
 import javax.mail.Authenticator;
@@ -11,7 +11,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 
-class EmailController  {
+public class EmailController  {
     public static void sendEmail(String recipient, String subject, String body) throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

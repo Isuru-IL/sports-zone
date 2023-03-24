@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchrpEmployee" prefHeight="1040.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminEmployeeFormController">
+   <children>
+      <TextField fx:id="txtEmpId" layoutX="70.0" layoutY="172.0" onAction="#empIdSearchOnAction" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtContactNo" layoutX="70.0" layoutY="263.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtEmpName" layoutX="601.0" layoutY="176.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtSalary" layoutX="600.0" layoutY="264.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtAddress" layoutX="1143.0" layoutY="176.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtEmail" layoutX="1143.0" layoutY="264.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtNIC" layoutX="70.0" layoutY="353.0" prefHeight="40.0" prefWidth="400.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <Label layoutX="661.0" layoutY="26.0" prefHeight="53.0" prefWidth="291.0" text="Employee Details">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="149.0" prefHeight="17.0" prefWidth="190.0" text="Employee Id ">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="601.0" layoutY="149.0" prefHeight="17.0" prefWidth="190.0" text="Employee Name">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="1143.0" layoutY="149.0" prefHeight="17.0" prefWidth="190.0" text="Address">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="236.0" prefHeight="17.0" prefWidth="190.0" text="Contact No">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="601.0" layoutY="236.0" prefHeight="17.0" prefWidth="190.0" text="Salary">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="1143.0" layoutY="236.0" prefHeight="17.0" prefWidth="190.0" text="Email">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="332.0" prefHeight="17.0" prefWidth="190.0" text="NIC">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="601.0" layoutY="332.0" prefHeight="17.0" prefWidth="190.0" text="Job Title">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="1143.0" layoutY="332.0" prefHeight="17.0" prefWidth="190.0" text="Date Of Birth">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="1443.0" layoutY="453.0" onAction="#deleteOnAction" prefHeight="40.0" prefWidth="100.0" ripplerFill="BLACK" styleClass="btnDelete" stylesheets="@../styles/style.css" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="Times New Roman Bold" size="18.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnSave" buttonType="RAISED" layoutX="1308.0" layoutY="453.0" onAction="#saveOnAction" prefHeight="40.0" prefWidth="100.0" styleClass="btnSave" stylesheets="@../styles/style.css" text="Save" textFill="WHITE">
+         <font>
+            <Font name="Times New Roman Bold" size="18.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnUpdate" buttonType="RAISED" layoutX="1172.0" layoutY="453.0" onAction="#updateOnAction" prefHeight="40.0" prefWidth="100.0" styleClass="btnUpdate" stylesheets="@../styles/style.css" text="Update" textFill="WHITE">
+         <font>
+            <Font name="Times New Roman Bold" size="18.0" />
+         </font>
+      </JFXButton>
+      <TableView fx:id="tblEmployee" layoutX="70.0" layoutY="534.0" prefHeight="475.0" prefWidth="1473.0">
+        <columns>
+          <TableColumn fx:id="colId" text="Id" />
+          <TableColumn fx:id="colName" prefWidth="210.0" text="Name" />
+            <TableColumn fx:id="colAddress" prefWidth="160.0" text="Address" />
+            <TableColumn fx:id="colContactNo" prefWidth="160.0" text="Contact No." />
+            <TableColumn fx:id="colSalary" minWidth="0.0" prefWidth="130.0" text="Salary" />
+            <TableColumn fx:id="colEmail" prefWidth="300.0" text="Email" />
+            <TableColumn fx:id="colNIC" prefWidth="180.0" style="-fx-backgrounf-colour: #000000;" text="NIC" />
+            <TableColumn fx:id="colJobTitle" prefWidth="130.0" text="Job Title" />
+            <TableColumn fx:id="colDOB" prefWidth="130.0" text="Date Of Birth" />
+        </columns>
+      </TableView>
+      <DatePicker fx:id="txtDob" layoutX="1143.0" layoutY="353.0" prefHeight="40.0" prefWidth="219.0" />
+      <TextField fx:id="txtSearch" layoutX="1143.0" layoutY="87.0" onAction="#empIdSearchBarOnAction" prefHeight="40.0" prefWidth="272.0" promptText="Search">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="cmbJobTitle" layoutX="600.0" layoutY="353.0" onAction="#jobTitleCmbOnAction" prefHeight="44.0" prefWidth="219.0" />
+   </children>
+</AnchorPane>

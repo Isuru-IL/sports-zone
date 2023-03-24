@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import lk.ijse.sports_zone.controller.DateAndTimeConntroller;
 
 import java.awt.*;
 import java.net.URL;
@@ -21,7 +20,7 @@ public class Launcher extends Application {
     Label l1;
     @Override
     public void start(Stage stage) throws Exception {
-        URL resource = Launcher.class.getResource("/view/start_form.fxml");
+        URL resource = Launcher.class.getResource("/view/homePage_form.fxml");
         Parent load = FXMLLoader.load(resource);
 
         stage.setScene(new Scene(load));
