@@ -171,7 +171,7 @@ public class AdminEmployeeFormController {
         txtSalary.setText("");
         txtEmail.setText("");
         txtNIC.setText("");
-        cmbJobTitle.setAccessibleText("hi");
+        //cmbJobTitle.setAccessibleText("hi");
         txtDob.setValue(null);
     }
 
@@ -211,7 +211,7 @@ public class AdminEmployeeFormController {
         txtSalary.setText("");
         txtEmail.setText("");
         txtNIC.setText("");
-        cmbJobTitle.setItems(null);
+        //cmbJobTitle.setItems(null);
         txtDob.setValue(null);
 
     }

@@ -20,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.sports_zone.dto.Supplier;
 import lk.ijse.sports_zone.dto.tm.SupplierTM;
 import lk.ijse.sports_zone.model.SupplierModel;
+import lk.ijse.sports_zone.util.NotificationController;
 
 public class AdminSupplierFormController {
 
@@ -75,15 +76,35 @@ public class AdminSupplierFormController {
     private TextField txtSupName;
 
     @FXML
-    void deleteOnAction(ActionEvent event) {
+    private TextField txtSearch;
 
+    @FXML
+    void deleteOnAction(ActionEvent event) {
+        String supId = txtSupId.getText();
+
+        try {
+            boolean isDeleted = SupplierModel.delete(supId);
+            if(isDeleted){
+                new Alert(Alert.AlertType.CONFIRMATION, "Deleted Successfully").show();
+
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
+
+            }else {
+                new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @FXML
     void saveOnAction(ActionEvent event) {
         Supplier supplier = new Supplier();
-        supplier.setSupId(txtSupId.getId());
-        supplier.setSupName(txtSupName.getId());
+        supplier.setSupId(txtSupId.getText());
+        supplier.setSupName(txtSupName.getText());
         supplier.setAddress(txtAddress.getText());
         supplier.setEmail(txtEmail.getText());
         supplier.setContactNo(txtContactNo.getText());
@@ -92,6 +113,11 @@ public class AdminSupplierFormController {
             boolean isSaved = SupplierModel.save(supplier);
             if(isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION, "Saved Successfully").show();
+
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
+
             }else {
                 new Alert(Alert.AlertType.ERROR, "Not Saved").show();
             }
@@ -99,16 +125,77 @@ public class AdminSupplierFormController {
             throwables.printStackTrace();
             new Alert(Alert.AlertType.ERROR,"Somthing Went Wrong").show();
         }
+
     }
 
     @FXML
     void supIdSearchOnAction(ActionEvent event) {
+        String supId = txtSupId.getText();
+        System.out.println(supId);
 
+        try {
+            Supplier supplier = SupplierModel.search(supId);
+
+            if(supplier != null){
+                txtSupId.setText(supplier.getSupId());
+                txtSupName.setText(supplier.getSupName());
+                txtAddress.setText(supplier.getAddress());
+                txtEmail.setText(supplier.getEmail());
+                txtContactNo.setText(supplier.getContactNo());
+
+            }else{
+                System.out.println("wrong");
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "something went wrong");
+        }
+    }
+
+    @FXML
+    void SearchBarOnAction(ActionEvent event) {
+        try {
+            Supplier supplier = SupplierModel.search(txtSearch.getText());
+            if(supplier != null){
+                txtSupId.setText(supplier.getSupId());
+                txtSupName.setText(supplier.getSupName());
+                txtAddress.setText(supplier.getAddress());
+                txtEmail.setText(supplier.getEmail());
+                txtContactNo.setText(supplier.getContactNo());
+
+            }else{
+                NotificationController.unSuccessful("Invalid Id");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @FXML
     void updateOnAction(ActionEvent event) {
+        Supplier supplier = new Supplier();
 
+        supplier.setSupId(txtSupId.getText());
+        supplier.setSupName(txtSupName.getText());
+        supplier.setAddress(txtAddress.getText());
+        supplier.setEmail(txtEmail.getText());
+        supplier.setContactNo(txtContactNo.getText());
+
+        try {
+            boolean isUpdated = SupplierModel.update(supplier);
+            if(isUpdated){
+                NotificationController.successful("update successful");
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
+            }else{
+                NotificationController.unSuccessful("update unSuccessful");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
@@ -162,6 +249,15 @@ public class AdminSupplierFormController {
             throwables.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "something went wrong").show();
         }
+    }
+
+    private void clearTxtField(){
+        txtSupId.setText("");
+        txtSupName.setText("");
+        txtAddress.setText("");
+        txtEmail.setText("");
+        txtContactNo.setText("");
+        txtSearch.setText("");
     }
 
 }

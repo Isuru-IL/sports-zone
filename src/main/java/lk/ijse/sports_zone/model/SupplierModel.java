@@ -48,4 +48,50 @@ public class SupplierModel {
             return allData;
         }
     }
+
+    public static Supplier search(String supId) throws SQLException {
+        String sql = "SELECT * FROM Supplier WHERE supId = ?";
+
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, supId);
+
+            ResultSet resultSet = pstm.executeQuery();
+
+            if(resultSet.next()){
+               return new Supplier(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5)
+                );
+            }
+        }
+        return null;
+    }
+
+    public static boolean delete(String supId) throws SQLException {
+        String sql = "DELETE FROM Supplier WHERE supId =?";
+
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, supId);
+
+            return pstm.executeUpdate() > 0;
+        }
+    }
+
+    public static boolean update(Supplier supplier) throws SQLException {
+        String sql = "UPDATE Supplier SET supId =?, supName =?, address =?, email =?, contactNo =? WHERE supId =?";
+
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, supplier.getSupId());
+            pstm.setString(2, supplier.getSupName());
+            pstm.setString(3, supplier.getAddress());
+            pstm.setString(4, supplier.getEmail());
+            pstm.setString(5, supplier.getContactNo());
+            pstm.setString(6, supplier.getSupId());
+
+            return pstm.executeUpdate() > 0;
+        }
+    }
 }
