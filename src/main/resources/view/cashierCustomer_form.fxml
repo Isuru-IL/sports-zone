@@ -29,7 +29,7 @@
             </ImageView>
             <JFXButton fx:id="btnCustomer" layoutX="45.0" layoutY="330.0" onAction="#btnCustomerOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="      Customers" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="22.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -44,7 +44,7 @@
             </JFXButton>
             <JFXButton fx:id="btnCashierOrders" buttonType="RAISED" layoutX="45.0" layoutY="420.0" onAction="#btnCashierOrdersOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="Orders" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="22.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -52,7 +52,7 @@
             </JFXButton>
             <JFXButton fx:id="btnDelivery" buttonType="RAISED" layoutX="45.0" layoutY="510.0" onAction="#btnDeliveryOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="   Delivery" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="22.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -60,12 +60,12 @@
             </JFXButton>
             <JFXButton fx:id="btnPayment" layoutX="45.0" layoutY="600.0" onAction="#btnPaymentOnAction" prefHeight="50.0" prefWidth="220.0" styleClass="btnEmployee" stylesheets="@../styles/style.css" text="    Payment" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="22.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
             </JFXButton>
             <JFXButton fx:id="btnCashierInventory" buttonType="RAISED" layoutX="45.0" layoutY="690.0" onAction="#btnCashierInventoryOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="     Inventory" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="22.0" />
+                  <Font name="System Bold" size="22.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
@@ -78,17 +78,17 @@
             </ImageView>
             <Label fx:id="lblTime" layoutX="4.0" layoutY="-2.0" prefHeight="32.0" prefWidth="144.0" text="time" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="16.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
             <Label fx:id="lblDate" layoutX="5.0" layoutY="30.0" prefHeight="24.0" prefWidth="132.0" text="date" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="16.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Label layoutX="5.0" layoutY="294.0" prefHeight="24.0" prefWidth="112.0" text="Hello! Cashier" textFill="WHITE">
+            <Label layoutX="5.0" layoutY="294.0" prefHeight="27.0" prefWidth="121.0" text="Hello! Cashier" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman Bold" size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <ImageView fx:id="btnCashierLogout" fitHeight="50.0" fitWidth="50.0" layoutX="26.0" layoutY="965.0" onMouseClicked="#logOutIconOnAction" pickOnBounds="true" preserveRatio="true">
@@ -116,6 +116,14 @@
                   <Image url="@../assets/deliveryIcon.png" />
                </image>
             </ImageView>
+            <JFXButton fx:id="btnCashierInventory1" buttonType="RAISED" layoutX="45.0" layoutY="780.0" onAction="#btnCashierInventoryOnAction" prefHeight="50.0" prefWidth="220.0" style="-fx-background-radius: 20;" styleClass="btnHome" stylesheets="@../styles/style.css" text="Repair" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </JFXButton>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="anchrpCustomer" layoutX="311.0" prefHeight="1040.0" prefWidth="1600.0">
@@ -204,6 +212,11 @@
                   <Font size="20.0" />
                </font>
             </TextField>
+            <ImageView fitHeight="38.0" fitWidth="30.0" layoutX="1378.0" layoutY="94.0" onMouseClicked="#searchIconOnClickedAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../assets/searchIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

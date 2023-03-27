@@ -132,12 +132,12 @@ public class EmployeeModel {
     private static String splitEmpId(String currentId) {
         if(currentId != null) {
             String[] strings = currentId.split("E0");
-            System.out.println(strings[1]);
+            //System.out.println(strings[1]);
             int id = Integer.parseInt(strings[1]);
 
-            System.out.println("first ="+id);
+            //System.out.println("first ="+id);
             id++;
-            System.out.println("seconf "+id);
+            //System.out.println("seconf "+id);
             return "E0" + id;
         }
         return "E001";

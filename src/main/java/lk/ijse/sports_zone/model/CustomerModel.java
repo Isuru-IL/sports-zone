@@ -45,4 +45,47 @@ public class CustomerModel {
         }
 
     }
+
+    public static boolean update(Customer customer) throws SQLException {
+        String sql = "UPDATE Customer SET custName =?, contactNo =?, address =?, email =?" +
+                "WHERE custId =?";
+
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, customer.getCustName());
+            pstm.setString(2, customer.getContactNo());
+            pstm.setString(3, customer.getAddress());
+            pstm.setString(4, customer.getEmail());
+            pstm.setString(5, customer.getCustId());
+
+            return pstm.executeUpdate()>0;
+        }
+    }
+
+    public static Customer search(String id) throws SQLException {
+        String sql = "SELECT * FROM Customer WHERE custId =?";
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, id);
+
+            ResultSet resultSet = pstm.executeQuery();
+            if(resultSet.next()){
+                return new Customer(
+                        resultSet.getString(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5)
+                );
+            }
+            return null;
+        }
+    }
+
+    public static boolean delete(String id) throws SQLException {
+        String sql = "DELETE FROM Customer WHERE custId =?";
+
+        try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
+            pstm.setString(1, id);
+            return pstm.executeUpdate()>0;
+        }
+    }
 }

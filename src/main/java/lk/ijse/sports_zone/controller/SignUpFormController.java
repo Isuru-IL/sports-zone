@@ -51,38 +51,45 @@ public class SignUpFormController {
 
     @FXML
     void cmbSignUpOnAction(ActionEvent event) {
-        user.setJobTitle(cmbSignUp.getValue());
+        try{
+            user.setJobTitle(cmbSignUp.getValue());
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
     }
 
     @FXML
     void signInOnAction(ActionEvent event) throws IOException {
 
-        if(txtPassword.getText().equals(txtConfirmPassword.getText())){
-            user.setUserName(txtUserName.getText());
-            user.setEmpId(txtEmployeeId.getText());
-            user.setEmail(txtEmail.getText());
-            user.setPassword(txtPassword.getText());
-
             try {
-                Boolean isSaved = UserModel.save(user);
-                if(isSaved){
-                    new Alert(Alert.AlertType.CONFIRMATION, "User saved").show();
+                if(txtPassword.getText().equals(txtConfirmPassword.getText())){
+                    user.setUserName(txtUserName.getText());
+                    user.setEmpId(txtEmployeeId.getText());
+                    user.setEmail(txtEmail.getText());
+                    user.setPassword(txtPassword.getText());
+
+
+                    Boolean isSaved = UserModel.save(user);
+                    if(isSaved){
+                        new Alert(Alert.AlertType.CONFIRMATION, "User saved").show();
+
+                        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
+                        Scene scene = new Scene(anchorPane);
+                        Stage stage = (Stage)anchorpSignUp.getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.setTitle("Login Form");
+                        stage.centerOnScreen();
+                    }
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"password not same").show();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                System.out.println(exception);
                 new Alert(Alert.AlertType.ERROR, "somthing went wrong").show();
             }
 
-            AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
-            Scene scene = new Scene(anchorPane);
-            Stage stage = (Stage)anchorpSignUp.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Login Form");
-            stage.centerOnScreen();
 
-        }else{
-            new Alert(Alert.AlertType.ERROR,"password not same").show();
-        }
     }
 
     @FXML

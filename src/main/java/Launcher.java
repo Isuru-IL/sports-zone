@@ -20,11 +20,11 @@ public class Launcher extends Application {
     Label l1;
     @Override
     public void start(Stage stage) throws Exception {
-        URL resource = Launcher.class.getResource("/view/cashierCustomer_form.fxml");
+        URL resource = Launcher.class.getResource("/view/start_form.fxml");
         Parent load = FXMLLoader.load(resource);
 
         stage.setScene(new Scene(load));
-        stage.setTitle("Welcome to the Sports Zone");
+        stage.setTitle("Sports Zone");
         stage.centerOnScreen();
         stage.show();
 

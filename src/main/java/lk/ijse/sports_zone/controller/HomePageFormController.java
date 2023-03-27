@@ -5,16 +5,21 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.util.ButtonColourController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 
 public class HomePageFormController {
@@ -68,6 +73,9 @@ public class HomePageFormController {
         anchorpaneHomeMain.getChildren().clear();
         anchorpaneHomeMain.getChildren().add(load);
         //btnHome.setVisible(false);
+
+        //btnColour(btnHome,anchorpaneAdminHome);
+        btnHomecolor(btnHome,anchorpaneAdminHome);
     }
 
     @FXML
@@ -75,7 +83,9 @@ public class HomePageFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/order_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
-
+                ButtonColourController.btncolor(btnOrders, anchorpaneAdminHome);
+        btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -83,12 +93,15 @@ public class HomePageFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/inventory_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnInventory,anchorpaneAdminHome);
     }
 
 
     @FXML
     void reportsOnAction(ActionEvent event) {
 
+        //btncolor(btnReports,anchorpaneAdminHome);
     }
 
     @FXML
@@ -96,6 +109,8 @@ public class HomePageFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplier_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnSupplier,anchorpaneAdminHome);
     }
 
     @FXML
@@ -103,6 +118,8 @@ public class HomePageFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/adminEmployee_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnEmployee,anchorpaneAdminHome);
     }
 
     @FXML
@@ -134,6 +151,35 @@ public class HomePageFormController {
 
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();
         d1.Timenow(lblTime, lblDate);
+
+        btnHome.setStyle("-fx-background-color: #0c0c0c;" +
+                "-fx-background-radius: 20px;");
     }
 
+    public static void btnHomecolor(Button btn, AnchorPane anchorPane){
+        btn.setStyle("-fx-background-color: #de1818;" +
+                "-fx-background-radius: 20px;");
+        anchorPane.getChildren().addListener((ListChangeListener<Node>) change -> {
+            //System.out.println(newAnchorPane.getId());
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    for (Node node : change.getAddedSubList()) {
+                        if (node instanceof AnchorPane) {
+                            // Check if the new node is an AnchorPane
+                            AnchorPane newAnchorPane = (AnchorPane) node;
+                            System.out.println(newAnchorPane.getId());
+                            if (newAnchorPane.getId().equals("anchorpaneAdminHome")) {
+                                btn.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                                        "-fx-background-radius: 20px;");
+                                System.out.println("if");
+                            } else {
+                                btn.setStyle("-fx-background-color: #033b66;");
+                                System.out.println("else");
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 }

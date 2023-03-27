@@ -101,10 +101,11 @@ public class LoginFormController {
 
     @FXML
     void goDashBoard(ActionEvent event) throws IOException {
-        userCheckLogin.setUserName(txtUsername.getText());
-        userCheckLogin.setPassword(txtPassword.getText());
 
         try {
+            userCheckLogin.setUserName(txtUsername.getText());
+            userCheckLogin.setPassword(txtPassword.getText());
+
             User user = UserModel.checkLoginAccess(userCheckLogin);
             String userName = user.getUserName();
             String password = user.getPassword();
@@ -117,7 +118,7 @@ public class LoginFormController {
 
                 Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
                 stage.setScene(scene);
-                stage.setTitle("Home Page");
+                stage.setTitle("Admin Page");
                 stage.centerOnScreen();
 
             }else if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Cashier")){
@@ -134,8 +135,9 @@ public class LoginFormController {
                 new Alert(Alert.AlertType.ERROR,"invalid login details").show();
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (Exception exception) {
+            //exception.printStackTrace();
+            System.out.println(exception);
             new Alert(Alert.AlertType.ERROR,"something went wrong").show();
         }
 

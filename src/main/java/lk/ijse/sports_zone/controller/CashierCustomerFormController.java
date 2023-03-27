@@ -121,17 +121,65 @@ public class CashierCustomerFormController {
 
     @FXML
     void SearchBarOnAction(ActionEvent event) {
+        String id = txtSearch.getText();
 
+        try {
+            Customer customer = CustomerModel.search(id);
+            if(customer != null){
+                txtCustId.setText(customer.getCustId());
+                txtCustName.setText(customer.getCustName());
+                txtContactNo.setText(customer.getContactNo());
+                txtAddress.setText(customer.getAddress());
+                txtEmail.setText(customer.getEmail());
+            }else{
+                System.out.println(id+" is wrong ID");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
     void SearchOnAction(ActionEvent event) {
+        String id = txtCustId.getText();
 
+        try {
+            Customer customer = CustomerModel.search(id);
+            if(customer != null){
+                txtCustId.setText(customer.getCustId());
+                txtCustName.setText(customer.getCustName());
+                txtContactNo.setText(customer.getContactNo());
+                txtAddress.setText(customer.getAddress());
+                txtEmail.setText(customer.getEmail());
+            }else{
+                System.out.println(id+" is wrong ID");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
     void searchIconOnClickedAction(MouseEvent event) {
+        String id = txtSearch.getText();
 
+        try {
+            Customer customer = CustomerModel.search(id);
+            if(customer != null){
+                txtCustId.setText(customer.getCustId());
+                txtCustName.setText(customer.getCustName());
+                txtContactNo.setText(customer.getContactNo());
+                txtAddress.setText(customer.getAddress());
+                txtEmail.setText(customer.getEmail());
+            }else{
+                System.out.println(id+" is wrong ID");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
@@ -141,7 +189,20 @@ public class CashierCustomerFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
+        String id = txtCustId.getText();
 
+        try {
+            boolean isDelete = CustomerModel.delete(id);
+            if(isDelete){
+                NotificationController.successful("Delete Successful");
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
@@ -175,7 +236,26 @@ public class CashierCustomerFormController {
 
     @FXML
     void updateOnAction(ActionEvent event) {
+        Customer customer = new Customer();
 
+        customer.setCustId(txtCustId.getText());
+        customer.setCustName(txtCustName.getText());
+        customer.setContactNo(txtContactNo.getText());
+        customer.setAddress(txtAddress.getText());
+        customer.setEmail(txtEmail.getText());
+
+        try {
+            boolean isUpdated = CustomerModel.update(customer);
+            if(isUpdated){
+                NotificationController.successful("Updated Successful");
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
     }
 
     @FXML
@@ -253,7 +333,11 @@ public class CashierCustomerFormController {
     }
 
     private void clearTxtField() {
-
+        txtCustId.setText("");
+        txtCustName.setText("");
+        txtContactNo.setText("");
+        txtAddress.setText("");
+        txtEmail.setText("");
     }
 
     private void getAll(){

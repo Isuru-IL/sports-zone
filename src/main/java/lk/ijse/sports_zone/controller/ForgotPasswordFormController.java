@@ -200,7 +200,7 @@ public class ForgotPasswordFormController {
 
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Password change successfull").show();
+                new Alert(Alert.AlertType.ERROR, "Password change Unsuccessfull").show();
             }
         }else{
             new Alert(Alert.AlertType.ERROR, "password not same").show();
