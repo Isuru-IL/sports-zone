@@ -25,9 +25,8 @@ import javafx.util.Duration;
 import lk.ijse.sports_zone.dto.User;
 import lk.ijse.sports_zone.model.UserModel;
 import lk.ijse.sports_zone.util.AlertController;
-import lk.ijse.sports_zone.util.AnimaionController;
 import lk.ijse.sports_zone.util.EmailController;
-import lk.ijse.sports_zone.util.ValidateEmail;
+import lk.ijse.sports_zone.util.ValidateController;
 
 import javax.mail.MessagingException;
 
@@ -90,7 +89,7 @@ public class ForgotPasswordFormController {
 
     private Timeline timeline;
     private IntegerProperty timeSeconds = new SimpleIntegerProperty();
-    private final int START_TIME = 20;
+    private final int START_TIME = 60;
     private String email;
     private String searchEmail;
     private String userName;
@@ -128,33 +127,18 @@ public class ForgotPasswordFormController {
 
     @FXML
     void submitEmailOnAction(ActionEvent event) throws MessagingException {
-        userName = txtEnterUserName.getText();
 
         try {
+            userName = txtEnterUserName.getText();
+
             User user = UserModel.searchByUsername(userName);
             searchEmail = user.getEmail();
-            System.out.println(searchEmail);
+            System.out.println(searchEmail);                            //temp
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-//
-//        ///////////////////////////////////////////////////////////////
-//        timeSeconds.set(START_TIME);
-//        timeline = new Timeline();
-//        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(START_TIME+1),
-//                new KeyValue(timeSeconds, 0)));
-//        timeline.setOnFinished(event2 -> {
-//            countdownLabel.setVisible(false);
-//            btnResend.setVisible(true);
-//            // handle timeout event
-//        });
-//        timeline.playFromStart();
-//        countdownLabel.textProperty().bind(timeSeconds.asString());
-
-        /////////////////////////////////////////////////////////////////
-
-        if(ValidateEmail.emailCheck(txtEnterEmail.getText())) {
+        if(ValidateController.emailCheck(txtEnterEmail.getText())) {
             if(txtEnterEmail.getText().equals(searchEmail)) {
                 randomnum = rand.nextInt(9000);
                 randomnum += 1000;
@@ -189,21 +173,21 @@ public class ForgotPasswordFormController {
 
         if(txtNewPassword.getText().equals(txtConfirmPassword.getText())) {
 
-            user.setUserName(userName);
-            user.setPassword(txtConfirmPassword.getText());
             try {
+                user.setUserName(userName);
+                user.setPassword(txtConfirmPassword.getText());
                 boolean isUpdate = UserModel.updatePassword(user);
 
                 if(isUpdate){
-                    new Alert(Alert.AlertType.CONFIRMATION, "Password change successfull").show();
+                    AlertController.successfulMessage("Password change successful");
                 }
 
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Password change Unsuccessfull").show();
+                AlertController.exceptionMessage("Password change Unsuccessful");
             }
         }else{
-            new Alert(Alert.AlertType.ERROR, "password not same").show();
+            AlertController.errormessage("Password not same");
         }
     }
 
@@ -212,7 +196,7 @@ public class ForgotPasswordFormController {
         countdownLabel.setVisible(true);
         txtOtp.setText("");
 
-        if(ValidateEmail.emailCheck(txtEnterEmail.getText())) {
+        if(ValidateController.emailCheck(txtEnterEmail.getText())) {
             randomnum = rand.nextInt(9000);
             randomnum += 1000;
 

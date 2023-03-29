@@ -24,6 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.User;
 import lk.ijse.sports_zone.model.UserModel;
+import lk.ijse.sports_zone.util.AlertController;
 
 public class LoginFormController {
 
@@ -132,13 +133,14 @@ public class LoginFormController {
                 stage.centerOnScreen();
 
             }else{
-                new Alert(Alert.AlertType.ERROR,"invalid login details").show();
+                AlertController.errormessage("Invalid login details");
             }
 
         } catch (Exception exception) {
             //exception.printStackTrace();
             System.out.println(exception);
-            new Alert(Alert.AlertType.ERROR,"something went wrong").show();
+            //new Alert(Alert.AlertType.ERROR,"something went wrong").show();
+            AlertController.exceptionMessage("Something went wrong");
         }
 
 

@@ -1,6 +1,8 @@
 package lk.ijse.sports_zone.controller;
 
 import com.jfoenix.controls.JFXButton;
+
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -14,10 +16,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.EmployeeModel;
+import lk.ijse.sports_zone.util.AlertController;
+import lk.ijse.sports_zone.util.ValidateController;
 
 public class AdminEmployeeFormController {
 
@@ -73,6 +78,12 @@ public class AdminEmployeeFormController {
     private TableView<EmployeeTM> tblEmployee;
 
     @FXML
+    private Label lblInvalidContacktNo;
+
+    @FXML
+    private Label lblInvalidEmail;
+
+    @FXML
     private TextField txtAddress;
 
     @FXML
@@ -89,9 +100,6 @@ public class AdminEmployeeFormController {
 
     @FXML
     private TextField txtEmpName;
-
-//    @FXML
-//    private TextField txtJobTItle;
 
     @FXML
     private TextField txtNIC;
@@ -111,68 +119,73 @@ public class AdminEmployeeFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String empId = txtEmpId.getText();
 
         try {
+            String empId = txtEmpId.getText();
+
             boolean isDeleted = EmployeeModel.delete(empId);
             if(isDeleted){
-                new Alert(Alert.AlertType.CONFIRMATION, "deleted Successfully").show();
+                AlertController.successfulMessage("Deleted");
+                setCellValueFactory();
+                getAll();
+                clearTxtField();
             }else {
-                new Alert(Alert.AlertType.ERROR, "Not deleted").show();
+                AlertController.errormessage("Not Deleted");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "somthing went wrong").show();
+            AlertController.exceptionMessage("Something went wrong");
         }
-        setCellValueFactory();
-        getAll();
-
-        txtEmpId.setText("");
-        txtEmpName.setText("");
-        txtAddress.setText("");
-        txtContactNo.setText("");
-        txtSalary.setText("");
-        txtEmail.setText("");
-        txtNIC.setText("");
-        //txtJobTItle.setText("");
-        txtDob.setValue(null);
     }
 
     @FXML
     void saveOnAction(ActionEvent event) {
         //Employee employee = new Employee();
 
-        employee.setEmpId(txtEmpId.getText());
-        employee.setEmpName(txtEmpName.getText());
-        employee.setAddress(txtAddress.getText());
-        employee.setDob(String.valueOf(txtDob.getValue()));
-        employee.setContactNo(txtContactNo.getText());
-        employee.setSalary(Double.valueOf(txtSalary.getText()));
-        employee.setEmail(txtEmail.getText());
-        employee.setNic(txtNIC.getText());
-        employee.setJobTitle(cmbJobTitle.getValue());
 
-        try {
-            boolean isSaved = EmployeeModel.save(employee);
-            if(isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION,"saved").show();
+        if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+            if (ValidateController.contactCheck(txtContactNo.getText())) {
+                //lblInvalidContacktNo.setVisible(false);
+
+                if (ValidateController.emailCheck(txtEmail.getText())) {
+                    //lblInvalidEmail.setVisible(false);
+
+                    try {
+                        employee.setEmpId(txtEmpId.getText());
+                        employee.setEmpName(txtEmpName.getText());
+                        employee.setAddress(txtAddress.getText());
+                        employee.setDob(String.valueOf(txtDob.getValue()));
+                        employee.setContactNo(txtContactNo.getText());
+                        employee.setSalary(Double.valueOf(txtSalary.getText()));
+                        employee.setEmail(txtEmail.getText());
+                        employee.setNic(txtNIC.getText());
+                        employee.setJobTitle(cmbJobTitle.getValue());
+
+                        boolean isSaved = EmployeeModel.save(employee);
+                        if(isSaved){
+                            new Alert(Alert.AlertType.CONFIRMATION,"saved").show();
+
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        AlertController.exceptionMessage("SQLException");
+                    }catch(Exception exception){
+                        AlertController.exceptionMessage("Something went wrong");
+                    }
+
+                } else {
+                    lblInvalidEmail.setVisible(true);
+                }
+            } else {
+                lblInvalidContacktNo.setVisible(true);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "somthing went wrong").show();
+        } else {
+            lblInvalidEmail.setVisible(true);
+            lblInvalidContacktNo.setVisible(true);
         }
-        setCellValueFactory();
-        getAll();
-
-        txtEmpId.setText("");
-        txtEmpName.setText("");
-        txtAddress.setText("");
-        txtContactNo.setText("");
-        txtSalary.setText("");
-        txtEmail.setText("");
-        txtNIC.setText("");
-        //cmbJobTitle.setAccessibleText("hi");
-        txtDob.setValue(null);
     }
 
     @FXML
@@ -203,18 +216,9 @@ public class AdminEmployeeFormController {
         }
         setCellValueFactory();
         getAll();
-
-        txtEmpId.setText("");
-        txtEmpName.setText("");
-        txtAddress.setText("");
-        txtContactNo.setText("");
-        txtSalary.setText("");
-        txtEmail.setText("");
-        txtNIC.setText("");
-        //cmbJobTitle.setItems(null);
-        txtDob.setValue(null);
-
+        clearTxtField();
     }
+
 
     @FXML
     void empIdSearchOnAction(ActionEvent event) {
@@ -274,6 +278,16 @@ public class AdminEmployeeFormController {
         }
     }
 
+    @FXML
+    void txtContactNoOnMouseClickedAction(MouseEvent event) {
+        lblInvalidContacktNo.setVisible(false);
+    }
+
+    @FXML
+    void txtEmailOnMouseClickedAction(MouseEvent event) {
+        lblInvalidEmail.setVisible(false);
+    }
+
     private void generateNextOrderId() {
         try {
             String id = EmployeeModel.getNextEmpId();
@@ -309,6 +323,9 @@ public class AdminEmployeeFormController {
         generateNextOrderId();
         setCellValueFactory();
         getAll();
+
+        lblInvalidEmail.setVisible(false);
+        lblInvalidContacktNo.setVisible(false);
     }
 
     private void setCellValueFactory() {
@@ -348,4 +365,15 @@ public class AdminEmployeeFormController {
         }
     }
 
+    private void clearTxtField() {
+        txtEmpId.setText("");
+        txtEmpName.setText("");
+        txtAddress.setText("");
+        txtContactNo.setText("");
+        txtSalary.setText("");
+        txtEmail.setText("");
+        txtNIC.setText("");
+        //cmbJobTitle.setItems(null);
+        txtDob.setValue(null);
+    }
 }
