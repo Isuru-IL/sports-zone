@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -126,9 +128,9 @@
         </columns>
       </TableView>
       <DatePicker fx:id="txtDob" layoutX="1143.0" layoutY="353.0" prefHeight="40.0" prefWidth="219.0" />
-      <TextField fx:id="txtSearch" layoutX="1143.0" layoutY="87.0" onAction="#empIdSearchBarOnAction" prefHeight="40.0" prefWidth="272.0" promptText="Search">
+      <TextField fx:id="txtSearch" layoutX="1271.0" layoutY="97.0" onAction="#empIdSearchBarOnAction" onKeyTyped="#txtSearchOnKeyTypedAction" prefHeight="31.0" prefWidth="272.0" promptText="Search by ID">
          <font>
-            <Font name="System Bold" size="20.0" />
+            <Font size="16.0" />
          </font>
       </TextField>
       <ComboBox fx:id="cmbJobTitle" layoutX="601.0" layoutY="361.0" onAction="#jobTitleCmbOnAction" prefHeight="31.0" prefWidth="219.0" />
@@ -142,5 +144,10 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
+      <ImageView fitHeight="25.0" fitWidth="28.0" layoutX="1507.0" layoutY="102.0" onMouseClicked="#searchIconOnMouseClickedAction" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../assets/searchIcon.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

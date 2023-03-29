@@ -5,22 +5,27 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.Supplier;
+import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.dto.tm.SupplierTM;
+import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.SupplierModel;
+import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.NotificationController;
+import lk.ijse.sports_zone.util.ValidateController;
 
 public class AdminSupplierFormController {
 
@@ -61,6 +66,12 @@ public class AdminSupplierFormController {
     private TableView<SupplierTM> tblSupplier;
 
     @FXML
+    private Label lblInvalidContacktNo;
+
+    @FXML
+    private Label lblInvalidEmail;
+
+    @FXML
     private TextField txtAddress;
 
     @FXML
@@ -80,52 +91,111 @@ public class AdminSupplierFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String supId = txtSupId.getText();
-
         try {
+            String supId = txtSupId.getText();
+
             boolean isDeleted = SupplierModel.delete(supId);
             if(isDeleted){
-                new Alert(Alert.AlertType.CONFIRMATION, "Deleted Successfully").show();
+                AlertController.successfulMessage("Deleted");
 
                 setCellValueFactory();
                 getAll();
                 clearTxtField();
 
             }else {
-                new Alert(Alert.AlertType.ERROR, "Not Deleted").show();
+                AlertController.errormessage("Invalid details");
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            System.out.println(throwables);                                             //temp
+            AlertController.exceptionMessage("SQLException");
+        }catch(Exception exception){
+            System.out.println(exception);                                              //temp
+            AlertController.exceptionMessage("Something went wrong");
         }
     }
 
     @FXML
     void saveOnAction(ActionEvent event) {
         Supplier supplier = new Supplier();
-        supplier.setSupId(txtSupId.getText());
-        supplier.setSupName(txtSupName.getText());
-        supplier.setAddress(txtAddress.getText());
-        supplier.setEmail(txtEmail.getText());
-        supplier.setContactNo(txtContactNo.getText());
 
-        try {
-            boolean isSaved = SupplierModel.save(supplier);
-            if(isSaved){
-                new Alert(Alert.AlertType.CONFIRMATION, "Saved Successfully").show();
+        if(ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+            if(ValidateController.emailCheck(txtEmail.getText())) {
+                if(ValidateController.contactCheck(txtContactNo.getText())) {
 
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+                    try {
+                        supplier.setSupId(txtSupId.getText());
+                        supplier.setSupName(txtSupName.getText());
+                        supplier.setAddress(txtAddress.getText());
+                        supplier.setEmail(txtEmail.getText());
+                        supplier.setContactNo(txtContactNo.getText());
 
+                        boolean isSaved = SupplierModel.save(supplier);
+                        if (isSaved) {
+                            new Alert(Alert.AlertType.CONFIRMATION, "Saved Successfully").show();
+
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+
+                        } else {
+                            new Alert(Alert.AlertType.ERROR, "Not Saved").show();
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        new Alert(Alert.AlertType.ERROR, "Somthing Went Wrong").show();
+                    }
+                }else{
+                    lblInvalidContacktNo.setVisible(true);
+                }
             }else {
-                new Alert(Alert.AlertType.ERROR, "Not Saved").show();
+                lblInvalidEmail.setVisible(true);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR,"Somthing Went Wrong").show();
+        }else{
+            lblInvalidContacktNo.setVisible(true);
+            lblInvalidEmail.setVisible(true);
         }
+    }
 
+    @FXML
+    void updateOnAction(ActionEvent event) {
+        Supplier supplier = new Supplier();
+
+        if(ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+            if(ValidateController.emailCheck(txtEmail.getText())) {
+                if(ValidateController.contactCheck(txtContactNo.getText())) {
+
+                    supplier.setSupId(txtSupId.getText());
+                    supplier.setSupName(txtSupName.getText());
+                    supplier.setAddress(txtAddress.getText());
+                    supplier.setEmail(txtEmail.getText());
+                    supplier.setContactNo(txtContactNo.getText());
+
+                    try {
+                        boolean isUpdated = SupplierModel.update(supplier);
+                        if(isUpdated){
+                            NotificationController.successful("update successful");
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+                        }else{
+                            NotificationController.unSuccessful("update unSuccessful");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        NotificationController.catchException(throwables);
+                    }
+                }else{
+                    lblInvalidContacktNo.setVisible(true);
+                }
+            }else {
+                lblInvalidEmail.setVisible(true);
+            }
+        }else{
+            lblInvalidContacktNo.setVisible(true);
+            lblInvalidEmail.setVisible(true);
+        }
     }
 
     @FXML
@@ -144,12 +214,12 @@ public class AdminSupplierFormController {
                 txtContactNo.setText(supplier.getContactNo());
 
             }else{
-                System.out.println("wrong");
+                AlertController.errormessage("Invalid ID");
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "something went wrong");
+            AlertController.exceptionMessage("Somthing went wrong");
         }
     }
 
@@ -173,30 +243,58 @@ public class AdminSupplierFormController {
     }
 
     @FXML
-    void updateOnAction(ActionEvent event) {
-        Supplier supplier = new Supplier();
-
-        supplier.setSupId(txtSupId.getText());
-        supplier.setSupName(txtSupName.getText());
-        supplier.setAddress(txtAddress.getText());
-        supplier.setEmail(txtEmail.getText());
-        supplier.setContactNo(txtContactNo.getText());
-
+    void searchIconOnMouseClickedAction(MouseEvent event) {
         try {
-            boolean isUpdated = SupplierModel.update(supplier);
-            if(isUpdated){
-                NotificationController.successful("update successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+            Supplier supplier = SupplierModel.search(txtSearch.getText());
+            if(supplier != null){
+                txtSupId.setText(supplier.getSupId());
+                txtSupName.setText(supplier.getSupName());
+                txtAddress.setText(supplier.getAddress());
+                txtEmail.setText(supplier.getEmail());
+                txtContactNo.setText(supplier.getContactNo());
+
             }else{
-                NotificationController.unSuccessful("update unSuccessful");
+                NotificationController.unSuccessful("Invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
+
+    @FXML
+    void txtSearchOnKeyTypedAction(KeyEvent event) {
+        String searchValue = txtSearch.getText().trim();
+
+        try {
+            ObservableList<SupplierTM> obList= SupplierModel.getAll();
+
+            if (!searchValue.isEmpty()) {
+                ObservableList<SupplierTM> filteredData = obList.filtered(new Predicate<SupplierTM>(){
+                    @Override
+                    public boolean test(SupplierTM supplierTM) {
+                        return String.valueOf(supplierTM.getSupId()).toLowerCase().contains(searchValue.toLowerCase());
+                    }
+                });
+                tblSupplier.setItems(filteredData);
+            } else {
+                tblSupplier.setItems(obList);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @FXML
+    void txtContactNoOnMouseClickedAction(MouseEvent event) {
+        lblInvalidContacktNo.setVisible(false);
+    }
+
+    @FXML
+    void txtEmailOnMouseClickedAction(MouseEvent event) {
+        lblInvalidEmail.setVisible(false);
+    }
+
+
 
     @FXML
     void initialize() {
@@ -218,6 +316,9 @@ public class AdminSupplierFormController {
 
         setCellValueFactory();
         getAll();
+
+        lblInvalidEmail.setVisible(false);
+        lblInvalidContacktNo.setVisible(false);
     }
 
     private void setCellValueFactory() {
@@ -230,34 +331,38 @@ public class AdminSupplierFormController {
 
     private void getAll(){
         try {
-            ObservableList<SupplierTM> obList = FXCollections.observableArrayList();
-                    List<SupplierTM> supplierAllData = SupplierModel.getAll();
+//            ObservableList<SupplierTM> obList = FXCollections.observableArrayList();
+//                    List<SupplierTM> supplierAllData = SupplierModel.getAll();
+//
+//                    for(SupplierTM supplierTM : supplierAllData){
+//                        obList.add(new SupplierTM(
+//                                supplierTM.getSupId(),
+//                                supplierTM.getSupName(),
+//                                supplierTM.getAddress(),
+//                                supplierTM.getEmail(),
+//                                supplierTM.getContactNo()
+//                        ));
+//                    }
 
-                    for(SupplierTM supplierTM : supplierAllData){
-                        obList.add(new SupplierTM(
-                                supplierTM.getSupId(),
-                                supplierTM.getSupName(),
-                                supplierTM.getAddress(),
-                                supplierTM.getEmail(),
-                                supplierTM.getContactNo()
-                        ));
-                    }
+            ObservableList<SupplierTM> obList = SupplierModel.getAll();
 
                     tblSupplier.setItems(obList);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "something went wrong").show();
+            AlertController.exceptionMessage("SQLException");
+        } catch (Exception exception){
+            AlertController.exceptionMessage("Something went wrong");
         }
     }
 
     private void clearTxtField(){
-        txtSupId.setText("");
-        txtSupName.setText("");
-        txtAddress.setText("");
-        txtEmail.setText("");
-        txtContactNo.setText("");
-        txtSearch.setText("");
+        txtSupId.setText(null);
+        txtSupName.setText(null);
+        txtAddress.setText(null);
+        txtEmail.setText(null);
+        txtContactNo.setText(null);
+        txtSearch.setText(null);
     }
 
 }

@@ -7,8 +7,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.sports_zone.dto.Employee;
@@ -163,7 +166,7 @@ public class AdminEmployeeFormController {
 
                         boolean isSaved = EmployeeModel.save(employee);
                         if(isSaved){
-                            new Alert(Alert.AlertType.CONFIRMATION,"saved").show();
+                            AlertController.successfulMessage("Saved");
 
                             setCellValueFactory();
                             getAll();
@@ -192,37 +195,57 @@ public class AdminEmployeeFormController {
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
 
-        employee.setEmpId(txtEmpId.getText());
-        employee.setEmpName(txtEmpName.getText());
-        employee.setAddress(txtAddress.getText());
-        employee.setDob(String.valueOf(txtDob.getValue()));
-        employee.setContactNo(txtContactNo.getText());
-        employee.setSalary(Double.valueOf(txtSalary.getText()));
-        employee.setEmail(txtEmail.getText());
-        employee.setNic(txtNIC.getText());
-        employee.setJobTitle(cmbJobTitle.getValue());
+        if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+            if (ValidateController.contactCheck(txtContactNo.getText())) {
+                //lblInvalidContacktNo.setVisible(false);
 
-        try {
-            boolean isUpdated = EmployeeModel.update(employee);
-            if(isUpdated){
-                new Alert(Alert.AlertType.CONFIRMATION, "updated Successfully").show();
-            }else {
-                new Alert(Alert.AlertType.ERROR, "Not updated").show();
+                if (ValidateController.emailCheck(txtEmail.getText())) {
+                    //lblInvalidEmail.setVisible(false);
+
+                    employee.setEmpId(txtEmpId.getText());
+                    employee.setEmpName(txtEmpName.getText());
+                    employee.setAddress(txtAddress.getText());
+                    employee.setDob(String.valueOf(txtDob.getValue()));
+                    employee.setContactNo(txtContactNo.getText());
+                    employee.setSalary(Double.valueOf(txtSalary.getText()));
+                    employee.setEmail(txtEmail.getText());
+                    employee.setNic(txtNIC.getText());
+                    employee.setJobTitle(cmbJobTitle.getValue());
+
+                    try {
+                        boolean isUpdated = EmployeeModel.update(employee);
+                        if(isUpdated){
+                            AlertController.successfulMessage("Updated");
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+                            btnSave.setDisable(false);
+                        }else {
+                            AlertController.errormessage("Not Updated");
+                        }
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        AlertController.exceptionMessage("Something went wrong");
+                    }
+
+                } else {
+                    lblInvalidEmail.setVisible(true);
+                }
+            } else {
+                lblInvalidContacktNo.setVisible(true);
             }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "something went wrong");
+        } else {
+            lblInvalidEmail.setVisible(true);
+            lblInvalidContacktNo.setVisible(true);
         }
-        setCellValueFactory();
-        getAll();
-        clearTxtField();
     }
 
 
     @FXML
     void empIdSearchOnAction(ActionEvent event) {
         String empId = txtEmpId.getText();
+        btnSave.setDisable(true);
 
         try {
             Employee employee = EmployeeModel.search(empId);
@@ -245,13 +268,14 @@ public class AdminEmployeeFormController {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "something went wrong");
+            AlertController.exceptionMessage("Something went wrong");
         }
     }
 
     @FXML
     void empIdSearchBarOnAction(ActionEvent event) {
         String empId = txtSearch.getText();
+        btnSave.setDisable(true);
 
         try {
             Employee employee = EmployeeModel.search(empId);
@@ -274,9 +298,76 @@ public class AdminEmployeeFormController {
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "something went wrong").show();
+            AlertController.exceptionMessage("Something went wrong");
         }
     }
+
+    @FXML
+    void searchIconOnMouseClickedAction(MouseEvent event) {
+        String empId = txtSearch.getText();
+        btnSave.setDisable(true);
+
+        try {
+            Employee employee = EmployeeModel.search(empId);
+
+            txtEmpId.setText(employee.getEmpId());
+            txtEmpName.setText(employee.getEmpName());
+            txtAddress.setText(employee.getAddress());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(employee.getDob(), formatter);
+            txtDob.setValue(date);
+            //txtDob.setValue(employee.getDob());
+
+
+            txtContactNo.setText(employee.getContactNo());
+            txtSalary.setText(String.valueOf(employee.getSalary()));
+            txtEmail.setText(employee.getEmail());
+            txtNIC.setText(employee.getNic());
+            cmbJobTitle.setAccessibleText(employee.getJobTitle());
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            AlertController.exceptionMessage("Something went wrong");
+        }
+    }
+
+    @FXML
+    void txtSearchOnKeyTypedAction(KeyEvent event) throws SQLException {
+        String searchValue = txtSearch.getText().trim();
+
+        ObservableList<EmployeeTM> obList= FXCollections.observableArrayList();
+
+        List<Employee> data = EmployeeModel.getAll();
+
+        for(Employee employee : data){
+            obList.add(new EmployeeTM(
+                    employee.getEmpId(),
+                    employee.getEmpName(),
+                    employee.getAddress(),
+                    employee.getDob(),
+                    employee.getContactNo(),
+                    employee.getSalary(),
+                    employee.getEmail(),
+                    employee.getNic(),
+                    employee.getJobTitle()
+            ));
+        }
+
+
+        if (!searchValue.isEmpty()) {
+            ObservableList<EmployeeTM> filteredData = obList.filtered(new Predicate<EmployeeTM>(){
+                @Override
+                public boolean test(EmployeeTM employeetm) {
+                    return String.valueOf(employeetm.getEmpId()).toLowerCase().contains(searchValue.toLowerCase());
+                }
+            });
+            tblEmployee.setItems(filteredData);
+        } else {
+            tblEmployee.setItems(obList);
+        }
+    }
+
 
     @FXML
     void txtContactNoOnMouseClickedAction(MouseEvent event) {

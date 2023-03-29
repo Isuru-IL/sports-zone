@@ -1,5 +1,6 @@
 package lk.ijse.sports_zone.model;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lk.ijse.sports_zone.db.DBConnection;
 import lk.ijse.sports_zone.dto.Supplier;
@@ -28,13 +29,13 @@ public class SupplierModel {
         }
     }
 
-    public static List<SupplierTM> getAll() throws SQLException {
+    public static ObservableList<SupplierTM> getAll() throws SQLException {
         String sql = "SELECT * FROM Supplier";
         try(PreparedStatement pstm = DBConnection.getInstance().getConnection().prepareStatement(sql)){
 
             ResultSet resultSet = pstm.executeQuery();
 
-            List<SupplierTM> allData = new ArrayList<>();
+            ObservableList<SupplierTM> allData = FXCollections.observableArrayList();
 
             while(resultSet.next()){
                 allData.add(new SupplierTM(

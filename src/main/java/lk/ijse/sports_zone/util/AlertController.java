@@ -21,7 +21,7 @@ public class AlertController {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/assets/wrongIcon.png"));
-        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType cancelButton = new ButtonType("Ok", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(cancelButton);
 
         alert.showAndWait();
