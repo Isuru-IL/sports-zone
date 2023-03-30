@@ -5,7 +5,9 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,10 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -25,8 +24,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.Customer;
+import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.tm.CustomerTM;
+import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
+import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 import lk.ijse.sports_zone.util.NotificationController;
 
@@ -183,7 +185,47 @@ public class CashierCustomerFormController {
     }
 
     @FXML
-    void txtSearchKeyTypedOnAction(KeyEvent event) {
+    void txtSearchKeyTypedOnAction(KeyEvent event) throws SQLException {
+        String searchValue = txtSearch.getText().trim();
+
+        ObservableList<CustomerTM> obList= FXCollections.observableArrayList();
+
+        List<CustomerTM> data = CustomerModel.getAll();
+
+        for(CustomerTM customerTM : data){
+            obList.add(new CustomerTM(
+                    customerTM.getCustId(),
+                    customerTM.getCustName(),
+                    customerTM.getContactNo(),
+                    customerTM.getAddress(),
+                    customerTM.getEmail()
+            ));
+        }
+        if (!searchValue.isEmpty()) {
+            ObservableList<CustomerTM> filteredData = obList.filtered(new Predicate<CustomerTM>(){
+                @Override
+                public boolean test(CustomerTM customerTM) {
+                    return String.valueOf(customerTM.getCustId()).toLowerCase().contains(searchValue.toLowerCase());
+                }
+            });
+            tblCustomer.setItems(filteredData);
+        } else {
+            tblCustomer.setItems(obList);
+        }
+    }
+
+    @FXML
+    void tabelOnMouseClickedAction(MouseEvent event) {
+        TablePosition pos=tblCustomer.getSelectionModel().getSelectedCells().get(0);
+        int row=pos.getRow();
+
+        ObservableList<TableColumn<CustomerTM,?>> columns=tblCustomer.getColumns();
+
+        txtCustId.setText(columns.get(0).getCellData(row).toString());
+        txtCustName.setText(columns.get(1).getCellData(row).toString());
+        txtAddress.setText(columns.get(2).getCellData(row).toString());
+        txtContactNo.setText(columns.get(3).getCellData(row).toString());
+        txtEmail.setText(columns.get(4).getCellData(row).toString());
 
     }
 
@@ -338,6 +380,7 @@ public class CashierCustomerFormController {
         txtContactNo.setText("");
         txtAddress.setText("");
         txtEmail.setText("");
+        txtSearch.setText("");
     }
 
     private void getAll(){

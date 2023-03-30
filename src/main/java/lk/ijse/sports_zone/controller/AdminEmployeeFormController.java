@@ -122,7 +122,7 @@ public class AdminEmployeeFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-
+        btnSave.setVisible(true);
         try {
             String empId = txtEmpId.getText();
 
@@ -194,6 +194,7 @@ public class AdminEmployeeFormController {
     @FXML
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
+        btnSave.setVisible(true);
 
         if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
             if (ValidateController.contactCheck(txtContactNo.getText())) {
@@ -215,7 +216,7 @@ public class AdminEmployeeFormController {
                     try {
                         boolean isUpdated = EmployeeModel.update(employee);
                         if(isUpdated){
-                            AlertController.successfulMessage("Updated");
+                            AlertController.successfulMessage("updated");
                             setCellValueFactory();
                             getAll();
                             clearTxtField();
@@ -250,21 +251,25 @@ public class AdminEmployeeFormController {
         try {
             Employee employee = EmployeeModel.search(empId);
 
-            txtEmpId.setText(employee.getEmpId());
-            txtEmpName.setText(employee.getEmpName());
-            txtAddress.setText(employee.getAddress());
+            if(employee != null){
+                txtEmpId.setText(employee.getEmpId());
+                txtEmpName.setText(employee.getEmpName());
+                txtAddress.setText(employee.getAddress());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date = LocalDate.parse(employee.getDob(), formatter);
-            txtDob.setValue(date);
-            //txtDob.setValue(employee.getDob());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(employee.getDob(), formatter);
+                txtDob.setValue(date);
+                //txtDob.setValue(employee.getDob());
 
 
-            txtContactNo.setText(employee.getContactNo());
-            txtSalary.setText(String.valueOf(employee.getSalary()));
-            txtEmail.setText(employee.getEmail());
-            txtNIC.setText(employee.getNic());
-            cmbJobTitle.setAccessibleText(employee.getJobTitle());
+                txtContactNo.setText(employee.getContactNo());
+                txtSalary.setText(String.valueOf(employee.getSalary()));
+                txtEmail.setText(employee.getEmail());
+                txtNIC.setText(employee.getNic());
+                cmbJobTitle.setValue(employee.getJobTitle());
+            }else{
+                AlertController.errormessage("Invalid Id");
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -280,21 +285,25 @@ public class AdminEmployeeFormController {
         try {
             Employee employee = EmployeeModel.search(empId);
 
-            txtEmpId.setText(employee.getEmpId());
-            txtEmpName.setText(employee.getEmpName());
-            txtAddress.setText(employee.getAddress());
+            if(employee != null){
+                txtEmpId.setText(employee.getEmpId());
+                txtEmpName.setText(employee.getEmpName());
+                txtAddress.setText(employee.getAddress());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date = LocalDate.parse(employee.getDob(), formatter);
-            txtDob.setValue(date);
-            //txtDob.setValue(employee.getDob());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(employee.getDob(), formatter);
+                txtDob.setValue(date);
+                //txtDob.setValue(employee.getDob());
 
 
-            txtContactNo.setText(employee.getContactNo());
-            txtSalary.setText(String.valueOf(employee.getSalary()));
-            txtEmail.setText(employee.getEmail());
-            txtNIC.setText(employee.getNic());
-            cmbJobTitle.setAccessibleText(employee.getJobTitle());
+                txtContactNo.setText(employee.getContactNo());
+                txtSalary.setText(String.valueOf(employee.getSalary()));
+                txtEmail.setText(employee.getEmail());
+                txtNIC.setText(employee.getNic());
+                cmbJobTitle.setValue(employee.getJobTitle());
+            }else{
+                AlertController.errormessage("Invalid Id");
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -310,21 +319,25 @@ public class AdminEmployeeFormController {
         try {
             Employee employee = EmployeeModel.search(empId);
 
-            txtEmpId.setText(employee.getEmpId());
-            txtEmpName.setText(employee.getEmpName());
-            txtAddress.setText(employee.getAddress());
+            if(employee != null){
+                txtEmpId.setText(employee.getEmpId());
+                txtEmpName.setText(employee.getEmpName());
+                txtAddress.setText(employee.getAddress());
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate date = LocalDate.parse(employee.getDob(), formatter);
-            txtDob.setValue(date);
-            //txtDob.setValue(employee.getDob());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate date = LocalDate.parse(employee.getDob(), formatter);
+                txtDob.setValue(date);
+                //txtDob.setValue(employee.getDob());
 
 
-            txtContactNo.setText(employee.getContactNo());
-            txtSalary.setText(String.valueOf(employee.getSalary()));
-            txtEmail.setText(employee.getEmail());
-            txtNIC.setText(employee.getNic());
-            cmbJobTitle.setAccessibleText(employee.getJobTitle());
+                txtContactNo.setText(employee.getContactNo());
+                txtSalary.setText(String.valueOf(employee.getSalary()));
+                txtEmail.setText(employee.getEmail());
+                txtNIC.setText(employee.getNic());
+                cmbJobTitle.setValue(employee.getJobTitle());
+            }else{
+                AlertController.errormessage("Invalid Id");
+            }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -368,6 +381,23 @@ public class AdminEmployeeFormController {
         }
     }
 
+    @FXML
+    void tableOnMouseClicked(MouseEvent event) {
+        TablePosition pos=tblEmployee.getSelectionModel().getSelectedCells().get(0);
+        int row=pos.getRow();
+
+        ObservableList<TableColumn<EmployeeTM,?>> columns=tblEmployee.getColumns();
+
+        txtEmpId.setText(columns.get(0).getCellData(row).toString());
+        txtEmpName.setText(columns.get(1).getCellData(row).toString());
+        txtAddress.setText(columns.get(2).getCellData(row).toString());
+        txtDob.setValue(LocalDate.parse(columns.get(8).getCellData(row).toString()));
+        txtContactNo.setText(columns.get(3).getCellData(row).toString());
+        txtSalary.setText(columns.get(4).getCellData(row).toString());
+        txtEmail.setText(columns.get(5).getCellData(row).toString());
+        txtNIC.setText(columns.get(6).getCellData(row).toString());
+        cmbJobTitle.setValue(columns.get(7).getCellData(row).toString());
+    }
 
     @FXML
     void txtContactNoOnMouseClickedAction(MouseEvent event) {

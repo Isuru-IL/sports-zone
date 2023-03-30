@@ -4,7 +4,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import org.controlsfx.control.Notifications;
+
+import java.util.Optional;
 
 public class AlertController {
     public static void errormessage(String msg){
@@ -27,8 +32,8 @@ public class AlertController {
         alert.showAndWait();
     }
 
-    public static void successfulMessage(String msg) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
+    public static boolean successfulMessage(String msg) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Successful");
         alert.setHeaderText(null);
         alert.setContentText(msg);
@@ -41,9 +46,15 @@ public class AlertController {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(new Image("/assets/wdoneIcon.png"));
         ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(okButton);
+        ButtonType cancleButton = new ButtonType("Cansel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        alert.show();
+        alert.getButtonTypes().setAll(okButton, cancleButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.orElse(cancleButton) == okButton){
+            return true;
+        }
+            return false;
     }
 
     public static void exceptionMessage(String msg) {
@@ -63,5 +74,16 @@ public class AlertController {
         alert.getButtonTypes().setAll(okButton);
 
         alert.show();
+    }
+
+    public static void animationMesseage(String image,String title,String text){
+        Image img = new Image(String.valueOf(image), 96, 96, false, false);
+        Notifications notificationBuilder = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(new ImageView(img))
+                .hideAfter(Duration.seconds(3));
+        notificationBuilder.darkStyle();
+        notificationBuilder.show();
     }
 }

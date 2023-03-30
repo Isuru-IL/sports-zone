@@ -262,6 +262,20 @@ public class AdminSupplierFormController {
     }
 
     @FXML
+    void tableOnMouseClicked(MouseEvent event) {
+        TablePosition pos=tblSupplier.getSelectionModel().getSelectedCells().get(0);
+        int row=pos.getRow();
+
+        ObservableList<TableColumn<SupplierTM,?>> columns=tblSupplier.getColumns();
+
+        txtSupId.setText(columns.get(0).getCellData(row).toString());
+        txtSupName.setText(columns.get(1).getCellData(row).toString());
+        txtAddress.setText(columns.get(2).getCellData(row).toString());
+        txtContactNo.setText(columns.get(3).getCellData(row).toString());
+        txtEmail.setText(columns.get(4).getCellData(row).toString());
+    }
+
+    @FXML
     void txtSearchOnKeyTypedAction(KeyEvent event) {
         String searchValue = txtSearch.getText().trim();
 
@@ -343,6 +357,8 @@ public class AdminSupplierFormController {
 //                                supplierTM.getContactNo()
 //                        ));
 //                    }
+
+
 
             ObservableList<SupplierTM> obList = SupplierModel.getAll();
 

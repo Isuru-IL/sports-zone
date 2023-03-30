@@ -5,19 +5,22 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.Inventory;
+import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.dto.tm.InventoryTM;
+import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.util.NotificationController;
 
@@ -84,6 +87,29 @@ public class InventoryFormController {
     private TextField txtUnitPrice;
 
     @FXML
+    void searchIconOnMouseClickedAction(MouseEvent event) {
+        String id = txtSearch.getText();
+
+        try {
+            Inventory inventory = InventoryModel.search(id);
+
+            if(inventory != null){
+                txtItemId.setText(inventory.getItemCode());
+                txtItemName.setText(inventory.getItemName());
+                txtCategory.setText(inventory.getCategory());
+                txtBrand.setText(inventory.getBrand());
+                txtUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
+                txtQty.setText(String.valueOf(inventory.getQtyOnHand()));
+            }else{
+                NotificationController.unSuccessful("Invalid Id");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            NotificationController.catchException(throwables);
+        }
+    }
+
+    @FXML
     void SearchBarOnAction(ActionEvent event) {
         String id = txtSearch.getText();
 
@@ -128,6 +154,53 @@ public class InventoryFormController {
             NotificationController.catchException(throwables);
         }
     }
+
+    @FXML
+    void tableOnMouseClicked(MouseEvent event) {
+        TablePosition pos=tblItem.getSelectionModel().getSelectedCells().get(0);
+        int row=pos.getRow();
+
+        ObservableList<TableColumn<InventoryTM,?>> columns=tblItem.getColumns();
+
+        txtItemId.setText(columns.get(0).getCellData(row).toString());
+        txtItemName.setText(columns.get(1).getCellData(row).toString());
+        txtCategory.setText(columns.get(2).getCellData(row).toString());
+        txtBrand.setText(columns.get(3).getCellData(row).toString());
+        txtUnitPrice.setText(columns.get(4).getCellData(row).toString());
+        txtQty.setText(columns.get(5).getCellData(row).toString());
+    }
+
+    @FXML
+    void txtSearchOnKeyTypedAction(KeyEvent event) throws SQLException {
+        String searchValue = txtSearch.getText().trim();
+
+        ObservableList<InventoryTM> obList= FXCollections.observableArrayList();
+
+        List<Inventory> data = InventoryModel.getAll();
+
+        for(Inventory inventory : data){
+            obList.add(new InventoryTM(
+                    inventory.getItemCode(),
+                    inventory.getItemName(),
+                    inventory.getCategory(),
+                    inventory.getBrand(),
+                    inventory.getUnitPrice(),
+                    inventory.getQtyOnHand()
+            ));
+        }
+        if (!searchValue.isEmpty()) {
+            ObservableList<InventoryTM> filteredData = obList.filtered(new Predicate<InventoryTM>(){
+                @Override
+                public boolean test(InventoryTM inventoryTM) {
+                    return String.valueOf(inventoryTM.getItemCode()).toLowerCase().contains(searchValue.toLowerCase());
+                }
+            });
+            tblItem.setItems(filteredData);
+        } else {
+            tblItem.setItems(obList);
+        }
+    }
+
 
     @FXML
     void deleteOnAction(ActionEvent event) {
@@ -246,16 +319,16 @@ public class InventoryFormController {
     private void getAll(){
         ObservableList<InventoryTM> oblist = FXCollections.observableArrayList();
         try {
-            List<InventoryTM> allData = InventoryModel.getAll();
+            List<Inventory> allData = InventoryModel.getAll();
 
-            for(InventoryTM inventoryTM : allData){
+            for(Inventory inventory : allData){
                 oblist.add(new InventoryTM(
-                        inventoryTM.getItemCode(),
-                        inventoryTM.getItemName(),
-                        inventoryTM.getCategory(),
-                        inventoryTM.getBrand(),
-                        inventoryTM.getUnitPrice(),
-                        inventoryTM.getQtyOnHand()
+                        inventory.getItemCode(),
+                        inventory.getItemName(),
+                        inventory.getCategory(),
+                        inventory.getBrand(),
+                        inventory.getUnitPrice(),
+                        inventory.getQtyOnHand()
                 ));
             }
             tblItem.setItems(oblist);
