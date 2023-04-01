@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import lk.ijse.sports_zone.dto.Customer;
 import lk.ijse.sports_zone.dto.tm.CustomerTM;
 import lk.ijse.sports_zone.model.CustomerModel;
+import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 import lk.ijse.sports_zone.util.NotificationController;
 
@@ -124,11 +125,11 @@ public class CashierCustomer02FormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
+
         }
     }
 
@@ -145,11 +146,10 @@ public class CashierCustomer02FormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -166,11 +166,10 @@ public class CashierCustomer02FormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -222,19 +221,21 @@ public class CashierCustomer02FormController {
     @FXML
     void deleteOnAction(ActionEvent event) {
         String id = txtCustId.getText();
-
-        try {
-            boolean isDelete = CustomerModel.delete(id);
-            if(isDelete){
-                NotificationController.successful("Delete Successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+        if(result){
+            try {
+                boolean isDelete = CustomerModel.delete(id);
+                if(isDelete){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Delete Successful");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
+
     }
 
     @FXML
@@ -250,14 +251,13 @@ public class CashierCustomer02FormController {
         try {
             boolean isSaved = CustomerModel.save(customer);
             if(isSaved){
-                NotificationController.successful("Saved Successful");
-
                 setCellValueFactory();
                 getAll();
                 clearTxtField();
+                AlertController.okMassage("save successful");
 
             }else{
-                NotificationController.unSuccessful("Saved Unsuccessful");
+                AlertController.errormessage("Saved unsuccessful");
             }
         } catch (SQLException throwables) {
             //throwables.printStackTrace();
@@ -276,17 +276,20 @@ public class CashierCustomer02FormController {
         customer.setAddress(txtAddress.getText());
         customer.setEmail(txtEmail.getText());
 
-        try {
-            boolean isUpdated = CustomerModel.update(customer);
-            if(isUpdated){
-                NotificationController.successful("Updated Successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+        if(result){
+            try {
+                boolean isUpdated = CustomerModel.update(customer);
+                if(isUpdated){
+                    NotificationController.successful("Updated Successful");
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                NotificationController.catchException(throwables);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 

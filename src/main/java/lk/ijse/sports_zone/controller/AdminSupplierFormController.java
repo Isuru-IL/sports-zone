@@ -91,27 +91,23 @@ public class AdminSupplierFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+
         try {
             String supId = txtSupId.getText();
 
             boolean isDeleted = SupplierModel.delete(supId);
             if(isDeleted){
-                AlertController.successfulMessage("Deleted");
-
                 setCellValueFactory();
                 getAll();
                 clearTxtField();
-
+                AlertController.okMassage("Delete successful");
             }else {
                 AlertController.errormessage("Invalid details");
             }
 
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables);                                             //temp
-            AlertController.exceptionMessage("SQLException");
         }catch(Exception exception){
-            System.out.println(exception);                                              //temp
+            System.out.println("supDelete = "+exception);                                              //temp
             AlertController.exceptionMessage("Something went wrong");
         }
     }
@@ -133,18 +129,16 @@ public class AdminSupplierFormController {
 
                         boolean isSaved = SupplierModel.save(supplier);
                         if (isSaved) {
-                            new Alert(Alert.AlertType.CONFIRMATION, "Saved Successfully").show();
-
                             setCellValueFactory();
                             getAll();
                             clearTxtField();
-
+                            AlertController.okMassage("Save successful");
                         } else {
-                            new Alert(Alert.AlertType.ERROR, "Not Saved").show();
+                            AlertController.errormessage("Invalid details");
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
-                        new Alert(Alert.AlertType.ERROR, "Somthing Went Wrong").show();
+                        AlertController.exceptionMessage("Something went wrong");
                     }
                 }else{
                     lblInvalidContacktNo.setVisible(true);
@@ -172,19 +166,22 @@ public class AdminSupplierFormController {
                     supplier.setEmail(txtEmail.getText());
                     supplier.setContactNo(txtContactNo.getText());
 
-                    try {
-                        boolean isUpdated = SupplierModel.update(supplier);
-                        if(isUpdated){
-                            NotificationController.successful("update successful");
-                            setCellValueFactory();
-                            getAll();
-                            clearTxtField();
-                        }else{
-                            NotificationController.unSuccessful("update unSuccessful");
+                    boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                    if(result){
+                        try {
+                            boolean isUpdated = SupplierModel.update(supplier);
+                            if(isUpdated){
+                                setCellValueFactory();
+                                getAll();
+                                clearTxtField();
+                                AlertController.okMassage("Update successful");
+                            }else{
+                                AlertController.errormessage("update unsuccessful");
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                            AlertController.exceptionMessage("SQLException");
                         }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                        NotificationController.catchException(throwables);
                     }
                 }else{
                     lblInvalidContacktNo.setVisible(true);
@@ -235,7 +232,7 @@ public class AdminSupplierFormController {
                 txtContactNo.setText(supplier.getContactNo());
 
             }else{
-                NotificationController.unSuccessful("Invalid Id");
+               AlertController.errormessage("Invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -254,7 +251,7 @@ public class AdminSupplierFormController {
                 txtContactNo.setText(supplier.getContactNo());
 
             }else{
-                NotificationController.unSuccessful("Invalid Id");
+                AlertController.errormessage("Invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

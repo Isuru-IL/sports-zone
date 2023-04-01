@@ -22,6 +22,7 @@ import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.dto.tm.InventoryTM;
 import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.InventoryModel;
+import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.NotificationController;
 
 public class InventoryFormController {
@@ -101,11 +102,10 @@ public class InventoryFormController {
                 txtUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
                 txtQty.setText(String.valueOf(inventory.getQtyOnHand()));
             }else{
-                NotificationController.unSuccessful("Invalid Id");
+                AlertController.errormessage(id+"is invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -124,11 +124,10 @@ public class InventoryFormController {
                 txtUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
                 txtQty.setText(String.valueOf(inventory.getQtyOnHand()));
             }else{
-                NotificationController.unSuccessful("Invalid Id");
+                AlertController.errormessage(id+"is invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -147,11 +146,10 @@ public class InventoryFormController {
                 txtUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
                 txtQty.setText(String.valueOf(inventory.getQtyOnHand()));
             }else{
-                NotificationController.unSuccessful("Invalid Id");
+                AlertController.errormessage(id+"is invalid Id");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -205,22 +203,22 @@ public class InventoryFormController {
     @FXML
     void deleteOnAction(ActionEvent event) {
         String id = txtItemId.getText();
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+        if(result){
+            try {
+                boolean isDeleted= InventoryModel.delete(id);
+                if(isDeleted){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Item Deleted Successfully");
 
-        try {
-            boolean isDeleted= InventoryModel.delete(id);
-            if(isDeleted){
-                NotificationController.successful("Delete successful");
-
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-
-            }else {
-                NotificationController.successful("Delete UnSuccessful");
+                }else {
+                    AlertController.errormessage("Item Deleted Unsuccessfully");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -239,19 +237,17 @@ public class InventoryFormController {
             boolean isSaved = InventoryModel.save(inventory);
 
             if(isSaved){
-                NotificationController.successful("Saved Successful");
-
                 setCellValueFactory();
                 getAll();
                 clearTxtField();
+                AlertController.okMassage("Item Saved Successfully");
 
             }else{
-                NotificationController.unSuccessful("Saved Unsuccessful");
+                AlertController.errormessage("Item Saved Unsuccessfully");
             }
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -267,19 +263,21 @@ public class InventoryFormController {
         inventory.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
         inventory.setQtyOnHand(Integer.valueOf(txtQty.getText()));
 
-        try {
-            boolean isUpdated = InventoryModel.update(inventory);
-            if(isUpdated){
-                NotificationController.successful("update successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-            }else{
-                NotificationController.unSuccessful("update unSuccessful");
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+        if(result){
+            try {
+                boolean isUpdated = InventoryModel.update(inventory);
+                if(isUpdated){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Item Updated Successfully");
+                }else{
+                    AlertController.errormessage("Item Updated Unsuccessfully");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 

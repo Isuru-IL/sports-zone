@@ -29,6 +29,7 @@ import lk.ijse.sports_zone.dto.tm.CustomerTM;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.EmployeeModel;
+import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 import lk.ijse.sports_zone.util.NotificationController;
 
@@ -134,11 +135,11 @@ public class CashierCustomerFormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
+            System.out.println(throwables);
         }
     }
 
@@ -155,11 +156,11 @@ public class CashierCustomerFormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
+            System.out.println(throwables);
         }
     }
 
@@ -176,11 +177,11 @@ public class CashierCustomerFormController {
                 txtAddress.setText(customer.getAddress());
                 txtEmail.setText(customer.getEmail());
             }else{
-                System.out.println(id+" is wrong ID");
+                AlertController.errormessage(id+" is invalid ID");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-            NotificationController.catchException(throwables);
+            System.out.println(throwables);
         }
     }
 
@@ -232,18 +233,20 @@ public class CashierCustomerFormController {
     @FXML
     void deleteOnAction(ActionEvent event) {
         String id = txtCustId.getText();
-
-        try {
-            boolean isDelete = CustomerModel.delete(id);
-            if(isDelete){
-                NotificationController.successful("Delete Successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+        if(result){
+            try {
+                boolean isDelete = CustomerModel.delete(id);
+                if(isDelete){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Customer Deleted Successfully");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                System.out.println(throwables);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -260,43 +263,44 @@ public class CashierCustomerFormController {
         try {
             boolean isSaved = CustomerModel.save(customer);
             if(isSaved){
-                NotificationController.successful("Saved Successful");
-
                 setCellValueFactory();
                 getAll();
                 clearTxtField();
-
+                AlertController.okMassage("Customer Saved Successfully");
             }else{
-                NotificationController.unSuccessful("Saved Unsuccessful");
+                AlertController.errormessage("Customer Saved Unsuccessfully");
             }
         } catch (SQLException throwables) {
-            //throwables.printStackTrace();
-            NotificationController.catchException(throwables);
+            throwables.printStackTrace();
+            System.out.println(throwables);
         }
     }
 
 
     @FXML
     void updateOnAction(ActionEvent event) {
-        Customer customer = new Customer();
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+        if(result){
+            Customer customer = new Customer();
 
-        customer.setCustId(txtCustId.getText());
-        customer.setCustName(txtCustName.getText());
-        customer.setContactNo(txtContactNo.getText());
-        customer.setAddress(txtAddress.getText());
-        customer.setEmail(txtEmail.getText());
+            customer.setCustId(txtCustId.getText());
+            customer.setCustName(txtCustName.getText());
+            customer.setContactNo(txtContactNo.getText());
+            customer.setAddress(txtAddress.getText());
+            customer.setEmail(txtEmail.getText());
 
-        try {
-            boolean isUpdated = CustomerModel.update(customer);
-            if(isUpdated){
-                NotificationController.successful("Updated Successful");
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
+            try {
+                boolean isUpdated = CustomerModel.update(customer);
+                if(isUpdated){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Customer updated Successfully");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                System.out.println(throwables);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            NotificationController.catchException(throwables);
         }
     }
 
@@ -329,12 +333,6 @@ public class CashierCustomerFormController {
 
     }
 
-    @FXML
-    void btnPaymentOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierOrder_form.fxml"));
-        anchrpCustomer.getChildren().clear();
-        anchrpCustomer.getChildren().add(load);
-    }
 
     @FXML
     void logOutIconOnAction(MouseEvent event) throws IOException {

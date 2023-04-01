@@ -33,7 +33,7 @@ public class AlertController {
     }
 
     public static boolean successfulMessage(String msg) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.NONE);
         alert.setTitle("Successful");
         alert.setHeaderText(null);
         alert.setContentText(msg);
@@ -85,5 +85,48 @@ public class AlertController {
                 .hideAfter(Duration.seconds(3));
         notificationBuilder.darkStyle();
         notificationBuilder.show();
+    }
+    public static boolean okconfirmmessage(String msg){
+        Alert alert= new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+
+        alert.getDialogPane().setPrefSize(400, 150); // Set the size of the alert dialog pane
+//            alert.getDialogPane().setMinSize(300, 150); // Set the minimum size of the alert dialog pane
+//            alert.getDialogPane().setMaxSize(300, 150); // Set the maximum size of the alert dialog pane
+        //alert.getDialogPane().setStyle("-fx-background-color: #F8D7DA;"); // Set the background color of the alert dialog pane
+        alert.getDialogPane().setHeaderText(null); // Remove the header text from the alert dialog pane
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("assets/wdoneIcon.png"));
+        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(okButton,cancelButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.orElse(cancelButton) == okButton){
+            return true;
+        }
+        return false;
+    }
+
+    public static void okMassage(String text) {
+        Alert alert= new Alert(Alert.AlertType.NONE);
+        alert.setTitle("Successful");
+        alert.setHeaderText(null);
+        alert.setContentText(text);
+
+        alert.getDialogPane().setPrefSize(300, 150);
+        alert.getDialogPane().setMinSize(400, 150);
+        alert.getDialogPane().setMaxSize(300, 150);
+        alert.getDialogPane().setHeaderText(null);
+
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("/assets/wdoneIcon.png"));
+        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(okButton);
+
+        alert.show();
     }
 }

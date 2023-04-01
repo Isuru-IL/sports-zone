@@ -14,6 +14,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.User;
 import lk.ijse.sports_zone.model.UserModel;
+import lk.ijse.sports_zone.util.AlertController;
 
 public class SignUpFormController {
 
@@ -71,7 +72,7 @@ public class SignUpFormController {
 
                     Boolean isSaved = UserModel.save(user);
                     if(isSaved){
-                        new Alert(Alert.AlertType.CONFIRMATION, "User saved").show();
+                        AlertController.okMassage("User saved");
 
                         AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
                         Scene scene = new Scene(anchorPane);
@@ -81,12 +82,12 @@ public class SignUpFormController {
                         stage.centerOnScreen();
                     }
                 }else{
-                    new Alert(Alert.AlertType.ERROR,"password not same").show();
+                    AlertController.errormessage("password not same");
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
                 System.out.println(exception);
-                new Alert(Alert.AlertType.ERROR, "somthing went wrong").show();
+                AlertController.exceptionMessage("somthing went wrong");
             }
 
 

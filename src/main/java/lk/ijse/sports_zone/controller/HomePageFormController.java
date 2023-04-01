@@ -95,13 +95,18 @@ public class HomePageFormController {
         anchorpaneAdminHome.getChildren().add(load);
 
         ButtonColourController.btncolor(btnInventory,anchorpaneAdminHome);
+
+        btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
 
     @FXML
     void reportsOnAction(ActionEvent event) {
 
-        //btncolor(btnReports,anchorpaneAdminHome);
+        ButtonColourController.btncolor(btnReports,anchorpaneAdminHome);
+        btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -111,6 +116,8 @@ public class HomePageFormController {
         anchorpaneAdminHome.getChildren().add(load);
 
         ButtonColourController.btncolor(btnSupplier,anchorpaneAdminHome);
+        btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -120,6 +127,8 @@ public class HomePageFormController {
         anchorpaneAdminHome.getChildren().add(load);
 
         ButtonColourController.btncolor(btnEmployee,anchorpaneAdminHome);
+        btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML

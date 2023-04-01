@@ -128,9 +128,9 @@ CREATE TABLE Delivery(
                          orderId VARCHAR(10) UNIQUE NOT NULL ,
                          vehiId VARCHAR(10) ,
                          location TEXT,
-                         deliveryDate DATE NOT NULL ,
-                         dueDate DATE NOT NULL ,
-                         deliveryStatus BOOLEAN,
+                         deliveryDate VARCHAR(20) DEFAULT 'pending',
+                         dueDate VARCHAR(20) DEFAULT 'not given',
+                         deliveryStatus VARCHAR(10) DEFAULT 'pending',
                          CONSTRAINT PRIMARY KEY (deliveryId),
                          CONSTRAINT FOREIGN KEY (empId) REFERENCES Employee(empId)
                              ON UPDATE CASCADE ON DELETE CASCADE ,

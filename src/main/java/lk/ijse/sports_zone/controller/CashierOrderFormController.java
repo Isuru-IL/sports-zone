@@ -208,29 +208,33 @@ public class CashierOrderFormController {
 
         setRemoveBtnOnAction(btnRemove);
 
-        if (!obList.isEmpty()) {
-            for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
-                if (colCode.getCellData(i).equals(code)) {
-                    qty += (int) colQty.getCellData(i);
-                    total = qty * unitPrice;
+        if(qty>inventory.getQtyOnHand()){
+            AlertController.errormessage("Item "+itemName+" out of stock or not enough stock");
+        }else {
+            if (!obList.isEmpty()) {
+                for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
+                    if (colCode.getCellData(i).equals(code)) {
+                        qty += (int) colQty.getCellData(i);
+                        total = qty * unitPrice;
 
-                    obList.get(i).setQty(qty);
-                    obList.get(i).setTotal(total);
+                        obList.get(i).setQty(qty);
+                        obList.get(i).setTotal(total);
 
-                    tblPlaceOrder.refresh();
-                    calculateNetTotal();
-                    return;
+                        tblPlaceOrder.refresh();
+                        calculateNetTotal();
+                        return;
+                    }
                 }
             }
+
+            CartTM tm = new CartTM(code, itemName, catagory, qty, unitPrice, total, delivery, btnRemove);
+
+            obList.add(tm);
+            tblPlaceOrder.setItems(obList);
+            calculateNetTotal();
+
+            txtQty.setText("");
         }
-
-        CartTM tm = new CartTM(code, itemName, catagory, qty, unitPrice, total, delivery, btnRemove);
-
-        obList.add(tm);
-        tblPlaceOrder.setItems(obList);
-        calculateNetTotal();
-
-        txtQty.setText("");
     }
 
     private void calculateNetTotal() {
@@ -264,6 +268,19 @@ public class CashierOrderFormController {
     @FXML
     void radioBtnYesOnAction(ActionEvent event) {
         delivery = "Yes";
+
+        if(radioBtnYes.isSelected()){
+            Stage stage = new Stage();
+            stage.resizableProperty().setValue(false);
+            try {
+                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/cashierDelivery02_form.fxml"))));
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println(e);
+            }
+            stage.centerOnScreen();
+            stage.show();
+        }
     }
 
     @FXML
@@ -317,7 +334,6 @@ public class CashierOrderFormController {
         } catch (Exception e) {
             //e.printStackTrace();
             System.out.println("custId "+e);
-
         }
     }
 
@@ -330,6 +346,13 @@ public class CashierOrderFormController {
             lblItemName.setText(inventory.getItemName());
             lblUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
             lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
+
+            if(inventory.getQtyOnHand()>0){
+                lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
+            }else{
+                lblQtyOnHand.setText("Out Of Stock");
+                AlertController.errormessage("item "+inventory.getItemName()+" out of stock");
+            }
         } catch (Exception e) {
             //throwables.printStackTrace();
             System.out.println("item code " +e);

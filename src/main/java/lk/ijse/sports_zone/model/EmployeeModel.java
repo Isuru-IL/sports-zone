@@ -218,4 +218,15 @@ public class EmployeeModel {
         }
         return "E001";
     }
+
+    public static List<String> loadEmpIds() throws SQLException {
+        String sql = "SELECT empId FROM Employee";
+        List<String> allEmpIds = new ArrayList<>();
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        while (resultSet.next()){
+            allEmpIds.add(resultSet.getString(1));
+        }
+        return allEmpIds;
+    }
 }
