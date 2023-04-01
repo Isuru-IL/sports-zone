@@ -126,7 +126,7 @@
             </JFXButton>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchrpCustomer" layoutX="311.0" prefHeight="1040.0" prefWidth="1600.0">
+      <AnchorPane fx:id="anchrpCustomer" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0">
          <children>
             <TextField fx:id="txtCustId" layoutX="70.0" layoutY="172.0" onAction="#SearchOnAction" prefHeight="40.0" prefWidth="400.0">
                <font>

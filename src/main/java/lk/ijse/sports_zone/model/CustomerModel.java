@@ -10,6 +10,8 @@ import lk.ijse.sports_zone.util.CrudUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerModel {
 
@@ -136,5 +138,33 @@ public class CustomerModel {
 //        }
         String sql = "DELETE FROM Customer WHERE custId =?";
         return CrudUtil.execute(sql,id);
+    }
+
+    public static List<String> loadCustomerIds() throws SQLException {
+        String sql = "SELECT custId FROM customer";
+        List<String> allCustIds = new ArrayList<>();
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+        while (resultSet.next()){
+            allCustIds.add(resultSet.getString(1));
+        }
+        return allCustIds;
+    }
+
+
+    public static Customer searchByCustId(String id) throws SQLException {
+        String sql = "SELECT * FROM Customer WHERE custid= ?";
+        ResultSet resultSet = CrudUtil.execute(sql, id);
+
+        if(resultSet.next()){
+            return new Customer(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5)
+            );
+        }
+        return null;
     }
 }

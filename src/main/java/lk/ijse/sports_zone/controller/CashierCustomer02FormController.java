@@ -1,39 +1,29 @@
 package lk.ijse.sports_zone.controller;
 
 import com.jfoenix.controls.JFXButton;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.function.Predicate;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.Customer;
-import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.tm.CustomerTM;
-import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
-import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 import lk.ijse.sports_zone.util.NotificationController;
 
-public class CashierCustomerFormController {
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
+public class CashierCustomer02FormController {
     @FXML
     private ResourceBundle resources;
 
@@ -300,76 +290,6 @@ public class CashierCustomerFormController {
         }
     }
 
-    @FXML
-    void btnCashierInventoryOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/inventory_form.fxml"));
-        anchrpCustomer.getChildren().clear();
-        anchrpCustomer.getChildren().add(load);
-    }
-
-    @FXML
-    void btnCashierOrdersOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierOrder_form.fxml"));
-        anchrpCustomer.getChildren().clear();
-        anchrpCustomer.getChildren().add(load);
-    }
-
-    @FXML
-    void btnCustomerOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
-        anchrpCashierCustomerMain.getChildren().clear();
-        anchrpCashierCustomerMain.getChildren().add(load);
-    }
-
-    @FXML
-    void btnDeliveryOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierDelivery_form.fxml"));
-        anchrpCustomer.getChildren().clear();
-        anchrpCustomer.getChildren().add(load);
-
-    }
-
-    @FXML
-    void btnPaymentOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierOrder_form.fxml"));
-        anchrpCustomer.getChildren().clear();
-        anchrpCustomer.getChildren().add(load);
-    }
-
-    @FXML
-    void logOutIconOnAction(MouseEvent event) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
-
-        Scene scene = new Scene(anchorPane);
-
-        Stage stage = (Stage)anchrpCustomer.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Login Form");
-        stage.centerOnScreen();
-    }
-
-    @FXML
-    void initialize() {
-        assert anchrpCashierButton != null : "fx:id=\"anchrpCashierButton\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert anchrpCashierCustomerMain != null : "fx:id=\"anchrpCashierCustomerMain\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert anchrpCustomer != null : "fx:id=\"anchrpCustomer\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnCashierInventory != null : "fx:id=\"btnCashierInventory\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnCashierLogout != null : "fx:id=\"btnCashierLogout\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnCashierOrders != null : "fx:id=\"btnCashierOrders\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnCustomer != null : "fx:id=\"btnCustomer\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnDelivery != null : "fx:id=\"btnDelivery\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnPayment != null : "fx:id=\"btnPayment\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert buttonDashBoard != null : "fx:id=\"buttonDashBoard\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert lblDate != null : "fx:id=\"lblDate\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-
-        DateAndTimeConntroller d1 = new DateAndTimeConntroller();
-        d1.Timenow(lblTime, lblDate);
-
-        setCellValueFactory();
-        getAll();
-    }
-
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("custId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("custName"));
@@ -397,4 +317,9 @@ public class CashierCustomerFormController {
 
     }
 
+    @FXML
+    void initialize() {
+        setCellValueFactory();
+        getAll();
+    }
 }

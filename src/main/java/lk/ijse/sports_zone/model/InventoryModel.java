@@ -1,6 +1,7 @@
 package lk.ijse.sports_zone.model;
 
 import lk.ijse.sports_zone.db.DBConnection;
+import lk.ijse.sports_zone.dto.CartDTO;
 import lk.ijse.sports_zone.dto.Inventory;
 import lk.ijse.sports_zone.dto.tm.InventoryTM;
 import lk.ijse.sports_zone.util.CrudUtil;
@@ -78,5 +79,46 @@ public class InventoryModel {
                 inventory.getQtyOnHand(),
                 inventory.getItemCode()
         );
+    }
+
+    public static List<String> loadItemCodes() throws SQLException {
+        String sql = "SELECT itemCode FROM Item";
+        List<String> allCodes = new ArrayList<>();
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        while (resultSet.next()){
+            allCodes.add(resultSet.getString(1));
+        }
+        return allCodes;
+    }
+
+    public static Inventory searchByItemCode(String code) throws SQLException {
+        String sql = "SELECT * FROM Item WHERE itemCode= ?";
+        ResultSet resultSet = CrudUtil.execute(sql,code);
+        if(resultSet.next()){
+            return new Inventory(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getString(3),
+                    resultSet.getString(4),
+                    resultSet.getDouble(5),
+                    resultSet.getInt(6)
+            );
+        }
+        return null;
+    }
+
+    public static boolean updateQty(List<CartDTO> cartDTOList) throws SQLException {
+        for(CartDTO dto : cartDTOList){
+            if(!updateQty(dto)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean updateQty(CartDTO dto) throws SQLException {
+        String sql = "UPDATE Item SET qtyOnHand = (qtyOnHand - ?) WHERE itemCode = ?";
+        return CrudUtil.execute(sql, dto.getQty(), dto.getItemCode());
     }
 }
