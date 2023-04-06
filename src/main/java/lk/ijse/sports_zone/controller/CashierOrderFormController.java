@@ -151,6 +151,7 @@ public class CashierOrderFormController {
 
             cmbCustId.setItems(custIds);
         } catch (SQLException throwables) {
+            System.out.println(throwables);
             AlertController.exceptionMessage("Something went wrong");
         }
     }
@@ -168,6 +169,42 @@ public class CashierOrderFormController {
             throwables.printStackTrace();
         }
 
+    }
+
+    @FXML
+    void cmbCustIdOnAction(ActionEvent event) {
+        String id = cmbCustId.getValue();
+        try {
+            Customer customer = CustomerModel.searchByCustId(id);
+
+            lblCustName.setText(customer.getCustName());
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("custId "+e);
+        }
+    }
+
+    @FXML
+    void cmbItemCodeOnAction(ActionEvent event) {
+        String code = cmbItemCode.getValue();
+
+        try {
+            inventory = InventoryModel.searchByItemCode(code);
+            lblItemName.setText(inventory.getItemName());
+            lblUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
+            lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
+
+            if(inventory.getQtyOnHand()>0){
+                lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
+            }else{
+                lblQtyOnHand.setText("Out Of Stock");
+                AlertController.errormessage("item "+inventory.getItemName()+" out of stock");
+            }
+        } catch (Exception e) {
+            //throwables.printStackTrace();
+            System.out.println("item code " +e);
+        }
     }
 
     private void generateNextOrderId() {
@@ -313,7 +350,6 @@ public class CashierOrderFormController {
             if(isPlaced){
                 generateNextOrderId();
                 AlertController.successfulMessage("Order Placed");
-                System.out.println("isPlaced");
                 clearTxtFields();
             }
         } catch (Exception e) {
@@ -323,41 +359,6 @@ public class CashierOrderFormController {
         }
     }
 
-    @FXML
-    void cmbCustIdOnAction(ActionEvent event) {
-        String id = cmbCustId.getValue();
-        try {
-            Customer customer = CustomerModel.searchByCustId(id);
-
-            lblCustName.setText(customer.getCustName());
-
-        } catch (Exception e) {
-            //e.printStackTrace();
-            System.out.println("custId "+e);
-        }
-    }
-
-    @FXML
-    void cmbItemCodeOnAction(ActionEvent event) {
-        String code = cmbItemCode.getValue();
-
-        try {
-            inventory = InventoryModel.searchByItemCode(code);
-            lblItemName.setText(inventory.getItemName());
-            lblUnitPrice.setText(String.valueOf(inventory.getUnitPrice()));
-            lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
-
-            if(inventory.getQtyOnHand()>0){
-                lblQtyOnHand.setText(String.valueOf(inventory.getQtyOnHand()));
-            }else{
-                lblQtyOnHand.setText("Out Of Stock");
-                AlertController.errormessage("item "+inventory.getItemName()+" out of stock");
-            }
-        } catch (Exception e) {
-            //throwables.printStackTrace();
-            System.out.println("item code " +e);
-        }
-    }
 
     @FXML
     void tableOnMouseClicked(MouseEvent event) {

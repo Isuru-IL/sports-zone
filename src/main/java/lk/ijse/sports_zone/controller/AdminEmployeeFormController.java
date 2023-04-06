@@ -193,9 +193,6 @@ public class AdminEmployeeFormController {
     @FXML
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result){
-            btnSave.setVisible(true);
 
             if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
                 if (ValidateController.contactCheck(txtContactNo.getText())) {
@@ -204,31 +201,36 @@ public class AdminEmployeeFormController {
                     if (ValidateController.emailCheck(txtEmail.getText())) {
                         //lblInvalidEmail.setVisible(false);
 
-                        employee.setEmpId(txtEmpId.getText());
-                        employee.setEmpName(txtEmpName.getText());
-                        employee.setAddress(txtAddress.getText());
-                        employee.setDob(String.valueOf(txtDob.getValue()));
-                        employee.setContactNo(txtContactNo.getText());
-                        employee.setSalary(Double.valueOf(txtSalary.getText()));
-                        employee.setEmail(txtEmail.getText());
-                        employee.setNic(txtNIC.getText());
-                        employee.setJobTitle(cmbJobTitle.getValue());
+                        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                        if(result) {
+                            btnSave.setVisible(true);
 
-                        try {
-                            boolean isUpdated = EmployeeModel.update(employee);
-                            if(isUpdated){
-                                AlertController.okMassage("updated");
-                                setCellValueFactory();
-                                getAll();
-                                clearTxtField();
-                                btnSave.setDisable(false);
-                            }else {
-                                AlertController.errormessage("Not Updated");
+                            employee.setEmpId(txtEmpId.getText());
+                            employee.setEmpName(txtEmpName.getText());
+                            employee.setAddress(txtAddress.getText());
+                            employee.setDob(String.valueOf(txtDob.getValue()));
+                            employee.setContactNo(txtContactNo.getText());
+                            employee.setSalary(Double.valueOf(txtSalary.getText()));
+                            employee.setEmail(txtEmail.getText());
+                            employee.setNic(txtNIC.getText());
+                            employee.setJobTitle(cmbJobTitle.getValue());
+
+                            try {
+                                boolean isUpdated = EmployeeModel.update(employee);
+                                if (isUpdated) {
+                                    AlertController.okMassage("updated");
+                                    setCellValueFactory();
+                                    getAll();
+                                    clearTxtField();
+                                    btnSave.setDisable(false);
+                                } else {
+                                    AlertController.errormessage("Not Updated");
+                                }
+
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                                AlertController.exceptionMessage("Something went wrong");
                             }
-
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                            AlertController.exceptionMessage("Something went wrong");
                         }
 
                     } else {
@@ -241,8 +243,6 @@ public class AdminEmployeeFormController {
                 lblInvalidEmail.setVisible(true);
                 lblInvalidContacktNo.setVisible(true);
             }
-        }
-
     }
 
 

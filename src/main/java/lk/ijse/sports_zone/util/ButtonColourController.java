@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class ButtonColourController {
     public static void btncolor(Button btn, AnchorPane anchorPane){
-        btn.setStyle("-fx-background-color: #0c0c0c;" +
+        btn.setStyle("-fx-background-color: #440000;" +
                 "-fx-background-radius: 20px;");
         anchorPane.getChildren().addListener((ListChangeListener<Node>) change -> {
             while (change.next()) {
@@ -16,7 +16,7 @@ public class ButtonColourController {
                         if (node instanceof AnchorPane) {
                             // Check if the new node is an AnchorPane
                             AnchorPane newAnchorPane = (AnchorPane) node;
-                            System.out.println(newAnchorPane.getId());
+                            //System.out.println(newAnchorPane.getId());
                             if (newAnchorPane.getId().equals("anchorpaneHomeMain")) {
                                 btn.setStyle("-fx-background-color: #3C4043;");
                             } else {

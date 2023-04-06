@@ -1,6 +1,8 @@
 package lk.ijse.sports_zone.controller;
 
 import com.jfoenix.controls.JFXButton;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
@@ -46,6 +49,9 @@ public class AdminSupplierFormController {
 
     @FXML
     private JFXButton btnUpdate;
+
+    @FXML
+    private JFXButton btnback;
 
     @FXML
     private TableColumn<?, ?> colAddress;
@@ -88,6 +94,18 @@ public class AdminSupplierFormController {
 
     @FXML
     private TextField txtSearch;
+
+    @FXML
+    void btnBackOnAction(ActionEvent event) {
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
+            anchrpSupplier.getChildren().clear();
+            anchrpSupplier.getChildren().add(load);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     void deleteOnAction(ActionEvent event) {

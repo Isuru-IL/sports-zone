@@ -149,4 +149,16 @@ public class SupplierModel {
                 supplier.getSupId()
                 );
     }
+
+    public static List<String> loadSupplierIds() throws SQLException {
+        String sql = "SELECT supId FROM supplier";
+
+        List<String> allSupIds = new ArrayList<>();
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        while (resultSet.next()){
+            allSupIds.add(resultSet.getString(1));
+        }
+        return allSupIds;
+    }
 }

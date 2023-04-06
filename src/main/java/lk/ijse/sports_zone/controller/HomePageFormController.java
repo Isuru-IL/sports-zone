@@ -111,7 +111,7 @@ public class HomePageFormController {
 
     @FXML
     void suplierOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplier_form.fxml"));
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
 
@@ -161,7 +161,7 @@ public class HomePageFormController {
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();
         d1.Timenow(lblTime, lblDate);
 
-        btnHome.setStyle("-fx-background-color: #0c0c0c;" +
+        btnHome.setStyle("-fx-background-color: #440000;" +
                 "-fx-background-radius: 20px;");
     }
 

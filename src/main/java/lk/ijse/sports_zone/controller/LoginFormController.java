@@ -113,7 +113,7 @@ public class LoginFormController {
             String jobTitle = user.getJobTitle();
 
             if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Admin")){
-                AlertController.animationMesseage("assets/wdoneIcon.png", "right", "login successful");
+                AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
                 AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/homePage_form.fxml"));
 
                 Scene scene = new Scene(anchorPane);
@@ -124,6 +124,7 @@ public class LoginFormController {
                 stage.centerOnScreen();
 
             }else if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Cashier")){
+                AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
                 AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
 
                 Scene scene = new Scene(anchorPane);

@@ -44,7 +44,7 @@ public class CashierOrderModel {
         return true;
     }
 
-    public static boolean save(String ordrId, String customerId, Date date, Time time, CartDTO dto) throws SQLException {
+    private static boolean save(String ordrId, String customerId, Date date, Time time, CartDTO dto) throws SQLException {
                 String sql = "INSERT INTO Orders(orderId, custId, payment, time, date, deliveryStatus)" +
                 "VALUES(?, ?, ?, ?, ?, ?)";
         return CrudUtil.execute(

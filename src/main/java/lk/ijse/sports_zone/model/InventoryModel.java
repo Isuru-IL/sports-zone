@@ -3,6 +3,7 @@ package lk.ijse.sports_zone.model;
 import lk.ijse.sports_zone.db.DBConnection;
 import lk.ijse.sports_zone.dto.CartDTO;
 import lk.ijse.sports_zone.dto.Inventory;
+import lk.ijse.sports_zone.dto.SupplyLoadDetailDTO;
 import lk.ijse.sports_zone.dto.tm.InventoryTM;
 import lk.ijse.sports_zone.util.CrudUtil;
 
@@ -119,6 +120,20 @@ public class InventoryModel {
 
     private static boolean updateQty(CartDTO dto) throws SQLException {
         String sql = "UPDATE Item SET qtyOnHand = (qtyOnHand - ?) WHERE itemCode = ?";
+        return CrudUtil.execute(sql, dto.getQty(), dto.getItemCode());
+    }
+
+    public static boolean updateSupplyQty(List<SupplyLoadDetailDTO> supplyLoadDetailDTOList) throws SQLException {
+        for (SupplyLoadDetailDTO dto : supplyLoadDetailDTOList){
+            if(!updateSupplyQty(dto)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean updateSupplyQty(SupplyLoadDetailDTO dto) throws SQLException {
+        String sql = "UPDATE Item SET qtyOnHand = (qtyOnHand + ?) WHERE itemCode =?";
         return CrudUtil.execute(sql, dto.getQty(), dto.getItemCode());
     }
 }

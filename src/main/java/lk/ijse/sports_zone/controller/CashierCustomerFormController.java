@@ -30,6 +30,7 @@ import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.util.AlertController;
+import lk.ijse.sports_zone.util.ButtonColourController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 import lk.ijse.sports_zone.util.NotificationController;
 
@@ -309,6 +310,10 @@ public class CashierCustomerFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/inventory_form.fxml"));
         anchrpCustomer.getChildren().clear();
         anchrpCustomer.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnCashierInventory, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -316,6 +321,10 @@ public class CashierCustomerFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/cashierOrder_form.fxml"));
         anchrpCustomer.getChildren().clear();
         anchrpCustomer.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnCashierOrders, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -323,6 +332,10 @@ public class CashierCustomerFormController {
         Parent load = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
         anchrpCashierCustomerMain.getChildren().clear();
         anchrpCashierCustomerMain.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnCustomer, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
     @FXML
@@ -331,6 +344,9 @@ public class CashierCustomerFormController {
         anchrpCustomer.getChildren().clear();
         anchrpCustomer.getChildren().add(load);
 
+        ButtonColourController.btncolor(btnDelivery, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
     }
 
 
@@ -360,6 +376,9 @@ public class CashierCustomerFormController {
         assert buttonDashBoard != null : "fx:id=\"buttonDashBoard\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblDate != null : "fx:id=\"lblDate\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
+
+        btnCustomer.setStyle("-fx-background-color: #440000;" +
+                "-fx-background-radius: 20px;");
 
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();
         d1.Timenow(lblTime, lblDate);
