@@ -1,5 +1,8 @@
 package lk.ijse.sports_zone.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import lk.ijse.sports_zone.db.DBConnection;
 import lk.ijse.sports_zone.dto.CartDTO;
 import lk.ijse.sports_zone.dto.Inventory;
@@ -135,5 +138,24 @@ public class InventoryModel {
     private static boolean updateSupplyQty(SupplyLoadDetailDTO dto) throws SQLException {
         String sql = "UPDATE Item SET qtyOnHand = (qtyOnHand + ?) WHERE itemCode =?";
         return CrudUtil.execute(sql, dto.getQty(), dto.getItemCode());
+    }
+
+    public static ObservableList<XYChart.Series<String, Integer>> getDataToBarChart() throws SQLException {
+        String sql="SELECT itemName,qtyOnhand FROM item WHERE qtyOnHand<=100 ";
+
+        ObservableList<XYChart.Series<String, Integer>> datalist = FXCollections.observableArrayList();
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        // Creating a new series object
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+
+        while(resultSet.next()){
+            String itemName = resultSet.getString("itemName");
+            int itemQty = resultSet.getInt("qtyOnhand");
+            series.getData().add(new XYChart.Data<>(itemName, itemQty));
+        }
+
+        datalist.add(series);
+        return datalist;
     }
 }

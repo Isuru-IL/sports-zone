@@ -2,9 +2,11 @@ package lk.ijse.sports_zone.controller;
 
 import com.jfoenix.controls.JFXButton;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,11 +18,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.EmployeeModel;
@@ -46,6 +51,9 @@ public class AdminEmployeeFormController {
 
     @FXML
     private JFXButton btnUpdate;
+
+    @FXML
+    private JFXButton btnvehicle;
 
     @FXML
     private ComboBox<String> cmbJobTitle;
@@ -173,7 +181,10 @@ public class AdminEmployeeFormController {
                             clearTxtField();
                             AlertController.successfulMessage("Saved");
                         }
-                    } catch(Exception exception){
+                    } catch (SQLIntegrityConstraintViolationException e) {
+                        System.out.println(e);
+                        new Alert(Alert.AlertType.ERROR, "Duplicate Employee ID").show();
+                    } catch(SQLException exception){
                         AlertController.exceptionMessage("Something went wrong");
                         System.out.println("EmpSave ="+exception);
                     }
@@ -227,6 +238,9 @@ public class AdminEmployeeFormController {
                                     AlertController.errormessage("Not Updated");
                                 }
 
+                            } catch (SQLIntegrityConstraintViolationException e) {
+                                System.out.println(e);
+                                AlertController.errormessage(e.getMessage());
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                                 AlertController.exceptionMessage("Something went wrong");
@@ -422,6 +436,19 @@ public class AdminEmployeeFormController {
         }
     }
 
+    @FXML
+    void btnVehicleOnAction(ActionEvent event) {
+        Stage stage = new Stage();
+        stage.resizableProperty().setValue(false);
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/adminVehicle_form.fxml"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
+        stage.centerOnScreen();
+        stage.show();
+    }
 
     @FXML
     void initialize() {

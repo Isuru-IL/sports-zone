@@ -109,24 +109,25 @@ public class AdminSupplierFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+        if(result){
+            try {
+                String supId = txtSupId.getText();
 
-        try {
-            String supId = txtSupId.getText();
+                boolean isDeleted = SupplierModel.delete(supId);
+                if (isDeleted) {
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    AlertController.okMassage("Delete successful");
+                } else {
+                    AlertController.errormessage("Invalid details");
+                }
 
-            boolean isDeleted = SupplierModel.delete(supId);
-            if(isDeleted){
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-                AlertController.okMassage("Delete successful");
-            }else {
-                AlertController.errormessage("Invalid details");
+            } catch (Exception exception) {
+                System.out.println("supDelete = " + exception);                                              //temp
+                AlertController.exceptionMessage("Something went wrong");
             }
-
-        }catch(Exception exception){
-            System.out.println("supDelete = "+exception);                                              //temp
-            AlertController.exceptionMessage("Something went wrong");
         }
     }
 
@@ -150,7 +151,7 @@ public class AdminSupplierFormController {
                             setCellValueFactory();
                             getAll();
                             clearTxtField();
-                            AlertController.okMassage("Save successful");
+                            AlertController.okMassage("Saved successfully");
                         } else {
                             AlertController.errormessage("Invalid details");
                         }
@@ -216,7 +217,6 @@ public class AdminSupplierFormController {
     @FXML
     void supIdSearchOnAction(ActionEvent event) {
         String supId = txtSupId.getText();
-        System.out.println(supId);
 
         try {
             Supplier supplier = SupplierModel.search(supId);

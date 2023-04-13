@@ -3,6 +3,7 @@ package lk.ijse.sports_zone.controller;
 import com.jfoenix.controls.JFXButton;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.db.DBConnection;
 import lk.ijse.sports_zone.dto.CartDTO;
 import lk.ijse.sports_zone.dto.Customer;
 import lk.ijse.sports_zone.dto.Inventory;
@@ -32,6 +34,11 @@ import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.model.PlaceOrderModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class CashierOrderFormController {
 
@@ -111,9 +118,6 @@ public class CashierOrderFormController {
     private Label lblBalance;
 
     @FXML
-    private RadioButton radioBtnNo;
-
-    @FXML
     private RadioButton radioBtnYes;
 
     @FXML
@@ -124,6 +128,9 @@ public class CashierOrderFormController {
 
     @FXML
     private TextField txtQty;
+
+    @FXML
+    private Button btnJasper;
 
     private ObservableList<CartTM> obList = FXCollections.observableArrayList();
     private Inventory inventory;
@@ -324,6 +331,7 @@ public class CashierOrderFormController {
     void btnPlaceOrderOnAction(ActionEvent event) {
         String ordrId = lblOrderId.getText();
         String customerId = cmbCustId.getValue();
+        boolean delivery = radioBtnYes.isSelected();
         double netTotal = Double.parseDouble(lblNetTotal.getText());
 
 
@@ -346,7 +354,7 @@ public class CashierOrderFormController {
         }
 
         try {
-            boolean isPlaced = PlaceOrderModel.placeOrder(ordrId, customerId, date, time, cartDTOList);
+            boolean isPlaced = PlaceOrderModel.placeOrder(ordrId, customerId, date, time,delivery, cartDTOList);
             if(isPlaced){
                 generateNextOrderId();
                 AlertController.successfulMessage("Order Placed");
@@ -401,7 +409,6 @@ public class CashierOrderFormController {
         assert lblQtyOnHand != null : "fx:id=\"lblQtyOnHand\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
         assert lblUnitPrice != null : "fx:id=\"lblUnitPrice\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
         assert lblorderTime != null : "fx:id=\"lblorderTime\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
-        assert radioBtnNo != null : "fx:id=\"radioBtnNo\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
         assert radioBtnYes != null : "fx:id=\"radioBtnYes\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
         assert tblPlaceOrder != null : "fx:id=\"tblPlaceOrder\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
         assert txtQty != null : "fx:id=\"txtQty\" was not injected: check your FXML file 'cashierOrder_form.fxml'.";
@@ -426,5 +433,18 @@ public class CashierOrderFormController {
         tblPlaceOrder.getItems().clear();
         radioBtnYes.setSelected(false);
     }
+
+    @FXML
+    void btnJasperOnAction(ActionEvent event) {
+        InputStream resource = this.getClass().getResourceAsStream("/report/Blank_A4.jrxml");
+        try {
+            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

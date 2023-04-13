@@ -84,3 +84,7 @@
 .column{
     -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
 }
+
+.chart-bar {
+    -fx-bar-fill: #534a4a;
+}

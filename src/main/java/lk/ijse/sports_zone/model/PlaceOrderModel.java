@@ -16,7 +16,7 @@ public class PlaceOrderModel {
 
     static Delivery delivery;
 
-    public static boolean placeOrder(String ordrId, String customerId, Date date, Time time, List<CartDTO> cartDTOList) throws SQLException {
+    public static boolean placeOrder(String ordrId, String customerId, Date date, Time time, boolean delivery, List<CartDTO> cartDTOList) throws SQLException {
         Connection con = null;
         try{
             con = DBConnection.getInstance().getConnection();
@@ -28,11 +28,21 @@ public class PlaceOrderModel {
                 if(isUpdate){
                     boolean isOrdered = OrderDetailModel.save(ordrId, cartDTOList);
                     if(isOrdered){
-                        boolean isDeliverySave = DeliveryModel.save(delivery);
-                        if(isDeliverySave) {
+                        if (delivery) {
+                            boolean isDeliverySave = DeliveryModel.save(PlaceOrderModel.delivery);
+                            if (isDeliverySave) {
+                                con.commit();
+                                return true;
+                            }
+                        } else {
                             con.commit();
                             return true;
                         }
+//                        boolean isDeliverySave = DeliveryModel.save(PlaceOrderModel.delivery);
+//                        if(isDeliverySave) {
+//                            con.commit();
+//                            return true;
+//                        }
                     }
                 }
             }

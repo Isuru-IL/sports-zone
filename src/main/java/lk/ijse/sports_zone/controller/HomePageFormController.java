@@ -4,21 +4,28 @@ import com.jfoenix.controls.JFXButton;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.model.InventoryModel;
+import lk.ijse.sports_zone.model.OrderDetailModel;
 import lk.ijse.sports_zone.util.ButtonColourController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
 
@@ -32,6 +39,12 @@ public class HomePageFormController {
 
     @FXML
     private AnchorPane anchorpaneAdminHome;
+
+    @FXML
+    private BarChart<String, Integer> barChart;
+
+    @FXML
+    private PieChart pieChart;
 
     @FXML
     private JFXButton btnEmployee;
@@ -80,7 +93,7 @@ public class HomePageFormController {
 
     @FXML
     void ordersOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/order_form.fxml"));
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminOrder_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
                 ButtonColourController.btncolor(btnOrders, anchorpaneAdminHome);
@@ -102,7 +115,10 @@ public class HomePageFormController {
 
 
     @FXML
-    void reportsOnAction(ActionEvent event) {
+    void reportsOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminReport_form.fxml"));
+        anchorpaneAdminHome.getChildren().clear();
+        anchorpaneAdminHome.getChildren().add(load);
 
         ButtonColourController.btncolor(btnReports,anchorpaneAdminHome);
         btnHome.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
@@ -161,6 +177,9 @@ public class HomePageFormController {
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();
         d1.Timenow(lblTime, lblDate);
 
+        setDataToBarChart();
+        setDataToPieChart();
+
         btnHome.setStyle("-fx-background-color: #440000;" +
                 "-fx-background-radius: 20px;");
     }
@@ -190,5 +209,27 @@ public class HomePageFormController {
                 }
             }
         });
+    }
+
+    public void setDataToBarChart(){
+        ObservableList<XYChart.Series<String, Integer>> barChartData = null;
+        try {
+            barChartData = InventoryModel.getDataToBarChart();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        barChart.setData(barChartData);
+    }
+
+    public void setDataToPieChart() {
+        ObservableList<PieChart.Data> pieChartData = null;
+        try {
+            pieChartData = OrderDetailModel.getDataToPieChart();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        pieChart.setData(pieChartData);
     }
 }

@@ -70,7 +70,7 @@ public class CashierCustomerFormController {
     private JFXButton btnDelivery;
 
     @FXML
-    private JFXButton btnPayment;
+    private JFXButton btnRepair;
 
     @FXML
     private JFXButton btnSave;
@@ -349,6 +349,18 @@ public class CashierCustomerFormController {
                 "-fx-background-radius: 20px;");
     }
 
+    @FXML
+    void btnRepairOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/cashierRepair_form.fxml"));
+        anchrpCustomer.getChildren().clear();
+        anchrpCustomer.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnRepair, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
+    }
+
+
 
     @FXML
     void logOutIconOnAction(MouseEvent event) throws IOException {
@@ -372,7 +384,6 @@ public class CashierCustomerFormController {
         assert btnCashierOrders != null : "fx:id=\"btnCashierOrders\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert btnCustomer != null : "fx:id=\"btnCustomer\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert btnDelivery != null : "fx:id=\"btnDelivery\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
-        assert btnPayment != null : "fx:id=\"btnPayment\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert buttonDashBoard != null : "fx:id=\"buttonDashBoard\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblDate != null : "fx:id=\"lblDate\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";

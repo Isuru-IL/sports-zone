@@ -149,5 +149,10 @@
             <Image url="@../assets/searchIcon.png" />
          </image>
       </ImageView>
+      <JFXButton fx:id="btnvehicle" buttonType="RAISED" layoutX="70.0" layoutY="453.0" onAction="#btnVehicleOnAction" prefHeight="40.0" prefWidth="112.0" style="-fx-background-color: #790101;" styleClass="btnUpdate" stylesheets="@../styles/style.css" text="Vehicle" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

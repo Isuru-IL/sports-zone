@@ -58,6 +58,8 @@ public class CashierDeliveryForm02Controller {
     @FXML
     private TextField txtLocation;
 
+    private Delivery delivery;
+
 
     @FXML
     void cmbCustIdOnAction(ActionEvent event) {
@@ -66,26 +68,27 @@ public class CashierDeliveryForm02Controller {
 
     @FXML
     void saveOnAction(ActionEvent event) {
-//        delivery.setDeliveryId(txtDeliveryId.getText());
-//        delivery.setEmpId(cmbEmployeeId.getValue());
-//        delivery.setOrderId(lblOrderId.getText());
-//        delivery.setVehiId(cmbVehiId.getValue());
-//        delivery.setLocation(txtLocation.getText());
-//        delivery.setDeliveryDate(lblDate.getText());
-//        delivery.setDueDate(String.valueOf(dtpickerDueDate.getValue()));
-        String deliveryId = txtDeliveryId.getText();
-        String empId = cmbEmployeeId.getValue();
-        String orderId = lblOrderId.getText();
-        String vehiId = cmbVehiId.getValue();
-        String location = txtLocation.getText();
-        String deliveryDate = lblDate.getText();
-        String dueDate = String.valueOf(dtpickerDueDate.getValue());
+        delivery.setDeliveryId(txtDeliveryId.getText());
+        delivery.setEmpId(cmbEmployeeId.getValue());
+        delivery.setOrderId(lblOrderId.getText());
+        delivery.setVehiId(cmbVehiId.getValue());
+        delivery.setLocation(txtLocation.getText());
+        delivery.setDeliveryDate(lblDate.getText());
+        delivery.setDueDate(String.valueOf(dtpickerDueDate.getValue()));
 
-        Delivery delivery = new Delivery(deliveryId, empId, orderId, vehiId, location, deliveryDate, dueDate);
-
-        System.out.println(empId);
-        System.out.println(orderId);
-        System.out.println(vehiId);
+//        String deliveryId = txtDeliveryId.getText();
+//        String empId = cmbEmployeeId.getValue();
+//        String orderId = lblOrderId.getText();
+//        String vehiId = cmbVehiId.getValue();
+//        String location = txtLocation.getText();
+//        String deliveryDate = lblDate.getText();
+//        String dueDate = String.valueOf(dtpickerDueDate.getValue());
+//
+//        Delivery delivery = new Delivery(deliveryId, empId, orderId, vehiId, location, deliveryDate, dueDate);
+//
+//        System.out.println(empId);
+//        System.out.println(orderId);
+//        System.out.println(vehiId);
         try {
             PlaceOrderModel.saveDelivery(delivery);
         } catch (SQLException throwables) {
@@ -132,6 +135,8 @@ public class CashierDeliveryForm02Controller {
         assert lblOrderId != null : "fx:id=\"lblOrderId\" was not injected: check your FXML file 'cashierDelivery02_form.fxml'.";
         assert txtDeliveryId != null : "fx:id=\"txtDeliveryId\" was not injected: check your FXML file 'cashierDelivery02_form.fxml'.";
         assert txtLocation != null : "fx:id=\"txtLocation\" was not injected: check your FXML file 'cashierDelivery02_form.fxml'.";
+
+        delivery = new Delivery();
 
         loadEmployeeIds();
         generateNextOrderId();
