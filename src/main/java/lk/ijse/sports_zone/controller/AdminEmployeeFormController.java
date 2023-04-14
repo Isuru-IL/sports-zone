@@ -95,6 +95,9 @@ public class AdminEmployeeFormController {
     private Label lblInvalidEmail;
 
     @FXML
+    private Label lblInvalidSalary;
+
+    @FXML
     private TextField txtAddress;
 
     @FXML
@@ -153,109 +156,127 @@ public class AdminEmployeeFormController {
 
     @FXML
     void saveOnAction(ActionEvent event) {
-        //Employee employee = new Employee();
 
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+            AlertController.errormessage("Employee details not saved.\nPlease make sure to fill out all the required fields.");
+        }else {
+            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
+                    || ValidateController.doubleValueCheck(txtSalary.getText())) {
+                if(ValidateController.doubleValueCheck(txtSalary.getText())){
+                    if (ValidateController.contactCheck(txtContactNo.getText())) {
+                        //lblInvalidContacktNo.setVisible(false);
 
-        if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
-            if (ValidateController.contactCheck(txtContactNo.getText())) {
-                //lblInvalidContacktNo.setVisible(false);
+                        if (ValidateController.emailCheck(txtEmail.getText())) {
+                            //lblInvalidEmail.setVisible(false);
 
-                if (ValidateController.emailCheck(txtEmail.getText())) {
-                    //lblInvalidEmail.setVisible(false);
+                            try {
+                                employee.setEmpId(txtEmpId.getText());
+                                employee.setEmpName(txtEmpName.getText());
+                                employee.setAddress(txtAddress.getText());
+                                employee.setDob(String.valueOf(txtDob.getValue()));
+                                employee.setContactNo(txtContactNo.getText());
+                                employee.setSalary(Double.valueOf(txtSalary.getText()));
+                                employee.setEmail(txtEmail.getText());
+                                employee.setNic(txtNIC.getText());
+                                employee.setJobTitle(cmbJobTitle.getValue());
 
-                    try {
-                        employee.setEmpId(txtEmpId.getText());
-                        employee.setEmpName(txtEmpName.getText());
-                        employee.setAddress(txtAddress.getText());
-                        employee.setDob(String.valueOf(txtDob.getValue()));
-                        employee.setContactNo(txtContactNo.getText());
-                        employee.setSalary(Double.valueOf(txtSalary.getText()));
-                        employee.setEmail(txtEmail.getText());
-                        employee.setNic(txtNIC.getText());
-                        employee.setJobTitle(cmbJobTitle.getValue());
+                                boolean isSaved = EmployeeModel.save(employee);
+                                if(isSaved){
+                                    setCellValueFactory();
+                                    getAll();
+                                    clearTxtField();
+                                    AlertController.successfulMessage("Saved");
+                                }
+                            } catch (SQLIntegrityConstraintViolationException e) {
+                                System.out.println(e);
+                                AlertController.errormessage("Duplicate Employee ID");
+                            } catch(Exception exception){
+                                AlertController.errormessage(exception+"");
+                                System.out.println("EmpSave ="+exception);
+                            }
 
-                        boolean isSaved = EmployeeModel.save(employee);
-                        if(isSaved){
-                            setCellValueFactory();
-                            getAll();
-                            clearTxtField();
-                            AlertController.successfulMessage("Saved");
+                        } else {
+                            lblInvalidEmail.setVisible(true);
                         }
-                    } catch (SQLIntegrityConstraintViolationException e) {
-                        System.out.println(e);
-                        new Alert(Alert.AlertType.ERROR, "Duplicate Employee ID").show();
-                    } catch(SQLException exception){
-                        AlertController.exceptionMessage("Something went wrong");
-                        System.out.println("EmpSave ="+exception);
+                    } else {
+                        lblInvalidContacktNo.setVisible(true);
                     }
-
-                } else {
-                    lblInvalidEmail.setVisible(true);
+                }else {
+                    lblInvalidSalary.setVisible(true);
                 }
             } else {
+                lblInvalidEmail.setVisible(true);
                 lblInvalidContacktNo.setVisible(true);
+                lblInvalidSalary.setVisible(true);
             }
-        } else {
-            lblInvalidEmail.setVisible(true);
-            lblInvalidContacktNo.setVisible(true);
         }
+
     }
 
     @FXML
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
 
-            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
-                if (ValidateController.contactCheck(txtContactNo.getText())) {
-                    //lblInvalidContacktNo.setVisible(false);
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+            AlertController.errormessage("Employee details not updated.\nPlease make sure to fill out all the required fields.");
+        }else {
+            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
+                    || ValidateController.doubleValueCheck(txtSalary.getText())) {
+                if (ValidateController.doubleValueCheck(txtSalary.getText())) {
+                    if (ValidateController.contactCheck(txtContactNo.getText())) {
+                        //lblInvalidContacktNo.setVisible(false);
 
-                    if (ValidateController.emailCheck(txtEmail.getText())) {
-                        //lblInvalidEmail.setVisible(false);
+                        if (ValidateController.emailCheck(txtEmail.getText())) {
+                            //lblInvalidEmail.setVisible(false);
 
-                        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-                        if(result) {
-                            btnSave.setVisible(true);
+                            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                            if (result) {
+                                btnSave.setVisible(true);
 
-                            employee.setEmpId(txtEmpId.getText());
-                            employee.setEmpName(txtEmpName.getText());
-                            employee.setAddress(txtAddress.getText());
-                            employee.setDob(String.valueOf(txtDob.getValue()));
-                            employee.setContactNo(txtContactNo.getText());
-                            employee.setSalary(Double.valueOf(txtSalary.getText()));
-                            employee.setEmail(txtEmail.getText());
-                            employee.setNic(txtNIC.getText());
-                            employee.setJobTitle(cmbJobTitle.getValue());
+                                employee.setEmpId(txtEmpId.getText());
+                                employee.setEmpName(txtEmpName.getText());
+                                employee.setAddress(txtAddress.getText());
+                                employee.setDob(String.valueOf(txtDob.getValue()));
+                                employee.setContactNo(txtContactNo.getText());
+                                employee.setSalary(Double.valueOf(txtSalary.getText()));
+                                employee.setEmail(txtEmail.getText());
+                                employee.setNic(txtNIC.getText());
+                                employee.setJobTitle(cmbJobTitle.getValue());
 
-                            try {
-                                boolean isUpdated = EmployeeModel.update(employee);
-                                if (isUpdated) {
-                                    AlertController.okMassage("updated");
-                                    setCellValueFactory();
-                                    getAll();
-                                    clearTxtField();
-                                    btnSave.setDisable(false);
-                                } else {
-                                    AlertController.errormessage("Not Updated");
+                                try {
+                                    boolean isUpdated = EmployeeModel.update(employee);
+                                    if (isUpdated) {
+                                        AlertController.okMassage("updated");
+                                        setCellValueFactory();
+                                        getAll();
+                                        clearTxtField();
+                                        btnSave.setDisable(false);
+                                    } else {
+                                        AlertController.errormessage("Not Updated");
+                                    }
+
+                                } catch (SQLIntegrityConstraintViolationException e) {
+                                    System.out.println(e);
+                                    AlertController.errormessage(e.getMessage());
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                    AlertController.exceptionMessage("Something went wrong");
                                 }
-
-                            } catch (SQLIntegrityConstraintViolationException e) {
-                                System.out.println(e);
-                                AlertController.errormessage(e.getMessage());
-                            } catch (SQLException throwables) {
-                                throwables.printStackTrace();
-                                AlertController.exceptionMessage("Something went wrong");
                             }
+                            } else {
+                                lblInvalidEmail.setVisible(true);
+                            }
+                        } else {
+                            lblInvalidContacktNo.setVisible(true);
                         }
-
                     } else {
-                        lblInvalidEmail.setVisible(true);
+                        lblInvalidSalary.setVisible(true);
                     }
                 } else {
+                    lblInvalidEmail.setVisible(true);
                     lblInvalidContacktNo.setVisible(true);
+                    lblInvalidSalary.setVisible(true);
                 }
-            } else {
-                lblInvalidEmail.setVisible(true);
-                lblInvalidContacktNo.setVisible(true);
             }
     }
 
@@ -426,6 +447,12 @@ public class AdminEmployeeFormController {
         lblInvalidEmail.setVisible(false);
     }
 
+    @FXML
+    void txtSalaryOnMouseClickedAction(MouseEvent event) {
+        lblInvalidSalary.setVisible(false);
+    }
+
+
     private void generateNextOrderId() {
         try {
             String id = EmployeeModel.getNextEmpId();
@@ -477,6 +504,7 @@ public class AdminEmployeeFormController {
 
         lblInvalidEmail.setVisible(false);
         lblInvalidContacktNo.setVisible(false);
+        lblInvalidSalary.setVisible(false);
     }
 
     private void setCellValueFactory() {

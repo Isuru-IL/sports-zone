@@ -24,6 +24,7 @@ import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.NotificationController;
+import lk.ijse.sports_zone.util.ValidateController;
 
 public class InventoryFormController {
 
@@ -44,6 +45,12 @@ public class InventoryFormController {
 
     @FXML
     private JFXButton btnUpdate;
+
+    @FXML
+    private Label lblInvalidQuantity;
+
+    @FXML
+    private Label lblInvalidUnitPrice;
 
     @FXML
     private TableColumn<?, ?> colBrand;
@@ -226,29 +233,53 @@ public class InventoryFormController {
     void saveOnAction(ActionEvent event) {
         Inventory inventory = new Inventory();
 
-        inventory.setItemCode(txtItemId.getText());
-        inventory.setItemName(txtItemName.getText());
-        inventory.setCategory(txtCategory.getText());
-        inventory.setBrand(txtBrand.getText());
-        inventory.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
-        inventory.setQtyOnHand(Integer.valueOf(txtQty.getText()));
+        if(txtItemId.getText().isEmpty() || txtItemName.getText().isEmpty() || txtCategory.getText().isEmpty() || txtBrand.getText().isEmpty()){
+            AlertController.errormessage("Item details not saved.\nPlease make sure to fill out all the required fields.");
+        }else {
+            //if(customer.getCustId().isEmpty()){
+            if (ValidateController.doubleValueCheck(txtUnitPrice.getText()) || ValidateController.intValueCheck(txtQty.getText())) {
+                if (ValidateController.intValueCheck(txtQty.getText())) {
+                    if (ValidateController.doubleValueCheck(txtUnitPrice.getText())) {
 
-        try {
-            boolean isSaved = InventoryModel.save(inventory);
+                        try {
+                            inventory.setItemCode(txtItemId.getText());
+                            inventory.setItemName(txtItemName.getText());
+                            inventory.setCategory(txtCategory.getText());
+                            inventory.setBrand(txtBrand.getText());
+                            inventory.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
+                            inventory.setQtyOnHand(Integer.valueOf(txtQty.getText()));
+                            boolean isSaved = InventoryModel.save(inventory);
 
-            if(isSaved){
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-                AlertController.okMassage("Item Saved Successfully");
+                            if(isSaved){
+                                setCellValueFactory();
+                                getAll();
+                                clearTxtField();
+                                AlertController.okMassage("Item Saved Successfully");
 
-            }else{
-                AlertController.errormessage("Item Saved Unsuccessfully");
+                            }else{
+                                AlertController.errormessage("Item Saved Unsuccessfully");
+                            }
+
+                        } catch (Exception throwables) {
+                            //throwables.printStackTrace();
+                            AlertController.errormessage(throwables+"");
+                        }
+                    } else {
+                        lblInvalidUnitPrice.setVisible(true);
+                    }
+                } else {
+                    lblInvalidQuantity.setVisible(true);
+                }
+            } else {
+                lblInvalidQuantity.setVisible(true);
+                lblInvalidUnitPrice.setVisible(true);
             }
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
+//        else{
+//                System.out.println(customer.getCustId());
+//                lblInvalidCustId.setVisible(true);
+//                //txtCustId.setStyle("-fx-text-fill: red");
+//            }
     }
 
 
@@ -256,30 +287,65 @@ public class InventoryFormController {
     void updateOnAction(ActionEvent event) {
         Inventory inventory = new Inventory();
 
-        inventory.setItemCode(txtItemId.getText());
-        inventory.setItemName(txtItemName.getText());
-        inventory.setCategory(txtCategory.getText());
-        inventory.setBrand(txtBrand.getText());
-        inventory.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
-        inventory.setQtyOnHand(Integer.valueOf(txtQty.getText()));
+        if(txtItemId.getText().isEmpty() || txtItemName.getText().isEmpty() || txtCategory.getText().isEmpty() || txtBrand.getText().isEmpty()){
+            AlertController.errormessage("Item details not updated.\nPlease make sure to fill out all the required fields.");
+        }else {
+            //if(customer.getCustId().isEmpty()){
+            if (ValidateController.doubleValueCheck(txtUnitPrice.getText()) || ValidateController.intValueCheck(txtQty.getText())) {
+                if (ValidateController.intValueCheck(txtQty.getText())) {
+                    if (ValidateController.doubleValueCheck(txtUnitPrice.getText())) {
 
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if(result){
-            try {
-                boolean isUpdated = InventoryModel.update(inventory);
-                if(isUpdated){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    AlertController.okMassage("Item Updated Successfully");
-                }else{
-                    AlertController.errormessage("Item Updated Unsuccessfully");
+                        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                        if(result) {
+                            try {
+                                inventory.setItemCode(txtItemId.getText());
+                                inventory.setItemName(txtItemName.getText());
+                                inventory.setCategory(txtCategory.getText());
+                                inventory.setBrand(txtBrand.getText());
+                                inventory.setUnitPrice(Double.valueOf(txtUnitPrice.getText()));
+                                inventory.setQtyOnHand(Integer.valueOf(txtQty.getText()));
+
+                                boolean isUpdated = InventoryModel.update(inventory);
+                                if (isUpdated) {
+                                    setCellValueFactory();
+                                    getAll();
+                                    clearTxtField();
+                                    AlertController.okMassage("Item Updated Successfully");
+                                } else {
+                                    AlertController.errormessage("Item Updated Unsuccessfully");
+                                }
+                            } catch (Exception throwables) {
+                                //throwables.printStackTrace();
+                                AlertController.errormessage(throwables + "");
+                            }
+                        }
+                    } else {
+                        lblInvalidUnitPrice.setVisible(true);
+                    }
+                } else {
+                    lblInvalidQuantity.setVisible(true);
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } else {
+                lblInvalidQuantity.setVisible(true);
+                lblInvalidUnitPrice.setVisible(true);
             }
         }
+//        else{
+//                System.out.println(customer.getCustId());
+//                lblInvalidCustId.setVisible(true);
+//                //txtCustId.setStyle("-fx-text-fill: red");
+//            }
     }
+
+    @FXML
+    void txtQuantityOnMouseClickedAction(MouseEvent event) {
+        lblInvalidQuantity.setVisible(false);
+    }
+    @FXML
+    void txtUnitPriceOnMouseClickedAction(MouseEvent event) {
+        lblInvalidUnitPrice.setVisible(false);
+    }
+
 
     @FXML
     void initialize() {
@@ -304,6 +370,9 @@ public class InventoryFormController {
 
         setCellValueFactory();
         getAll();
+
+        lblInvalidUnitPrice.setVisible(false);
+        lblInvalidQuantity.setVisible(false);
     }
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("itemCode"));

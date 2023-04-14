@@ -118,12 +118,12 @@
       </AnchorPane>
       <AnchorPane fx:id="anchrpCustomer" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0">
          <children>
-            <TextField fx:id="txtCustId" layoutX="70.0" layoutY="172.0" onAction="#SearchOnAction" prefHeight="40.0" prefWidth="400.0">
+            <TextField fx:id="txtCustId" layoutX="70.0" layoutY="172.0" onAction="#SearchOnAction" onMouseClicked="#txtcustIdOnMouseClickedAction" prefHeight="40.0" prefWidth="400.0">
                <font>
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtContactNo" layoutX="70.0" layoutY="263.0" prefHeight="40.0" prefWidth="400.0">
+            <TextField fx:id="txtContactNo" layoutX="70.0" layoutY="263.0" onMouseClicked="#txtContactNoOnMouseClickedAction" prefHeight="40.0" prefWidth="400.0">
                <font>
                   <Font size="18.0" />
                </font>
@@ -133,7 +133,7 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-            <TextField fx:id="txtEmail" layoutX="600.0" layoutY="264.0" prefHeight="40.0" prefWidth="400.0">
+            <TextField fx:id="txtEmail" layoutX="600.0" layoutY="264.0" onMouseClicked="#txtEmailOnMouseClickedAction" prefHeight="40.0" prefWidth="400.0">
                <font>
                   <Font size="18.0" />
                </font>
@@ -207,6 +207,21 @@
                   <Image url="@../assets/searchIcon.png" />
                </image>
             </ImageView>
+            <Label fx:id="lblInvalidContacktNo" layoutX="72.0" layoutY="304.0" prefHeight="17.0" prefWidth="272.0" text="Invalid Contact Number" textFill="RED">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblInvalidEmail" layoutX="600.0" layoutY="304.0" prefHeight="17.0" prefWidth="272.0" text="Invalid Email" textFill="RED">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblInvalidCustId" layoutX="70.0" layoutY="210.0" prefHeight="17.0" prefWidth="272.0" text="Invalid Customer Id" textFill="RED">
+               <font>
+                  <Font name="System Bold Italic" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

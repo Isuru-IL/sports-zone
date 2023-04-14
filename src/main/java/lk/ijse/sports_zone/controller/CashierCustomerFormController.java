@@ -29,10 +29,7 @@ import lk.ijse.sports_zone.dto.tm.CustomerTM;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.EmployeeModel;
-import lk.ijse.sports_zone.util.AlertController;
-import lk.ijse.sports_zone.util.ButtonColourController;
-import lk.ijse.sports_zone.util.DateAndTimeConntroller;
-import lk.ijse.sports_zone.util.NotificationController;
+import lk.ijse.sports_zone.util.*;
 
 public class CashierCustomerFormController {
 
@@ -95,6 +92,15 @@ public class CashierCustomerFormController {
 
     @FXML
     private TableColumn<?, ?> colName;
+
+    @FXML
+    private Label lblInvalidContacktNo;
+
+    @FXML
+    private Label lblInvalidCustId;
+
+    @FXML
+    private Label lblInvalidEmail;
 
     @FXML
     private Label lblDate;
@@ -261,48 +267,114 @@ public class CashierCustomerFormController {
         customer.setAddress(txtAddress.getText());
         customer.setEmail(txtEmail.getText());
 
-        try {
-            boolean isSaved = CustomerModel.save(customer);
-            if(isSaved){
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-                AlertController.okMassage("Customer Saved Successfully");
-            }else{
-                AlertController.errormessage("Customer Saved Unsuccessfully");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables);
+        if(customer.getCustId().isEmpty() || customer.getCustName().isEmpty() || customer.getContactNo().isEmpty()){
+            AlertController.errormessage("Customer details not saved.\nPlease make sure to fill out all the required fields.");
+        }else {
+            //if(customer.getCustId().isEmpty()){
+                if (ValidateController.emailCheck(customer.getEmail()) || ValidateController.contactCheck(customer.getContactNo())) {
+                    if (ValidateController.contactCheck(customer.getContactNo())) {
+                        if (ValidateController.emailCheck(customer.getEmail()) || customer.getEmail().isEmpty()) {
+
+
+                            try {
+                                boolean isSaved = CustomerModel.save(customer);
+                                if(isSaved){
+                                    setCellValueFactory();
+                                    getAll();
+                                    clearTxtField();
+                                    AlertController.okMassage("Customer Saved Successfully");
+                                }else{
+                                    AlertController.errormessage("Customer Saved Unsuccessfully");
+                                }
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                                System.out.println(throwables);
+                            }
+
+                        } else {
+                            lblInvalidEmail.setVisible(true);
+                        }
+                    } else {
+                        lblInvalidContacktNo.setVisible(true);
+                    }
+                } else {
+                    lblInvalidEmail.setVisible(true);
+                    lblInvalidContacktNo.setVisible(true);
+                }
         }
+//        else{
+//                System.out.println(customer.getCustId());
+//                lblInvalidCustId.setVisible(true);
+//                //txtCustId.setStyle("-fx-text-fill: red");
+//            }
     }
 
 
     @FXML
     void updateOnAction(ActionEvent event) {
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if(result){
-            Customer customer = new Customer();
+        Customer customer = new Customer();
 
-            customer.setCustId(txtCustId.getText());
-            customer.setCustName(txtCustName.getText());
-            customer.setContactNo(txtContactNo.getText());
-            customer.setAddress(txtAddress.getText());
-            customer.setEmail(txtEmail.getText());
+        customer.setCustId(txtCustId.getText());
+        customer.setCustName(txtCustName.getText());
+        customer.setContactNo(txtContactNo.getText());
+        customer.setAddress(txtAddress.getText());
+        customer.setEmail(txtEmail.getText());
 
-            try {
-                boolean isUpdated = CustomerModel.update(customer);
-                if(isUpdated){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    AlertController.okMassage("Customer updated Successfully");
+            if(customer.getCustId().isEmpty() || customer.getCustName().isEmpty() || customer.getContactNo().isEmpty()){
+                AlertController.errormessage("Customer details not updated.\nPlease make sure to fill out all the required fields.");
+            }else {
+                //if(customer.getCustId().isEmpty()){
+                if (ValidateController.emailCheck(customer.getEmail()) || ValidateController.contactCheck(customer.getContactNo())) {
+                    if (ValidateController.contactCheck(customer.getContactNo())) {
+                        if (ValidateController.emailCheck(customer.getEmail()) || customer.getEmail().isEmpty()) {
+
+                            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                            if(result) {
+                                try {
+                                    boolean isUpdated = CustomerModel.update(customer);
+                                    if (isUpdated) {
+                                        setCellValueFactory();
+                                        getAll();
+                                        clearTxtField();
+                                        AlertController.okMassage("Customer updated Successfully");
+                                    }
+                                } catch (SQLException throwables) {
+                                    throwables.printStackTrace();
+                                    System.out.println(throwables);
+                                }
+                            }
+
+                        } else {
+                            lblInvalidEmail.setVisible(true);
+                        }
+                    } else {
+                        lblInvalidContacktNo.setVisible(true);
+                    }
+                } else {
+                    lblInvalidEmail.setVisible(true);
+                    lblInvalidContacktNo.setVisible(true);
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                System.out.println(throwables);
             }
-        }
+//        else{
+//                System.out.println(customer.getCustId());
+//                lblInvalidCustId.setVisible(true);
+//                //txtCustId.setStyle("-fx-text-fill: red");
+//            }
+    }
+
+    @FXML
+    void txtcustIdOnMouseClickedAction(MouseEvent event) {
+        lblInvalidCustId.setVisible(false);
+    }
+
+    @FXML
+    void txtContactNoOnMouseClickedAction(MouseEvent event) {
+        lblInvalidContacktNo.setVisible(false);
+    }
+
+    @FXML
+    void txtEmailOnMouseClickedAction(MouseEvent event) {
+        lblInvalidEmail.setVisible(false);
     }
 
     @FXML
@@ -396,6 +468,10 @@ public class CashierCustomerFormController {
 
         setCellValueFactory();
         getAll();
+
+        lblInvalidEmail.setVisible(false);
+        lblInvalidCustId.setVisible(false);
+        lblInvalidContacktNo.setVisible(false);
     }
 
     private void setCellValueFactory() {

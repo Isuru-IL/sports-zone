@@ -1,6 +1,10 @@
 package lk.ijse.sports_zone.model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lk.ijse.sports_zone.dto.CartDTO;
+import lk.ijse.sports_zone.dto.tm.CashierOrderTM;
+import lk.ijse.sports_zone.dto.tm.VehicleTM;
 import lk.ijse.sports_zone.util.CrudUtil;
 
 import java.sql.ResultSet;
@@ -56,5 +60,24 @@ public class CashierOrderModel {
                 date,
                 dto.getDeliveryStatus()
         );
+    }
+
+    public static ObservableList<CashierOrderTM> getAll() throws SQLException {
+        String sql = "SELECT * FROM Orders";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        ObservableList<CashierOrderTM> allData = FXCollections.observableArrayList();
+
+        while (resultSet.next()){
+            allData.add(new CashierOrderTM(
+                    resultSet.getString(1),
+                    resultSet.getString(2),
+                    resultSet.getDouble(3),
+                    resultSet.getString(4),
+                    resultSet.getString(5),
+                    resultSet.getString(6)
+            ));
+        }
+        return allData;
     }
 }
