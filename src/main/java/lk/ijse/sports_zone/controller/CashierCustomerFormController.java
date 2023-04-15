@@ -76,6 +76,9 @@ public class CashierCustomerFormController {
     private JFXButton btnUpdate;
 
     @FXML
+    private JFXButton btnSupplies;
+
+    @FXML
     private ImageView buttonDashBoard;
 
     @FXML
@@ -398,6 +401,18 @@ public class CashierCustomerFormController {
         btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
                 "-fx-background-radius: 20px;");
     }
+
+    @FXML
+    void btnSuppliesOnAction(ActionEvent event) throws IOException {
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
+        anchrpCustomer.getChildren().clear();
+        anchrpCustomer.getChildren().add(load);
+
+        ButtonColourController.btncolor(btnSupplies, anchrpCustomer);
+        btnCustomer.setStyle("-fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);" +
+                "-fx-background-radius: 20px;");
+    }
+
 
     @FXML
     void btnCustomerOnAction(ActionEvent event) throws IOException {

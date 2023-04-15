@@ -1,5 +1,6 @@
 package lk.ijse.sports_zone.util;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +41,13 @@ public class ValidateController {
     public static boolean intValueCheck(String value) {
         String intRegex = "^-?[0-9]+$";
         Pattern pattern = Pattern.compile(intRegex);
+        Matcher matcher = pattern.matcher(value);
+        return matcher.matches();
+    }
+
+    public static boolean dateCheck(String value) {
+        String dateRegex = "\\\\d{4}-\\\\d{2}-\\\\d{2}";
+        Pattern pattern = Pattern.compile(dateRegex);
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }

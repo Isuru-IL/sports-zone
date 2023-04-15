@@ -158,4 +158,24 @@ public class InventoryModel {
         datalist.add(series);
         return datalist;
     }
+
+    public static String getNextItemCode() throws SQLException {
+        String sql = "SELECT itemCode FROM Item ORDER BY itemCode DESC LIMIT 1";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if (resultSet.next()) {
+            return splitRepairId(resultSet.getString(1));
+        }
+        return splitRepairId(null);
+    }
+    private static String splitRepairId(String currentId) {
+        if(currentId != null) {
+            String[] strings = currentId.split("I");
+            int id = Integer.parseInt(strings[1]);
+            ++id;
+            String digit=String.format("%03d", id);
+            return "I" + digit;
+        }
+        return "I001";
+    }
 }

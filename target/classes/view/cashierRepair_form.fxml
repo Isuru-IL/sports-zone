@@ -19,7 +19,7 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <TextField fx:id="txtPrice" layoutX="601.0" layoutY="263.0" prefHeight="40.0" prefWidth="400.0">
+      <TextField fx:id="txtPrice" layoutX="601.0" layoutY="263.0" onMouseClicked="#txtPriceOnMouseClickedAction" prefHeight="40.0" prefWidth="400.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -93,6 +93,11 @@
       <Label layoutX="72.0" layoutY="236.0" prefHeight="17.0" prefWidth="190.0" text="Customer Id">
          <font>
             <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblInvalidPrice" layoutX="601.0" layoutY="303.0" prefHeight="17.0" prefWidth="272.0" text="Invalid Value" textFill="RED">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
    </children>

@@ -135,39 +135,43 @@ public class AdminSupplierFormController {
     void saveOnAction(ActionEvent event) {
         Supplier supplier = new Supplier();
 
-        if(ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
-            if(ValidateController.emailCheck(txtEmail.getText())) {
-                if(ValidateController.contactCheck(txtContactNo.getText())) {
+        if(txtSupId.getText().isEmpty() || txtSupName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+            AlertController.errormessage("Suplier details not saved.\nPlease make sure to fill out all the required fields.");
+        }else {
+            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+                if (ValidateController.emailCheck(txtEmail.getText())) {
+                    if (ValidateController.contactCheck(txtContactNo.getText())) {
 
-                    try {
-                        supplier.setSupId(txtSupId.getText());
-                        supplier.setSupName(txtSupName.getText());
-                        supplier.setAddress(txtAddress.getText());
-                        supplier.setEmail(txtEmail.getText());
-                        supplier.setContactNo(txtContactNo.getText());
+                        try {
+                            supplier.setSupId(txtSupId.getText());
+                            supplier.setSupName(txtSupName.getText());
+                            supplier.setAddress(txtAddress.getText());
+                            supplier.setEmail(txtEmail.getText());
+                            supplier.setContactNo(txtContactNo.getText());
 
-                        boolean isSaved = SupplierModel.save(supplier);
-                        if (isSaved) {
-                            setCellValueFactory();
-                            getAll();
-                            clearTxtField();
-                            AlertController.okMassage("Saved successfully");
-                        } else {
-                            AlertController.errormessage("Invalid details");
+                            boolean isSaved = SupplierModel.save(supplier);
+                            if (isSaved) {
+                                setCellValueFactory();
+                                getAll();
+                                clearTxtField();
+                                AlertController.okMassage("Saved successfully");
+                            } else {
+                                AlertController.errormessage("Invalid details");
+                            }
+                        } catch (Exception throwables) {
+                            //throwables.printStackTrace();
+                            AlertController.exceptionMessage(throwables+"");
                         }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                        AlertController.exceptionMessage("Something went wrong");
+                    } else {
+                        lblInvalidContacktNo.setVisible(true);
                     }
-                }else{
-                    lblInvalidContacktNo.setVisible(true);
+                } else {
+                    lblInvalidEmail.setVisible(true);
                 }
-            }else {
+            } else {
+                lblInvalidContacktNo.setVisible(true);
                 lblInvalidEmail.setVisible(true);
             }
-        }else{
-            lblInvalidContacktNo.setVisible(true);
-            lblInvalidEmail.setVisible(true);
         }
     }
 
@@ -175,42 +179,47 @@ public class AdminSupplierFormController {
     void updateOnAction(ActionEvent event) {
         Supplier supplier = new Supplier();
 
-        if(ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
-            if(ValidateController.emailCheck(txtEmail.getText())) {
-                if(ValidateController.contactCheck(txtContactNo.getText())) {
+        if(txtSupId.getText().isEmpty() || txtSupName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+            AlertController.errormessage("Suplier details not updated.\nPlease make sure to fill out all the required fields.");
+        }else {
 
-                    supplier.setSupId(txtSupId.getText());
-                    supplier.setSupName(txtSupName.getText());
-                    supplier.setAddress(txtAddress.getText());
-                    supplier.setEmail(txtEmail.getText());
-                    supplier.setContactNo(txtContactNo.getText());
+            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())) {
+                if (ValidateController.emailCheck(txtEmail.getText())) {
+                    if (ValidateController.contactCheck(txtContactNo.getText())) {
 
-                    boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-                    if(result){
-                        try {
-                            boolean isUpdated = SupplierModel.update(supplier);
-                            if(isUpdated){
-                                setCellValueFactory();
-                                getAll();
-                                clearTxtField();
-                                AlertController.okMassage("Update successful");
-                            }else{
-                                AlertController.errormessage("update unsuccessful");
+                        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                        if (result) {
+                            try {
+                                supplier.setSupId(txtSupId.getText());
+                                supplier.setSupName(txtSupName.getText());
+                                supplier.setAddress(txtAddress.getText());
+                                supplier.setEmail(txtEmail.getText());
+                                supplier.setContactNo(txtContactNo.getText());
+
+                                boolean isUpdated = SupplierModel.update(supplier);
+                                if (isUpdated) {
+                                    setCellValueFactory();
+                                    getAll();
+                                    clearTxtField();
+                                    AlertController.okMassage("Update successful");
+                                } else {
+                                    AlertController.errormessage("update unsuccessful");
+                                }
+                            } catch (Exception throwables) {
+                                throwables.printStackTrace();
+                                AlertController.exceptionMessage(throwables+"");
                             }
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                            AlertController.exceptionMessage("SQLException");
                         }
+                    } else {
+                        lblInvalidContacktNo.setVisible(true);
                     }
-                }else{
-                    lblInvalidContacktNo.setVisible(true);
+                } else {
+                    lblInvalidEmail.setVisible(true);
                 }
-            }else {
+            } else {
+                lblInvalidContacktNo.setVisible(true);
                 lblInvalidEmail.setVisible(true);
             }
-        }else{
-            lblInvalidContacktNo.setVisible(true);
-            lblInvalidEmail.setVisible(true);
         }
     }
 

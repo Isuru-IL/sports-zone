@@ -22,6 +22,7 @@ import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.dto.tm.InventoryTM;
 import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.InventoryModel;
+import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.NotificationController;
 import lk.ijse.sports_zone.util.ValidateController;
@@ -368,12 +369,23 @@ public class InventoryFormController {
         assert txtSearch != null : "fx:id=\"txtSearch\" was not injected: check your FXML file 'inventory_form.fxml'.";
         assert txtUnitPrice != null : "fx:id=\"txtUnitPrice\" was not injected: check your FXML file 'inventory_form.fxml'.";
 
+        genarateNextItemCode();
         setCellValueFactory();
         getAll();
 
         lblInvalidUnitPrice.setVisible(false);
         lblInvalidQuantity.setVisible(false);
     }
+
+    private void genarateNextItemCode() {
+        try {
+            String id = InventoryModel.getNextItemCode();
+            txtItemId.setText(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
         colName.setCellValueFactory(new PropertyValueFactory<>("itemName"));

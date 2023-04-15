@@ -26,6 +26,7 @@ import lk.ijse.sports_zone.model.CashierOrderModel;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.util.AlertController;
+import lk.ijse.sports_zone.util.ValidateController;
 
 public class CashierRepairFormController {
 
@@ -70,6 +71,9 @@ public class CashierRepairFormController {
 
     @FXML
     private TableView<RepairTM> tblRepair;
+
+    @FXML
+    private Label lblInvalidPrice;
 
     @FXML
     private DatePicker txtDate;
@@ -255,54 +259,78 @@ public class CashierRepairFormController {
 
     @FXML
     void saveOnAction(ActionEvent event) {
-        repair.setRepairId(txtRepairId.getText());
-        repair.setCustId(cmbCustId.getValue());
-        repair.setRepairItem(txtRepairitem.getText());
-        repair.setDate(String.valueOf(txtDate.getValue()));
-        repair.setPrice(Double.valueOf(txtPrice.getText()));
 
-        try {
-            boolean isSaved = RepairModel.save(repair);
-            if(isSaved){
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-                genarateNextRepairId();
-                AlertController.okMassage("Saved Successfully");
+        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getValue().isEmpty()){
+            AlertController.errormessage("Repair details not saved.\nPlease make sure to fill out all the required fields.");
+        }else{
+            if(ValidateController.doubleValueCheck(txtPrice.getText())){
+                try {
+                    repair.setRepairId(txtRepairId.getText());
+                    repair.setCustId(cmbCustId.getValue());
+                    repair.setRepairItem(txtRepairitem.getText());
+                    repair.setDate(String.valueOf(txtDate.getValue()));
+                    repair.setPrice(Double.valueOf(txtPrice.getText()));
+                    boolean isSaved = RepairModel.save(repair);
+                    if(isSaved){
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextRepairId();
+                        AlertController.okMassage("Saved Successfully");
+                    }else{
+                        AlertController.errormessage("Saved Unsuccessfully");
+                    }
+                } catch (Exception throwables) {
+                    //throwables.printStackTrace();
+                    AlertController.errormessage(throwables+"");
+                    System.out.println("Repair save "+throwables);
+                }
             }else{
-                AlertController.errormessage("Saved Unsuccessfully");
+                lblInvalidPrice.setVisible(true);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println(throwables);
         }
     }
 
     @FXML
     void updateOnAction(ActionEvent event) {
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if(result){
-            repair.setRepairId(txtRepairId.getText());
-            repair.setCustId(cmbCustId.getValue());
-            repair.setRepairItem(txtRepairitem.getText());
-            repair.setDate(String.valueOf(txtDate.getValue()));
-            repair.setPrice(Double.valueOf(txtPrice.getText()));
 
-            try {
-                boolean isUpdated = RepairModel.update(repair);
-                if(isUpdated){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextRepairId();
-                    AlertController.okMassage("updated Successfully");
+        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getValue().isEmpty()){
+            AlertController.errormessage("Repair details not updated.\nPlease make sure to fill out all the required fields.");
+        }else {
+            if (ValidateController.doubleValueCheck(txtPrice.getText())) {
+                boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                if (result) {
+                    repair.setRepairId(txtRepairId.getText());
+                    repair.setCustId(cmbCustId.getValue());
+                    repair.setRepairItem(txtRepairitem.getText());
+                    repair.setDate(String.valueOf(txtDate.getValue()));
+                    repair.setPrice(Double.valueOf(txtPrice.getText()));
+
+                    try {
+                        boolean isUpdated = RepairModel.update(repair);
+                        if (isUpdated) {
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+                            genarateNextRepairId();
+                            AlertController.okMassage("updated Successfully");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        System.out.println(throwables);
+                    }
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                System.out.println(throwables);
+            } else {
+                lblInvalidPrice.setVisible(true);
             }
         }
     }
+
+    @FXML
+    void txtPriceOnMouseClickedAction(MouseEvent event) {
+        lblInvalidPrice.setVisible(false);
+    }
+
 
     private void getAll() {
         try {
@@ -339,7 +367,7 @@ public class CashierRepairFormController {
         setCellValueFactory();
         getAll();
 
-
+        lblInvalidPrice.setVisible(false);
     }
 
 }
