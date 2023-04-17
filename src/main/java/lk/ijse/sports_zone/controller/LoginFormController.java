@@ -7,6 +7,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -103,73 +106,105 @@ public class LoginFormController {
     @FXML
     void goDashBoard(ActionEvent event) throws IOException {
 
-        try {
-            userCheckLogin.setUserName(txtUsername.getText());
-            userCheckLogin.setPassword(txtPassword.getText());
-
-            User user = UserModel.checkLoginAccess(userCheckLogin);
-            String userName = user.getUserName();
-            String password = user.getPassword();
-            String jobTitle = user.getJobTitle();
-
-            if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Admin")){
-                AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
-                AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/homePage_form.fxml"));
-
-                Scene scene = new Scene(anchorPane);
-
-                Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setTitle("Admin Page");
-                stage.centerOnScreen();
-
-            }else if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Cashier")){
-                AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
-                AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
-
-                Scene scene = new Scene(anchorPane);
-
-                Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setTitle("Cashier Page");
-                stage.centerOnScreen();
-
-            }else{
-                AlertController.errormessage("Invalid login details");
+        if(cmbbxLoggin.getSelectionModel().isEmpty() || txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()){
+            if(txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()){
+                AlertController.errormessage("Please enter login details");
+            }else {
+                AlertController.errormessage("Please select Job Title");
             }
+        }else{
+            try {
+                userCheckLogin.setUserName(txtUsername.getText());
+                userCheckLogin.setPassword(txtPassword.getText());
 
-        } catch (Exception exception) {
-            //exception.printStackTrace();
-            System.out.println(exception);
-            //new Alert(Alert.AlertType.ERROR,"something went wrong").show();
-            AlertController.exceptionMessage("Something went wrong");
+                User user = UserModel.checkLoginAccess(userCheckLogin);
+                String userName = user.getUserName();
+                String password = user.getPassword();
+                String jobTitle = user.getJobTitle();
+
+                if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Admin")){
+                    AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
+                    AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/homePage_form.fxml"));
+
+                    Scene scene = new Scene(anchorPane);
+
+                    Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.setTitle("Admin Page");
+                    stage.centerOnScreen();
+
+                }else if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Cashier")){
+                    AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
+                    AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/cashierCustomer_form.fxml"));
+
+                    Scene scene = new Scene(anchorPane);
+
+                    Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.setTitle("Cashier Page");
+                    stage.centerOnScreen();
+
+                }else{
+                    AlertController.errormessage("Invalid login details");
+                }
+
+            } catch (Exception exception) {
+                //exception.printStackTrace();
+                System.out.println(exception);
+                //new Alert(Alert.AlertType.ERROR,"something went wrong").show();
+                AlertController.exceptionMessage("Something went wrong");
+            }
         }
-
-
 
     }
 
     @FXML
     void forgotPasswordOnAction(ActionEvent event) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/forgotPassword_form.fxml"));
+//        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/forgotPassword_form.fxml"));
+//
+//        Scene scene = new Scene(anchorPane);
+//
+//        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+//        stage.setScene(scene);
+//        stage.setTitle("Forgot Password Form");
+//        stage.centerOnScreen();
 
-        Scene scene = new Scene(anchorPane);
-
-        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/view/forgotPassword_form.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(StartFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Forgot Password Form");
-        stage.centerOnScreen();
+        stage.show();
+        loginAnchorPane.getScene().getWindow().hide();
     }
 
     @FXML
     void signUpOnAction(ActionEvent event) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/signUp_form.fxml"));
+//        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/signUp_form.fxml"));
+//
+//        Scene scene = new Scene(anchorPane);
+//        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+//        stage.setScene(scene);
+//        stage.setTitle("Login Form");
+//        stage.centerOnScreen();
 
-        Scene scene = new Scene(anchorPane);
-        Stage stage = (Stage)loginAnchorPane.getScene().getWindow();
+        Stage stage = new Stage();
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("/view/signUp_form.fxml"));
+        } catch (IOException ex) {
+            Logger.getLogger(StartFormController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Login Form");
-        stage.centerOnScreen();
+        stage.show();
+        loginAnchorPane.getScene().getWindow().hide();
     }
 
     @FXML

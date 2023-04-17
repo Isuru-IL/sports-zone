@@ -219,6 +219,7 @@ public class InventoryFormController {
                     setCellValueFactory();
                     getAll();
                     clearTxtField();
+                    genarateNextItemCode();
                     AlertController.okMassage("Item Deleted Successfully");
 
                 }else {
@@ -255,6 +256,7 @@ public class InventoryFormController {
                                 setCellValueFactory();
                                 getAll();
                                 clearTxtField();
+                                genarateNextItemCode();
                                 AlertController.okMassage("Item Saved Successfully");
 
                             }else{
@@ -311,6 +313,7 @@ public class InventoryFormController {
                                     setCellValueFactory();
                                     getAll();
                                     clearTxtField();
+                                    genarateNextItemCode();
                                     AlertController.okMassage("Item Updated Successfully");
                                 } else {
                                     AlertController.errormessage("Item Updated Unsuccessfully");

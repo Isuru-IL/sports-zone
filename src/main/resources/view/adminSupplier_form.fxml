@@ -111,7 +111,7 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnback" layoutX="1378.0" layoutY="357.0" onAction="#btnBackOnAction" prefHeight="40.0" prefWidth="165.0" style="-fx-background-color: #790101;" text="Back" textFill="#fffbfb">
+      <JFXButton fx:id="btnAddSupply" buttonType="RAISED" layoutX="81.0" layoutY="453.0" onAction="#btnAddSupplyOnAction" prefHeight="40.0" prefWidth="211.0" styleClass="btnSave" stylesheets="@../styles/style.css" text="Add Supply" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

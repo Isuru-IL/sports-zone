@@ -17,10 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.sports_zone.dto.Delivery;
-import lk.ijse.sports_zone.model.CashierOrderModel;
-import lk.ijse.sports_zone.model.CustomerModel;
-import lk.ijse.sports_zone.model.EmployeeModel;
-import lk.ijse.sports_zone.model.PlaceOrderModel;
+import lk.ijse.sports_zone.model.*;
 import lk.ijse.sports_zone.util.AlertController;
 
 public class CashierDeliveryForm02Controller {
@@ -111,14 +108,39 @@ public class CashierDeliveryForm02Controller {
 
             cmbEmployeeId.setItems(empIds);
         } catch (SQLException throwables) {
-            AlertController.exceptionMessage("Something went wrong");
+            AlertController.exceptionMessage("loadEmployeeIds() "+throwables);
         }
+    }
+
+    private void loadVehicleIds() {
+        ObservableList<String> vehiIds = FXCollections.observableArrayList();
+        List<String> ids = null;
+        try {
+            ids = VehicleModel.loadVehiIds();
+
+            for(String id : ids){
+                vehiIds.add(id);
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+            AlertController.exceptionMessage("loadVehicleIds() "+e);
+        }
+
+        cmbVehiId.setItems(vehiIds);
     }
 
     private void generateNextOrderId() {
         try {
             String id = CashierOrderModel.getNextOrderId();
             lblOrderId.setText(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    private void generateNextDeliveryId() {
+        try {
+            String id = DeliveryModel.getNextDeliveryId();
+            txtDeliveryId.setText(id);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -139,10 +161,9 @@ public class CashierDeliveryForm02Controller {
         delivery = new Delivery();
 
         loadEmployeeIds();
+        loadVehicleIds();
         generateNextOrderId();
-        cmbVehiId.getItems().addAll("V001", "V002");
-        //cmbVehiId.setValue("V002");
+        generateNextDeliveryId();
         lblDate.setText(String.valueOf(LocalDate.now()));
     }
-
 }

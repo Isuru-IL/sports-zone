@@ -167,4 +167,24 @@ public class CustomerModel {
         }
         return null;
     }
+
+    public static String getNextCustId() throws SQLException {
+        String sql = "SELECT custId FROM Customer ORDER BY custId DESC LIMIT 1";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if (resultSet.next()) {
+            return splitRepairId(resultSet.getString(1));
+        }
+        return splitRepairId(null);
+    }
+    private static String splitRepairId(String currentId) {
+        if(currentId != null) {
+            String[] strings = currentId.split("C-");
+            int id = Integer.parseInt(strings[1]);
+            ++id;
+            String digit=String.format("%03d", id);
+            return "C-" + digit;
+        }
+        return "C-001";
+    }
 }

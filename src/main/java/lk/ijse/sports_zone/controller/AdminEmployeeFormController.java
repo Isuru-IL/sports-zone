@@ -28,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lk.ijse.sports_zone.dto.Employee;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
+import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.ValidateController;
@@ -144,6 +145,8 @@ public class AdminEmployeeFormController {
                     setCellValueFactory();
                     getAll();
                     clearTxtField();
+                    addJobRolescmb();
+                    generateNextEmpId();
                 } else {
                     AlertController.errormessage("Not Deleted");
                 }
@@ -156,6 +159,8 @@ public class AdminEmployeeFormController {
 
     @FXML
     void saveOnAction(ActionEvent event) {
+
+        System.out.println(ValidateController.NICcheck(txtNIC.getText()));
 
         if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
             AlertController.errormessage("Employee details not saved.\nPlease make sure to fill out all the required fields.");
@@ -185,6 +190,8 @@ public class AdminEmployeeFormController {
                                     setCellValueFactory();
                                     getAll();
                                     clearTxtField();
+                                    generateNextEmpId();
+                                    addJobRolescmb();
                                     AlertController.successfulMessage("Saved");
                                 }
                             } catch (SQLIntegrityConstraintViolationException e) {
@@ -217,7 +224,7 @@ public class AdminEmployeeFormController {
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
 
-        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty() || txtDob.getEditor().getText().isEmpty()){
             AlertController.errormessage("Employee details not updated.\nPlease make sure to fill out all the required fields.");
         }else {
             if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
@@ -250,6 +257,8 @@ public class AdminEmployeeFormController {
                                         setCellValueFactory();
                                         getAll();
                                         clearTxtField();
+                                        addJobRolescmb();
+                                        generateNextEmpId();
                                         btnSave.setDisable(false);
                                     } else {
                                         AlertController.errormessage("Not Updated");
@@ -453,13 +462,12 @@ public class AdminEmployeeFormController {
     }
 
 
-    private void generateNextOrderId() {
+    private void generateNextEmpId() {
         try {
             String id = EmployeeModel.getNextEmpId();
             txtEmpId.setText(id);
         } catch (SQLException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "SQL Error!").show();
         }
     }
 
@@ -495,12 +503,11 @@ public class AdminEmployeeFormController {
 
 
         employee = new Employee();
-        cmbJobTitle.getItems().add("Admin");
-        cmbJobTitle.getItems().add("Cashier");
 
-        generateNextOrderId();
+        generateNextEmpId();
         setCellValueFactory();
         getAll();
+        addJobRolescmb();
 
         lblInvalidEmail.setVisible(false);
         lblInvalidContacktNo.setVisible(false);
@@ -552,7 +559,19 @@ public class AdminEmployeeFormController {
         txtSalary.setText("");
         txtEmail.setText("");
         txtNIC.setText("");
-        //cmbJobTitle.setItems(null);
+        cmbJobTitle.setItems(null);
         txtDob.setValue(null);
+    }
+    private void addJobRolescmb(){
+        String[] jobRoles = new String[]{"Admin", "Cashier", "Sales Associate", "Store Manager", "Cleaner", "Driver"};
+//        cmbJobTitle = new ComboBox<>();
+//        cmbJobTitle.getItems().setAll(jobRoles);
+
+        ObservableList<String> jobs = FXCollections.observableArrayList();
+
+        for(String role : jobRoles){
+            jobs.add(role);
+        }
+        cmbJobTitle.setItems(jobs);
     }
 }

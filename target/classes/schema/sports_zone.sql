@@ -19,27 +19,25 @@ CREATE TABLE Employee(
 
 CREATE TABLE User(
                      userName VARCHAR(20),
-                     empId VARCHAR(10) UNIQUE NOT NULL ,
-                     password VARCHAR(100) NOT NULL ,
-                     email VARCHAR(50) UNIQUE NOT NULL ,
-                     jobTitle VARCHAR(10) NOT NULL ,
+                     empId    VARCHAR(10) UNIQUE NOT NULL,
+                     password VARCHAR(100)       NOT NULL,
+                     email    VARCHAR(50) UNIQUE NOT NULL,
+                     jobTitle VARCHAR(10)        NOT NULL,
                      CONSTRAINT PRIMARY KEY (userName),
-                     CONSTRAINT FOREIGN KEY (empId) REFERENCES Employee(empId)
+                     CONSTRAINT FOREIGN KEY (empId) REFERENCES Employee (empId)
                          ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-
 CREATE TABLE Customer(
                          custId VARCHAR(10),
-                         userName VARCHAR(20),
                          custName VARCHAR(30) NOT NULL ,
                          contactNo VARCHAR(15) NOT NULL ,
                          address TEXT NOT NULL ,
                          email VARCHAR(50) ,
-                         CONSTRAINT PRIMARY KEY (custId),
-                         CONSTRAINT FOREIGN KEY (userName) REFERENCES User(userName)
-                             ON UPDATE CASCADE ON DELETE CASCADE
+                         CONSTRAINT PRIMARY KEY (custId)
 );
+
+/*remove foriegn key*/
 
 CREATE TABLE Repair(
                        repairId VARCHAR(10),

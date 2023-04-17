@@ -199,7 +199,7 @@ public class EmployeeModel {
         String sql = "SELECT empId FROM employee ORDER BY empId DESC LIMIT 1";
         ResultSet resultSet = CrudUtil.execute(sql);
 
-        if(resultSet.next()){
+        if (resultSet.next()) {
             return splitEmpId(resultSet.getString(1));
         }
         return splitEmpId(null);
@@ -207,16 +207,13 @@ public class EmployeeModel {
 
     private static String splitEmpId(String currentId) {
         if(currentId != null) {
-            String[] strings = currentId.split("E0");
-            //System.out.println(strings[1]);
+            String[] strings = currentId.split("E-");
             int id = Integer.parseInt(strings[1]);
-
-            //System.out.println("first ="+id);
-            id++;
-            //System.out.println("seconf "+id);
-            return "E0" + id;
+            ++id;
+            String digit=String.format("%03d", id);
+            return "E-" + digit;
         }
-        return "E001";
+        return "E-001";
     }
 
     public static List<String> loadEmpIds() throws SQLException {

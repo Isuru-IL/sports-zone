@@ -29,6 +29,7 @@ import lk.ijse.sports_zone.dto.tm.CustomerTM;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.EmployeeModel;
+import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.util.*;
 
 public class CashierCustomerFormController {
@@ -227,6 +228,8 @@ public class CashierCustomerFormController {
 
     @FXML
     void tabelOnMouseClickedAction(MouseEvent event) {
+        btnSave.setDisable(true);
+
         TablePosition pos=tblCustomer.getSelectionModel().getSelectedCells().get(0);
         int row=pos.getRow();
 
@@ -251,6 +254,8 @@ public class CashierCustomerFormController {
                     setCellValueFactory();
                     getAll();
                     clearTxtField();
+                    genarateNextCustId();
+                    btnSave.setDisable(false);
                     AlertController.okMassage("Customer Deleted Successfully");
                 }
             } catch (SQLException throwables) {
@@ -285,6 +290,7 @@ public class CashierCustomerFormController {
                                     setCellValueFactory();
                                     getAll();
                                     clearTxtField();
+                                    genarateNextCustId();
                                     AlertController.okMassage("Customer Saved Successfully");
                                 }else{
                                     AlertController.errormessage("Customer Saved Unsuccessfully");
@@ -339,6 +345,8 @@ public class CashierCustomerFormController {
                                         setCellValueFactory();
                                         getAll();
                                         clearTxtField();
+                                        genarateNextCustId();
+                                        btnSave.setDisable(false);
                                         AlertController.okMassage("Customer updated Successfully");
                                     }
                                 } catch (SQLException throwables) {
@@ -481,12 +489,22 @@ public class CashierCustomerFormController {
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();
         d1.Timenow(lblTime, lblDate);
 
+        genarateNextCustId();
         setCellValueFactory();
         getAll();
 
         lblInvalidEmail.setVisible(false);
         lblInvalidCustId.setVisible(false);
         lblInvalidContacktNo.setVisible(false);
+    }
+
+    private void genarateNextCustId() {
+        try {
+            String id = CustomerModel.getNextCustId();
+            txtCustId.setText(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void setCellValueFactory() {

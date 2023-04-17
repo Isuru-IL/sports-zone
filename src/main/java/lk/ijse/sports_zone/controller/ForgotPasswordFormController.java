@@ -105,6 +105,7 @@ public class ForgotPasswordFormController {
         }
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setTitle("Login Form");
         stage.show();
         anchorpForgotPassword.getScene().getWindow().hide();
     }
@@ -112,10 +113,7 @@ public class ForgotPasswordFormController {
     @FXML
     void sendOtpOnAction(ActionEvent event) {
         if(txtOtp.getText().equals(Integer. toString(randomnum))) {
-            txtOtp.setDisable(true);
-            btnSubmitOtp.setDisable(true);
-            lblOTP.setDisable(true);
-            btnResend.setDisable(true);
+            otpGroup.setDisable(true);
 
             newPasswordGroup.setVisible(true);
         }else{
@@ -128,40 +126,44 @@ public class ForgotPasswordFormController {
     @FXML
     void submitEmailOnAction(ActionEvent event) throws MessagingException {
 
-        try {
-            userName = txtEnterUserName.getText();
+        if(txtEnterUserName.getText().isEmpty() || txtEnterEmail.getText().isEmpty()){
+            AlertController.errormessage("Empty details");
+        }else {
+            try {
+                userName = txtEnterUserName.getText();
 
-            User user = UserModel.searchByUsername(userName);
-            searchEmail = user.getEmail();
-            System.out.println(searchEmail);                            //temp
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        if(ValidateController.emailCheck(txtEnterEmail.getText())) {
-            if(txtEnterEmail.getText().equals(searchEmail)) {
-                randomnum = rand.nextInt(9000);
-                randomnum += 1000;
-
-                email = txtEnterEmail.getText();
-                //setCountDownLbl();
-                try {
-                    EmailController.sendEmail(email, "Test Email", randomnum + "");
-                    System.out.println("Email sent successfully.");
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                }
-
-                emailGroup.setVisible(false);
-                otpGroup.setVisible(true);
-
-                setCountDownLbl();
-
-            }else{
-                AlertController.errormessage("Invalid Email");
+                User user = UserModel.searchByUsername(userName);
+                searchEmail = user.getEmail();
+                //System.out.println(searchEmail);                            //temp
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        }else{
-            AlertController.errormessage("Invalid Email format");
+
+            if(ValidateController.emailCheck(txtEnterEmail.getText())) {
+                if(txtEnterEmail.getText().equals(searchEmail)) {
+                    randomnum = rand.nextInt(9000);
+                    randomnum += 1000;
+
+                    email = txtEnterEmail.getText();
+                    //setCountDownLbl();
+                    try {
+                        EmailController.sendEmail(email, "Sports Zone", randomnum + "");
+                        //System.out.println("Email sent successfully.");
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
+                    }
+
+                    emailGroup.setVisible(false);
+                    otpGroup.setVisible(true);
+
+                    setCountDownLbl();
+
+                }else{
+                    AlertController.errormessage("Invalid Email");
+                }
+            }else{
+                AlertController.errormessage("Invalid Email format");
+            }
         }
     }
 
@@ -171,23 +173,38 @@ public class ForgotPasswordFormController {
     void submitPasswordOnAction(ActionEvent event) {
         User user = new User();
 
-        if(txtNewPassword.getText().equals(txtConfirmPassword.getText())) {
+        if(txtNewPassword.getText().isEmpty() || txtConfirmPassword.getText().isEmpty()){
+            AlertController.errormessage("Empty details");
+        }else {
+            if(txtNewPassword.getText().equals(txtConfirmPassword.getText())) {
 
-            try {
-                user.setUserName(userName);
-                user.setPassword(txtConfirmPassword.getText());
-                boolean isUpdate = UserModel.updatePassword(user);
+                try {
+                    user.setUserName(userName);
+                    user.setPassword(txtConfirmPassword.getText());
+                    boolean isUpdate = UserModel.updatePassword(user);
 
-                if(isUpdate){
-                    AlertController.successfulMessage("Password change successful");
+                    if(isUpdate){
+                        AlertController.successfulMessage("Password change successful");
+                        Stage stage = new Stage();
+                        Parent root = null;
+                        try {
+                            root = FXMLLoader.load(getClass().getResource("/view/login_form.fxml"));
+                        } catch (IOException ex) {
+                            Logger.getLogger(StartFormController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        Scene scene = new Scene(root);
+                        stage.setScene(scene);
+                        stage.show();
+                        anchorpForgotPassword.getScene().getWindow().hide();
+                    }
+
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    AlertController.exceptionMessage("Password change Unsuccessful");
                 }
-
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                AlertController.exceptionMessage("Password change Unsuccessful");
+            }else{
+                AlertController.errormessage("Password not same");
             }
-        }else{
-            AlertController.errormessage("Password not same");
         }
     }
 
@@ -201,25 +218,13 @@ public class ForgotPasswordFormController {
             randomnum += 1000;
 
             try {
-                EmailController.sendEmail(email, "Test Email", randomnum + "");
-                System.out.println("Email sent successfully.");
+                EmailController.sendEmail(email, "Sports Zone", randomnum + "");
+                //System.out.println("Email sent successfully.");
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
         }
         setCountDownLbl();
-        //////////////////////////////////////////////////////
-//        timeSeconds.set(START_TIME);
-//        timeline = new Timeline();
-//        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(START_TIME+1),
-//                new KeyValue(timeSeconds, 0)));
-//        timeline.setOnFinished(event2 -> {
-//            countdownLabel.setVisible(false);
-//            //btnResend.setVisible(true);
-//            // handle timeout event
-//        });
-//        timeline.playFromStart();
-//        countdownLabel.textProperty().bind(timeSeconds.asString());
     }
 
 

@@ -32,6 +32,7 @@ import lk.ijse.sports_zone.model.PlaceSupplyModel;
 import lk.ijse.sports_zone.model.SupplierloadDetailModel;
 import lk.ijse.sports_zone.model.SupplierModel;
 import lk.ijse.sports_zone.util.AlertController;
+import lk.ijse.sports_zone.util.ValidateController;
 
 public class AdminSupplierLoadDetailFormController {
 
@@ -108,6 +109,21 @@ public class AdminSupplierLoadDetailFormController {
     private Label lblSupplyDate;
 
     @FXML
+    private Label lblInvalidBuyUnitPrice;
+
+    @FXML
+    private Label lblInvalidQuantity;
+
+    @FXML
+    private Label lblEmptyBuyUnitPrice;
+
+    @FXML
+    private Label lblEmptyPaidAmount;
+
+    @FXML
+    private Label lblEmptyQuantity;
+
+    @FXML
     private TableView<SupplyLoadDetailTM> tblPlaceSupply;
 
     @FXML
@@ -121,6 +137,7 @@ public class AdminSupplierLoadDetailFormController {
 
     private ObservableList<SupplyLoadDetailTM> obList = FXCollections.observableArrayList();
     private Inventory inventory;
+    Button btnRemove;
 
     private void loadSupplierIds() {
         ObservableList<String> supids = FXCollections.observableArrayList();
@@ -162,7 +179,7 @@ public class AdminSupplierLoadDetailFormController {
 
         } catch (Exception throwables) {
             //throwables.printStackTrace();
-            System.out.println(throwables);
+            //System.out.println(throwables);
         }
     }
 
@@ -175,7 +192,7 @@ public class AdminSupplierLoadDetailFormController {
             lblSupplierName.setText(supplier.getSupName());
         } catch (Exception throwables) {
             //throwables.printStackTrace();
-            System.out.println(throwables);
+            //System.out.println(throwables);
         }
     }
 
@@ -204,41 +221,92 @@ public class AdminSupplierLoadDetailFormController {
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
-        String code = cmbItemCode.getValue();
-        String itemName = lblItemName.getText();
-        String catagory = lblCatagory.getText();
-        Integer buyQty = Integer.valueOf(txtQty.getText());
-        Double buyUnitPrice = Double.valueOf(txtBuyUnitPrice.getText());
+        if(lblSupplierName.getText().isEmpty() || lblItemName.getText().isEmpty()){
+            AlertController.errormessage("Please make sure to fill out all the required fields.");
+        }else {
+            if(!txtBuyUnitPrice.getText().isEmpty() || !txtQty.getText().isEmpty()){
+                if(!txtQty.getText().isEmpty()){
+                    if(!txtBuyUnitPrice.getText().isEmpty()){
 
-        Double total = buyQty*buyUnitPrice;
+                        if(ValidateController.doubleValueCheck(txtBuyUnitPrice.getText()) || ValidateController.intValueCheck(txtQty.getText())){
+                            if(ValidateController.intValueCheck(txtQty.getText())){
+                                if(ValidateController.doubleValueCheck(txtBuyUnitPrice.getText())){
+                                    String code = cmbItemCode.getValue();
+                                    String itemName = lblItemName.getText();
+                                    String catagory = lblCatagory.getText();
+                                    Integer buyQty = Integer.valueOf(txtQty.getText());
+                                    Double buyUnitPrice = Double.valueOf(txtBuyUnitPrice.getText());
 
-        Button btnRemove = new Button("Remove");
-        btnRemove.setCursor(Cursor.HAND);
+                                    Double total = buyQty*buyUnitPrice;
 
-        setRemoveBtnOnAction(btnRemove);
+                                    btnRemove = new Button("Remove");
+                                    btnRemove.setCursor(Cursor.HAND);
 
-        if (!obList.isEmpty()) {
-            for (int i = 0; i < tblPlaceSupply.getItems().size(); i++) {
-                if (colCode.getCellData(i).equals(code)) {
-                    buyQty += (int) colQty.getCellData(i);
-                    total = buyQty * buyUnitPrice;
+                                    //setRemoveBtnOnAction(btnRemove);
 
-                    obList.get(i).setQty(buyQty);
-                    obList.get(i).setTotal(total);
+                                    if (!obList.isEmpty()) {
+                                        for (int i = 0; i < tblPlaceSupply.getItems().size(); i++) {
+                                            if (colCode.getCellData(i).equals(code)) {
+                                                buyQty += (int) colQty.getCellData(i);
+                                                total = buyQty * buyUnitPrice;
 
-                    tblPlaceSupply.refresh();
-                    calculateNetTotal();
-                    return;
+                                                obList.get(i).setQty(buyQty);
+                                                obList.get(i).setTotal(total);
+
+                                                tblPlaceSupply.refresh();
+                                                calculateNetTotal();
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    SupplyLoadDetailTM tm = new SupplyLoadDetailTM(code, itemName, catagory, buyQty, buyUnitPrice, total, btnRemove);
+
+                                    obList.add(tm);
+                                    tblPlaceSupply.setItems(obList);
+                                    calculateNetTotal();
+                                    clearTxtField();
+
+                                    btnRemove.setOnAction(e -> {
+                                        // Get the row that contains the button
+                                        TableRow row = (TableRow) btnRemove.getParent().getParent();
+                                        int index = tblPlaceSupply.getItems().indexOf(row.getItem());
+                                        tblPlaceSupply.getSelectionModel().select(index);
+
+                                        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+                                        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                                        Optional<ButtonType> result = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+
+                                        if (result.orElse(no) == yes) {
+                                            int index1 = tblPlaceSupply.getSelectionModel().getSelectedIndex();
+                                            obList.remove(index1);
+
+                                            tblPlaceSupply.refresh();
+                                        }
+
+                                    });
+                                }else {
+                                    lblInvalidBuyUnitPrice.setVisible(true);
+                                }
+                            }else {
+                                lblInvalidQuantity.setVisible(true);
+                            }
+                        }else {
+                            lblInvalidQuantity.setVisible(true);
+                            lblInvalidBuyUnitPrice.setVisible(true);
+                        }
+                    }else {
+                        lblEmptyBuyUnitPrice.setVisible(true);
+                    }
+                }else {
+                    lblEmptyQuantity.setVisible(true);
                 }
+            }else {
+                lblEmptyBuyUnitPrice.setVisible(true);
+                lblEmptyQuantity.setVisible(true);
             }
         }
-
-        SupplyLoadDetailTM tm = new SupplyLoadDetailTM(code, itemName, catagory, buyQty, buyUnitPrice, total, btnRemove);
-
-        obList.add(tm);
-        tblPlaceSupply.setItems(obList);
-        calculateNetTotal();
-        clearTxtField();
     }
 
 
@@ -272,35 +340,53 @@ public class AdminSupplierLoadDetailFormController {
 
     @FXML
     void btnPlaceSupplyOnAction(ActionEvent event) {
-        String loadId = lblLoadId.getText();
-        String supId = cmbSupId.getValue();
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
 
-        List<SupplyLoadDetailDTO> supplyLoadDetailDTOList = new ArrayList<>();
+        if(txtPaidAmount.getText().isEmpty()){
+            lblEmptyPaidAmount.setVisible(true);
+            AlertController.errormessage("Please enter Amount");
+        }else {
 
-        for (int i = 0; i < tblPlaceSupply.getItems().size(); i++) {
-            SupplyLoadDetailTM supplyLoadDetailTM = obList.get(i);
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            double paidAmount = Double.parseDouble(txtPaidAmount.getText());
 
-            SupplyLoadDetailDTO dto = new SupplyLoadDetailDTO(
-                    supplyLoadDetailTM.getItemCode(),
-                    supplyLoadDetailTM.getTotal(),
-                    supplyLoadDetailTM.getQty()
-            );
-            supplyLoadDetailDTOList.add(dto);
-        }
+            if(paidAmount > netTotal){
 
-        try {
-            boolean isPlaced = PlaceSupplyModel.placeSupply(loadId, supId, netTotal, supplyLoadDetailDTOList);
-            if(isPlaced){
-                generateNextLoadId();
-                clearTxtField();
-                tblPlaceSupply.refresh();
-                AlertController.successfulMessage("Supply placed");
+                String loadId = lblLoadId.getText();
+                String supId = cmbSupId.getValue();
+
+                List<SupplyLoadDetailDTO> supplyLoadDetailDTOList = new ArrayList<>();
+
+                for (int i = 0; i < tblPlaceSupply.getItems().size(); i++) {
+                    SupplyLoadDetailTM supplyLoadDetailTM = obList.get(i);
+
+                    SupplyLoadDetailDTO dto = new SupplyLoadDetailDTO(
+                            supplyLoadDetailTM.getItemCode(),
+                            supplyLoadDetailTM.getTotal(),
+                            supplyLoadDetailTM.getQty()
+                    );
+                    supplyLoadDetailDTOList.add(dto);
+                }
+
+                try {
+                    boolean isPlaced = PlaceSupplyModel.placeSupply(loadId, supId, netTotal, supplyLoadDetailDTOList);
+                    if(isPlaced){
+                        generateNextLoadId();
+                        clearTxtField();
+                        //tblPlaceSupply.refresh();
+                        tblPlaceSupply.getItems().clear();
+                        lblNetTotal.setText("");
+                        lblBalance.setText("");
+                        txtPaidAmount.setText("");
+                        AlertController.successfulMessage("Supply placed");
+                    }
+                } catch (SQLException throwables) {
+                    //throwables.printStackTrace();
+                    System.out.println("supController => "+ throwables);
+                    AlertController.errormessage("Supply not placed");
+                }
+            }else {
+                AlertController.errormessage("Amount not enough");
             }
-        } catch (SQLException throwables) {
-            //throwables.printStackTrace();
-            System.out.println("supController => "+ throwables);
-            AlertController.errormessage("Supply not placed");
         }
     }
 
@@ -312,13 +398,30 @@ public class AdminSupplierLoadDetailFormController {
 
     @FXML
     void txtPaidAmountOnKeyTypedAction(KeyEvent event) {
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
-        double paidAmount = Double.parseDouble(txtPaidAmount.getText());
+        lblEmptyPaidAmount.setVisible(false);
+        if(!txtPaidAmount.getText().isEmpty() && !lblNetTotal.getText().isEmpty()){
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            double paidAmount = Double.parseDouble(txtPaidAmount.getText());
 
-        lblBalance.setText(String.valueOf(paidAmount - netTotal));
-        if(netTotal>paidAmount){
-
+            if(netTotal < paidAmount){
+                lblBalance.setVisible(true);
+                lblBalance.setText(String.valueOf(paidAmount - netTotal));
+            }else if(netTotal > paidAmount){
+                lblBalance.setVisible(false);
+            }
         }
+    }
+
+    @FXML
+    void txtBuyUnitPriceOnMouseClickedAction(MouseEvent event) {
+        lblInvalidBuyUnitPrice.setVisible(false);
+        lblEmptyBuyUnitPrice.setVisible(false);
+    }
+
+    @FXML
+    void txtQtyOnMouseClickedAction(MouseEvent event) {
+        lblInvalidQuantity.setVisible(false);
+        lblEmptyQuantity.setVisible(false);
     }
 
     @FXML
@@ -329,6 +432,8 @@ public class AdminSupplierLoadDetailFormController {
         setCellValueFactory();
 
         lblSupplyDate.setText(String.valueOf(LocalDate.now()));
+        lblInvalidBuyUnitPrice.setVisible(false);
+        lblInvalidQuantity.setVisible(false);
     }
 
     private void setCellValueFactory() {
@@ -342,7 +447,7 @@ public class AdminSupplierLoadDetailFormController {
     }
 
     private void clearTxtField() {
-        lblSupplierName.setText("");
+        //lblSupplierName.setText("");
         cmbItemCode.setValue(null);
         lblItemName.setText("");
         lblSaleUnitPrice.setText("");

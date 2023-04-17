@@ -25,6 +25,7 @@ import lk.ijse.sports_zone.dto.Supplier;
 import lk.ijse.sports_zone.dto.tm.EmployeeTM;
 import lk.ijse.sports_zone.dto.tm.SupplierTM;
 import lk.ijse.sports_zone.model.EmployeeModel;
+import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.model.SupplierModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.NotificationController;
@@ -51,7 +52,7 @@ public class AdminSupplierFormController {
     private JFXButton btnUpdate;
 
     @FXML
-    private JFXButton btnback;
+    private JFXButton btnAddSupply;
 
     @FXML
     private TableColumn<?, ?> colAddress;
@@ -96,10 +97,9 @@ public class AdminSupplierFormController {
     private TextField txtSearch;
 
     @FXML
-    void btnBackOnAction(ActionEvent event) {
-        Parent load = null;
+    void btnAddSupplyOnAction(ActionEvent event) {
         try {
-            load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
+            Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
             anchrpSupplier.getChildren().clear();
             anchrpSupplier.getChildren().add(load);
         } catch (IOException e) {
@@ -119,6 +119,7 @@ public class AdminSupplierFormController {
                     setCellValueFactory();
                     getAll();
                     clearTxtField();
+                    genarateNextSupId();
                     AlertController.okMassage("Delete successful");
                 } else {
                     AlertController.errormessage("Invalid details");
@@ -154,6 +155,7 @@ public class AdminSupplierFormController {
                                 setCellValueFactory();
                                 getAll();
                                 clearTxtField();
+                                genarateNextSupId();
                                 AlertController.okMassage("Saved successfully");
                             } else {
                                 AlertController.errormessage("Invalid details");
@@ -201,6 +203,7 @@ public class AdminSupplierFormController {
                                     setCellValueFactory();
                                     getAll();
                                     clearTxtField();
+                                    genarateNextSupId();
                                     AlertController.okMassage("Update successful");
                                 } else {
                                     AlertController.errormessage("update unsuccessful");
@@ -352,11 +355,21 @@ public class AdminSupplierFormController {
         assert txtSupId != null : "fx:id=\"txtSupId\" was not injected: check your FXML file 'adminSupplier_form.fxml'.";
         assert txtSupName != null : "fx:id=\"txtSupName\" was not injected: check your FXML file 'adminSupplier_form.fxml'.";
 
+        genarateNextSupId();
         setCellValueFactory();
         getAll();
 
         lblInvalidEmail.setVisible(false);
         lblInvalidContacktNo.setVisible(false);
+    }
+
+    private void genarateNextSupId() {
+        try {
+            String id = SupplierModel.getNextSuoId();
+            txtSupId.setText(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void setCellValueFactory() {
@@ -397,12 +410,12 @@ public class AdminSupplierFormController {
     }
 
     private void clearTxtField(){
-        txtSupId.setText(null);
-        txtSupName.setText(null);
-        txtAddress.setText(null);
-        txtEmail.setText(null);
-        txtContactNo.setText(null);
-        txtSearch.setText(null);
+        txtSupId.setText("");
+        txtSupName.setText("");
+        txtAddress.setText("");
+        txtEmail.setText("");
+        txtContactNo.setText("");
+        txtSearch.setText("");
     }
 
 }

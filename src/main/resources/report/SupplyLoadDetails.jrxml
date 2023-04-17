@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SupplyLoadDetails" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b531d6ca-3857-47ef-ae94-3c0027a3c69a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<queryString language="SQL">
+		<![CDATA[select supplyloaddetail.loadId,supplyloaddetail.supId,supplier.supName,supplyloaddetail.date,supplyloaddetail.price 
+FROM supplyloaddetail 
+    INNER JOIN supplier ON supplier.supId=supplyloaddetail.supId 
+ORDER BY supplyloaddetail.loadId]]>
+	</queryString>
+	<field name="loadId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="loadId"/>
+		<property name="com.jaspersoft.studio.field.label" value="loadId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplyloaddetail"/>
+	</field>
+	<field name="supId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supId"/>
+		<property name="com.jaspersoft.studio.field.label" value="supId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplyloaddetail"/>
+	</field>
+	<field name="supName" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supName"/>
+		<property name="com.jaspersoft.studio.field.label" value="supName"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplier"/>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplyloaddetail"/>
+	</field>
+	<field name="price" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="price"/>
+		<property name="com.jaspersoft.studio.field.label" value="price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="supplyloaddetail"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="200" y="10" width="180" height="34" uuid="cc2e1cdd-34de-490b-b1cc-23208de9f484"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SPORTS ZONE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="44" width="180" height="26" uuid="a050bc84-5181-4f6e-a272-9c08f31797e1"/>
+				<textElement>
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supply Load Details]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="10" width="50" height="30" uuid="ce9921dc-baa7-41a5-bdec-3cd1c7d68e73"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[load Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="10" width="70" height="28" uuid="5cffac0e-862f-47c4-9d96-9c89328efcb4"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="10" width="150" height="26" uuid="89194d75-2e9a-40c4-9536-67f8742b2fb1"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Supplier Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="10" width="80" height="24" uuid="1445966a-39c2-49a2-ad2c-4860a3f88127"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Price]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="10" width="100" height="22" uuid="476df535-905c-446c-b8b4-b61598c7635c"/>
+				<textElement>
+					<font size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<line>
+				<reportElement x="10" y="48" width="539" height="1" uuid="ccb6c33e-81f7-42a6-9017-f6cf4ec48b3e"/>
+			</line>
+			<line>
+				<reportElement x="10" y="0" width="539" height="1" uuid="de57aef7-cf8d-4fd8-8145-d615fc169668"/>
+			</line>
+			<line>
+				<reportElement x="10" y="1" width="1" height="48" uuid="887fd140-cc45-4d50-ac99-73326ba5023c"/>
+			</line>
+			<line>
+				<reportElement x="549" y="1" width="1" height="48" uuid="264f75bd-1fa0-43c6-9db1-c3694476fd1d"/>
+			</line>
+			<line>
+				<reportElement x="84" y="1" width="1" height="48" uuid="6c7496c1-e6e5-48e8-bf4d-b9c122a94043"/>
+			</line>
+			<line>
+				<reportElement x="165" y="1" width="1" height="48" uuid="74ffea56-024b-4904-8de1-2320a4869919"/>
+			</line>
+			<line>
+				<reportElement x="325" y="1" width="1" height="48" uuid="bface675-961a-4eda-8c19-c3fa4de63dae"/>
+			</line>
+			<line>
+				<reportElement x="420" y="1" width="1" height="48" uuid="4d488db0-425e-45cc-800b-d16cdb001c87"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="11" width="50" height="18" uuid="5e740804-69ae-4ca6-a210-a079821d84b7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{loadId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="10" width="70" height="18" uuid="1b112eba-b832-414a-adfb-484c9c0d93e7"/>
+				<textFieldExpression><![CDATA[$F{supId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="11" width="150" height="16" uuid="ac70256e-d332-40f6-9dbb-4eaf047a3a80"/>
+				<textFieldExpression><![CDATA[$F{supName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="10" width="80" height="18" uuid="a3cfbdf6-91fe-4d1c-94b8-960008d2f4c7"/>
+				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMM d, yyyy">
+				<reportElement x="430" y="10" width="100" height="18" uuid="45d7dae8-c840-4d9f-a2eb-a29de845373d"/>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="27" width="539" height="1" uuid="37e4f8a3-4142-4619-a318-25902dce587c"/>
+			</line>
+			<line>
+				<reportElement x="10" y="-4" width="1" height="31" uuid="faf84f19-7bc0-4554-8242-778136e365b8"/>
+			</line>
+			<line>
+				<reportElement x="84" y="-4" width="1" height="31" uuid="f8c9882e-9bc9-4551-81a4-363f40b7ccd2"/>
+			</line>
+			<line>
+				<reportElement x="165" y="-3" width="1" height="31" uuid="8b35e032-b182-4115-9a8b-bdd8b7c470c7"/>
+			</line>
+			<line>
+				<reportElement x="325" y="-3" width="1" height="31" uuid="4cf3e8d4-5f3e-4229-be36-d13a5542b803"/>
+			</line>
+			<line>
+				<reportElement x="420" y="-4" width="1" height="31" uuid="533d0ad8-7e80-4c91-b7c2-d42389bff817"/>
+			</line>
+			<line>
+				<reportElement x="549" y="-3" width="1" height="31" uuid="3bea046a-eb35-4d4f-b629-b44248c6dfeb"/>
+			</line>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="50"/>
+	</lastPageFooter>
+</jasperReport>

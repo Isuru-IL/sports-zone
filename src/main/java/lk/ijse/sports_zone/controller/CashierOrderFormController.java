@@ -34,6 +34,7 @@ import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.model.PlaceOrderModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
+import lk.ijse.sports_zone.util.ValidateController;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -118,6 +119,15 @@ public class CashierOrderFormController {
     private Label lblBalance;
 
     @FXML
+    private Label lblEmptyPaidAmount;
+
+    @FXML
+    private Label lblEmptyQuantity;
+
+    @FXML
+    private Label lblInvalidQuantity;
+
+    @FXML
     private RadioButton radioBtnYes;
 
     @FXML
@@ -188,7 +198,7 @@ public class CashierOrderFormController {
 
         } catch (Exception e) {
             //e.printStackTrace();
-            System.out.println("custId "+e);
+            //System.out.println("custId "+e);
         }
     }
 
@@ -210,16 +220,7 @@ public class CashierOrderFormController {
             }
         } catch (Exception e) {
             //throwables.printStackTrace();
-            System.out.println("item code " +e);
-        }
-    }
-
-    private void generateNextOrderId() {
-        try {
-            String id = CashierOrderModel.getNextOrderId();
-            lblOrderId.setText(id);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            //System.out.println("item code " +e);
         }
     }
 
@@ -239,55 +240,60 @@ public class CashierOrderFormController {
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
-        String code = cmbItemCode.getValue();
-        String itemName = lblItemName.getText();
-        String catagory = inventory.getCategory();
-        int qty = Integer.parseInt(txtQty.getText());
-        double unitPrice = Double.parseDouble(lblUnitPrice.getText());
+        if(lblCustName.getText().isEmpty() || lblItemName.getText().isEmpty()){
+            AlertController.errormessage("Please make sure to fill out all the required fields.");
+        }else{
+            if(!txtQty.getText().isEmpty()){
+                if(ValidateController.intValueCheck(txtQty.getText())){
 
-        double total = unitPrice*qty;
+                    String code = cmbItemCode.getValue();
+                    String itemName = lblItemName.getText();
+                    String catagory = inventory.getCategory();
+                    int qty = Integer.parseInt(txtQty.getText());
+                    double unitPrice = Double.parseDouble(lblUnitPrice.getText());
 
-        Button btnRemove = new Button("Remove");
-        btnRemove.setCursor(Cursor.HAND);
+                    double total = unitPrice*qty;
 
-        setRemoveBtnOnAction(btnRemove);
+                    Button btnRemove = new Button("Remove");
+                    btnRemove.setCursor(Cursor.HAND);
 
-        if(qty>inventory.getQtyOnHand()){
-            AlertController.errormessage("Item "+itemName+" out of stock or not enough stock");
-        }else {
-            if (!obList.isEmpty()) {
-                for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
-                    if (colCode.getCellData(i).equals(code)) {
-                        qty += (int) colQty.getCellData(i);
-                        total = qty * unitPrice;
+                    setRemoveBtnOnAction(btnRemove);
 
-                        obList.get(i).setQty(qty);
-                        obList.get(i).setTotal(total);
+                    if(qty>inventory.getQtyOnHand()){
+                        AlertController.errormessage("Item "+itemName+" out of stock or not enough stock");
+                    }else {
+                        if (!obList.isEmpty()) {
+                            for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
+                                if (colCode.getCellData(i).equals(code)) {
+                                    qty += (int) colQty.getCellData(i);
+                                    total = qty * unitPrice;
 
-                        tblPlaceOrder.refresh();
+                                    obList.get(i).setQty(qty);
+                                    obList.get(i).setTotal(total);
+
+                                    tblPlaceOrder.refresh();
+                                    calculateNetTotal();
+                                    return;
+                                }
+                            }
+                        }
+
+                        CartTM tm = new CartTM(code, itemName, catagory, qty, unitPrice, total, delivery, btnRemove);
+
+                        obList.add(tm);
+                        tblPlaceOrder.setItems(obList);
                         calculateNetTotal();
-                        return;
+                        clearTxtFields();
+                        txtQty.setText("");
                     }
+
+                }else {
+                    lblInvalidQuantity.setVisible(true);
                 }
+            }else {
+                lblEmptyQuantity.setVisible(true);
             }
-
-            CartTM tm = new CartTM(code, itemName, catagory, qty, unitPrice, total, delivery, btnRemove);
-
-            obList.add(tm);
-            tblPlaceOrder.setItems(obList);
-            calculateNetTotal();
-
-            txtQty.setText("");
         }
-    }
-
-    private void calculateNetTotal() {
-        double netTotal = 0.0;
-        for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
-            double total = (double) colTotal.getCellData(i);
-            netTotal += total;
-        }
-        lblNetTotal.setText(String.valueOf(netTotal));
     }
 
     private void setRemoveBtnOnAction(Button btnRemove) {
@@ -310,6 +316,86 @@ public class CashierOrderFormController {
     }
 
     @FXML
+    void btnPlaceOrderOnAction(ActionEvent event) {
+
+        if(txtPaidAmount.getText().isEmpty()){
+            lblEmptyPaidAmount.setVisible(true);
+            AlertController.errormessage("Please enter Amount");
+        }else {
+            String ordrId = lblOrderId.getText();
+            String customerId = cmbCustId.getValue();
+            boolean delivery = radioBtnYes.isSelected();
+
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            double paidAmount = Double.parseDouble(txtPaidAmount.getText());
+
+            if(paidAmount > netTotal){
+
+                Calendar calendar = Calendar.getInstance();
+                Date date = new Date(calendar.getTimeInMillis());
+                Time time = new Time(calendar.getTimeInMillis());
+
+                List<CartDTO> cartDTOList = new ArrayList<>();
+
+                for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
+                    CartTM cartTM = obList.get(i);
+
+                    CartDTO dto = new CartDTO(
+                            cartTM.getCode(),
+                            cartTM.getQty(),
+                            netTotal,
+                            cartTM.getDelivery()
+                    );
+                    cartDTOList.add(dto);
+                }
+
+                try {
+                    boolean isPlaced = PlaceOrderModel.placeOrder(ordrId, customerId, date, time,delivery, cartDTOList);
+                    if(isPlaced){
+                        generateNextOrderId();
+                        AlertController.successfulMessage("Order Placed");
+
+                        boolean result = AlertController.okconfirmmessage("Do you want the bill ?");
+
+                        if (result) {
+                            String printcash = txtPaidAmount.getText();
+                            String balance = lblBalance.getText();
+
+                            Map<String, Object> parameters = new HashMap<>();
+                            parameters.put("param1", printcash);
+                            parameters.put("param2", balance);
+
+                            InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
+                            try {
+                                JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+                                JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, DBConnection.getInstance().getConnection());
+                                JasperViewer.viewReport(jasperPrint, false);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        clearTxtFields();
+                        tblPlaceOrder.getItems().clear();
+                        lblCustName.setText("");
+                        cmbCustId.setValue(null);
+                        radioBtnYes.setSelected(false);
+                        lblNetTotal.setText("");
+                        txtPaidAmount.setText("");
+                        lblBalance.setText("");
+                    }
+                } catch (Exception e) {
+                    //e.printStackTrace();
+                    System.out.println(e);
+                    AlertController.errormessage("Order Not Placed");
+                }
+            }else {
+                AlertController.errormessage("Amount not enough");
+            }
+        }
+    }
+
+    @FXML
     void radioBtnYesOnAction(ActionEvent event) {
         delivery = "Yes";
 
@@ -327,46 +413,23 @@ public class CashierOrderFormController {
         }
     }
 
-    @FXML
-    void btnPlaceOrderOnAction(ActionEvent event) {
-        String ordrId = lblOrderId.getText();
-        String customerId = cmbCustId.getValue();
-        boolean delivery = radioBtnYes.isSelected();
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
-
-
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date(calendar.getTimeInMillis());
-        Time time = new Time(calendar.getTimeInMillis());
-
-        List<CartDTO> cartDTOList = new ArrayList<>();
-
+    private void calculateNetTotal() {
+        double netTotal = 0.0;
         for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
-            CartTM cartTM = obList.get(i);
-
-            CartDTO dto = new CartDTO(
-                    cartTM.getCode(),
-                    cartTM.getQty(),
-                    netTotal,
-                    cartTM.getDelivery()
-            );
-            cartDTOList.add(dto);
+            double total = (double) colTotal.getCellData(i);
+            netTotal += total;
         }
-
-        try {
-            boolean isPlaced = PlaceOrderModel.placeOrder(ordrId, customerId, date, time,delivery, cartDTOList);
-            if(isPlaced){
-                generateNextOrderId();
-                AlertController.successfulMessage("Order Placed");
-                clearTxtFields();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e);
-            AlertController.errormessage("Order Not Placed");
-        }
+        lblNetTotal.setText(String.valueOf(netTotal));
     }
 
+    private void generateNextOrderId() {
+        try {
+            String id = CashierOrderModel.getNextOrderId();
+            lblOrderId.setText(id);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     @FXML
     void tableOnMouseClicked(MouseEvent event) {
@@ -375,15 +438,25 @@ public class CashierOrderFormController {
 
     @FXML
     void txtPaidAmountOnKeyTypedAction(KeyEvent event) {
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
-        double paidAmount = Double.parseDouble(txtPaidAmount.getText());
+        lblEmptyPaidAmount.setVisible(false);
+        if(!txtPaidAmount.getText().isEmpty() && !lblNetTotal.getText().isEmpty()){
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            double paidAmount = Double.parseDouble(txtPaidAmount.getText());
 
-        lblBalance.setText(String.valueOf(paidAmount - netTotal));
-        if(netTotal>paidAmount){
-
+            if(netTotal <= paidAmount){
+                lblBalance.setVisible(true);
+                lblBalance.setText(String.valueOf(paidAmount - netTotal));
+            }else {
+                lblBalance.setVisible(false);
+            }
         }
     }
 
+    @FXML
+    void txtQuantityOnMouseClickedAction(MouseEvent event) {
+        lblEmptyQuantity.setVisible(false);
+        lblInvalidQuantity.setVisible(false);
+    }
 
     @FXML
     void initialize() {
@@ -421,29 +494,48 @@ public class CashierOrderFormController {
         dateTime.Timenow(lblorderTime, lblOrderDate);
 
         setCellValueFactory();
+
+        lblInvalidQuantity.setVisible(false);
+        lblEmptyPaidAmount.setVisible(false);
+        lblEmptyQuantity.setVisible(false);
     }
 
     public void clearTxtFields(){
-        lblCustName.setText("");
-        cmbCustId.setValue(null);
+        //lblCustName.setText("");
+        //cmbCustId.setValue(null);
         cmbItemCode.setValue(null);
         lblItemName.setText("");
         lblUnitPrice.setText("");
         lblQtyOnHand.setText("");
-        tblPlaceOrder.getItems().clear();
-        radioBtnYes.setSelected(false);
+        //tblPlaceOrder.getItems().clear();
+        //radioBtnYes.setSelected(false);
     }
 
     @FXML
     void btnJasperOnAction(ActionEvent event) {
-        InputStream resource = this.getClass().getResourceAsStream("/report/Blank_A4.jrxml");
+        String printcash = txtPaidAmount.getText();
+        String balance = lblBalance.getText();
+
+        Map<String, Object> parameters = new HashMap<>();
+            parameters.put("param1", printcash);
+            parameters.put("param2", balance);
+
+        InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
         try {
             JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, DBConnection.getInstance().getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
+//        InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
+//        try {
+//            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+//            JasperViewer.viewReport(jasperPrint, false);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 

@@ -19,6 +19,7 @@ import lk.ijse.sports_zone.dto.Supplier;
 import lk.ijse.sports_zone.dto.Vehicle;
 import lk.ijse.sports_zone.dto.tm.SupplierTM;
 import lk.ijse.sports_zone.dto.tm.VehicleTM;
+import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.SupplierModel;
 import lk.ijse.sports_zone.model.VehicleModel;
 import lk.ijse.sports_zone.util.AlertController;
@@ -91,62 +92,79 @@ public class AdminVehicleFormController {
     void deleteOnAction(ActionEvent event) {
         String id = txtVehiId.getText();
 
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if(result) {
-            try {
-                boolean isDeleted = VehicleModel.delete(id);
-                if (isDeleted) {
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    AlertController.okMassage("Delete successful");
-                }
+        if(txtVehiId.getText().isEmpty() || txtVehiType.getText().isEmpty() || txtVehiNo.getText().isEmpty()){
+            AlertController.errormessage("Vehicle details not deleted.");
+        }else {
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+            if(result) {
+                try {
+                    boolean isDeleted = VehicleModel.delete(id);
+                    if (isDeleted) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        generateNextVehiId();
+                        AlertController.okMassage("Delete successful");
+                    }
 
-            } catch (SQLException throwables) {
-                //throwables.printStackTrace();
-                System.out.println("Vehicle delete = " + throwables);
+                } catch (SQLException throwables) {
+                    //throwables.printStackTrace();
+                    System.out.println("Vehicle delete = " + throwables);
+                }
             }
         }
     }
 
     @FXML
     void saveOnAction(ActionEvent event) {
-        vehicle.setVehiId(txtVehiId.getText());
-        vehicle.setVehiType(txtVehiType.getText());
-        vehicle.setVehiNo(txtVehiNo.getText());
 
-        try {
-            boolean isSaved = VehicleModel.save(vehicle);
-            if(isSaved){
-                setCellValueFactory();
-                getAll();
-                clearTxtField();
-                AlertController.okMassage("Saved successfully");
+        if(txtVehiId.getText().isEmpty() || txtVehiType.getText().isEmpty() || txtVehiNo.getText().isEmpty()){
+            AlertController.errormessage("Vehicle details not saved.\nPlease make sure to fill out all the required fields.");
+        }else{
+            vehicle.setVehiId(txtVehiId.getText());
+            vehicle.setVehiType(txtVehiType.getText());
+            vehicle.setVehiNo(txtVehiNo.getText());
+
+            try {
+                boolean isSaved = VehicleModel.save(vehicle);
+                if(isSaved){
+                    setCellValueFactory();
+                    getAll();
+                    clearTxtField();
+                    generateNextVehiId();
+                    AlertController.okMassage("Saved successfully");
+                }
+            } catch (SQLException throwables) {
+                //throwables.printStackTrace();
+                System.out.println("Vehicle save = "+throwables);
             }
-        } catch (SQLException throwables) {
-            //throwables.printStackTrace();
-            System.out.println("Vehicle save = "+throwables);
         }
     }
 
     @FXML
     void updateOnAction(ActionEvent event) {
-        vehicle.setVehiId(txtVehiId.getText());
-        vehicle.setVehiNo(txtVehiNo.getText());
-        vehicle.setVehiType(txtVehiType.getText());
 
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if (result) {
-            try {
-                boolean isUpdated = VehicleModel.update(vehicle);
-                if (isUpdated) {
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    AlertController.okMassage("Update successful");
+        if(txtVehiId.getText().isEmpty() || txtVehiType.getText().isEmpty() || txtVehiNo.getText().isEmpty()){
+            AlertController.errormessage("Vehicle details not updated.\nPlease make sure to fill out all the required fields.");
+        }else{
+            vehicle.setVehiId(txtVehiId.getText());
+            vehicle.setVehiNo(txtVehiNo.getText());
+            vehicle.setVehiType(txtVehiType.getText());
+
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+            if (result) {
+                try {
+                    boolean isUpdated = VehicleModel.update(vehicle);
+                    if (isUpdated) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        generateNextVehiId();
+                        AlertController.okMassage("Update successful");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
     }
@@ -189,8 +207,19 @@ public class AdminVehicleFormController {
     void initialize() {
         vehicle = new Vehicle();
 
+        generateNextVehiId();
         setCellValueFactory();
         getAll();
+    }
+
+    private void generateNextVehiId() {
+        try {
+            String id = VehicleModel.getNextVehiId();
+            txtVehiId.setText(id);
+            System.out.println("Vehicle = "+id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

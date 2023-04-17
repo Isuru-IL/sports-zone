@@ -10,8 +10,14 @@
 
 <AnchorPane fx:id="anchrpDelivery02" prefHeight="706.0" prefWidth="695.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierDeliveryForm02Controller">
    <children>
-      <TextField fx:id="txtDeliveryId" layoutX="315.0" layoutY="193.0" prefHeight="46.0" prefWidth="219.0" />
-      <TextField fx:id="txtLocation" layoutX="315.0" layoutY="253.0" prefHeight="46.0" prefWidth="219.0" />
+      <TextField fx:id="txtDeliveryId" focusTraversable="false" layoutX="315.0" layoutY="193.0" prefHeight="46.0" prefWidth="219.0">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></TextField>
+      <TextField fx:id="txtLocation" layoutX="315.0" layoutY="253.0" prefHeight="46.0" prefWidth="219.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
       <Label layoutX="161.0" layoutY="373.0" prefHeight="46.0" prefWidth="139.0" text="Employee Id :">
          <font>
             <Font name="System Bold" size="20.0" />

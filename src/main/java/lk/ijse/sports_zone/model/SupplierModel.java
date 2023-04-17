@@ -161,4 +161,24 @@ public class SupplierModel {
         }
         return allSupIds;
     }
+
+    public static String getNextSuoId() throws SQLException {
+        String sql = "SELECT supId FROM Supplier ORDER BY supId DESC LIMIT 1";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if (resultSet.next()) {
+            return splitRepairId(resultSet.getString(1));
+        }
+        return splitRepairId(null);
+    }
+    private static String splitRepairId(String currentId) {
+        if(currentId != null) {
+            String[] strings = currentId.split("S-");
+            int id = Integer.parseInt(strings[1]);
+            ++id;
+            String digit=String.format("%03d", id);
+            return "S-" + digit;
+        }
+        return "S-001";
+    }
 }

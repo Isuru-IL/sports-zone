@@ -1,5 +1,10 @@
 package lk.ijse.sports_zone.util;
 
+import javafx.scene.control.Control;
+import org.controlsfx.validation.Severity;
+import org.controlsfx.validation.ValidationResult;
+import org.controlsfx.validation.Validator;
+
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,10 +37,24 @@ public class ValidateController {
     }
 
     public static boolean NICcheck(String nic) {
-        String nicRegex = "^[0-9]{9}[vVxX]$";
-        Pattern pattern = Pattern.compile(nicRegex);
-        Matcher matcher = pattern.matcher(nic);
-        return matcher.matches();
+        Pattern patternNew = Pattern.compile("^([0-9]{2})(0[1-9]|1[0-2])([0-3][0-9])([0-9]{4})([0-9]{4})([vVxX])?$");
+        Pattern patternOld = Pattern.compile("^[0-9]{9}[vVxX]$");
+        Pattern patternForeign = Pattern.compile("^[0-9]{12}$");
+
+        Validator<String> validator = new Validator<String>() {
+            @Override
+            public ValidationResult apply(Control control, String value) {
+                boolean matchesNew = patternNew.matcher(value).matches();
+                boolean matchesOld = patternOld.matcher(value).matches();
+                boolean matchesForeign = patternForeign.matcher(value).matches();
+                boolean matches = matchesNew || matchesOld || matchesForeign;
+                return ValidationResult.fromMessageIf(control, "Invalid NIC", Severity.ERROR, !matches);
+            }
+        };
+
+        ValidationResult result = validator.apply(null, nic);
+        return result.getErrors().isEmpty();
+
     }
 
     public static boolean intValueCheck(String value) {
@@ -51,4 +70,12 @@ public class ValidateController {
         Matcher matcher = pattern.matcher(value);
         return matcher.matches();
     }
+
+    public static boolean employeeIdCheck(String empId) {
+        String pattern = "^E-\\d+$";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(empId);
+        return m.matches();
+    }
+
 }

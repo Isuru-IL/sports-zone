@@ -80,4 +80,25 @@ public class VehicleModel {
         }
         return allVehiIds;
     }
+
+    public static String getNextVehiId() throws SQLException {
+        String sql = "SELECT vehiId FROM Vehicle ORDER BY vehiId DESC LIMIT 1";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if (resultSet.next()) {
+            return splitVehicleId(resultSet.getString(1));
+        }
+        return splitVehicleId(null);
+    }
+
+    private static String splitVehicleId(String currentId) {
+        if(currentId != null) {
+            String[] strings = currentId.split("V-");
+            int id = Integer.parseInt(strings[1]);
+            ++id;
+            String digit=String.format("%03d", id);
+            return "V-" + digit;
+        }
+        return "V-001";
+    }
 }

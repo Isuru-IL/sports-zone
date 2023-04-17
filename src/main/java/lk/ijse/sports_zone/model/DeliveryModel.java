@@ -85,4 +85,24 @@ public class DeliveryModel {
         }
         return  null;
     }
+
+    public static String getNextDeliveryId() throws SQLException {
+        String sql = "SELECT deliveryId FROM Delivery ORDER BY deliveryId DESC LIMIT 1";
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if (resultSet.next()) {
+            return splitRepairId(resultSet.getString(1));
+        }
+        return splitRepairId(null);
+    }
+    private static String splitRepairId(String currentId) {
+        if(currentId != null) {
+            String[] strings = currentId.split("DE-");
+            int id = Integer.parseInt(strings[1]);
+            ++id;
+            String digit=String.format("%03d", id);
+            return "DE-" + digit;
+        }
+        return "DE-001";
+    }
 }

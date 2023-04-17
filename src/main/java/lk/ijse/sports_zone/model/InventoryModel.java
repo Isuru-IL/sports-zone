@@ -170,12 +170,12 @@ public class InventoryModel {
     }
     private static String splitRepairId(String currentId) {
         if(currentId != null) {
-            String[] strings = currentId.split("I");
+            String[] strings = currentId.split("I-");
             int id = Integer.parseInt(strings[1]);
             ++id;
             String digit=String.format("%03d", id);
-            return "I" + digit;
+            return "I-" + digit;
         }
-        return "I001";
+        return "I-001";
     }
 }

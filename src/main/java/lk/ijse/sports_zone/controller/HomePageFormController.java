@@ -127,7 +127,7 @@ public class HomePageFormController {
 
     @FXML
     void suplierOnAction(ActionEvent event) throws IOException {
-        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplierLoad_form.fxml"));
+        Parent load = FXMLLoader.load(getClass().getResource("/view/adminSupplier_form.fxml"));
         anchorpaneAdminHome.getChildren().clear();
         anchorpaneAdminHome.getChildren().add(load);
 

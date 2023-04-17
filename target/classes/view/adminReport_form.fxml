@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
 <AnchorPane fx:id="anchrpReport" prefHeight="1040.0" prefWidth="1602.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminReportFormController">
-
+   <children>
+      <JFXButton fx:id="btnSupplierLoadDetail" layoutX="176.0" layoutY="132.0" onAction="#btnSupplierLoadDetailOnAction" prefHeight="84.0" prefWidth="384.0" styleClass="loginBtn" stylesheets="@../styles/style.css" text="Supply Load Details">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="btnEmployeeDetail" layoutX="176.0" layoutY="254.0" onAction="#btnEmployeeDetailOnAction" prefHeight="84.0" prefWidth="384.0" styleClass="loginBtn" stylesheets="@../styles/style.css" text="Employee Details">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXButton>
+   </children>
 </AnchorPane>
