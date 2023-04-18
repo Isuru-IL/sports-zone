@@ -24,6 +24,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.sports_zone.model.CashierOrderModel;
+import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.model.OrderDetailModel;
 import lk.ijse.sports_zone.util.ButtonColourController;
@@ -74,10 +76,38 @@ public class HomePageFormController {
     private AnchorPane anchorpaneHomeMain;
 
     @FXML
+    private Label lblTotCustomer;
+
+    @FXML
+    private Label lblTotIncome;
+
+    @FXML
+    private Label lblTotOrders;
+
+    @FXML
     private Label lblDate;
 
     @FXML
     private Label lblTime;
+
+    private void countTotalCust(){
+        try {
+            int count = CustomerModel.getTotCustomers();
+            lblTotCustomer.setText(String.valueOf(count));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    private void countTotalOrders(){
+        try {
+            int count = CashierOrderModel.getTotOrders();
+            lblTotOrders.setText(String.valueOf(count));
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
 
     @FXML
@@ -182,6 +212,9 @@ public class HomePageFormController {
 
         btnHome.setStyle("-fx-background-color: #440000;" +
                 "-fx-background-radius: 20px;");
+
+        countTotalCust();
+        countTotalOrders();
     }
 
     public static void btnHomecolor(Button btn, AnchorPane anchorPane){

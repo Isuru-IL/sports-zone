@@ -88,3 +88,7 @@
 .chart-bar {
     -fx-bar-fill: #534a4a;
 }
+
+.homeAnchorPane{
+    -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
+}

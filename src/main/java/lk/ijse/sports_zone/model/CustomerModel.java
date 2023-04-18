@@ -187,4 +187,16 @@ public class CustomerModel {
         }
         return "C-001";
     }
+
+    public static int getTotCustomers() throws SQLException {
+        String sql="SELECT COUNT(custId) FROM Customer";
+        ResultSet resultSet= CrudUtil.execute(sql);
+        int count=0;
+        while (resultSet.next()){
+            count=resultSet.getInt(1);
+        }
+        return count;
+
+
+    }
 }

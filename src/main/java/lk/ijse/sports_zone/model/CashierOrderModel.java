@@ -80,4 +80,15 @@ public class CashierOrderModel {
         }
         return allData;
     }
+
+    public static int getTotOrders() throws SQLException {
+        String sql="SELECT COUNT(orderId) FROM orders";
+        ResultSet resultSet= CrudUtil.execute(sql);
+        int count=0;
+        while (resultSet.next()){
+            count=resultSet.getInt(1);
+        }
+        return count;
+
+    }
 }

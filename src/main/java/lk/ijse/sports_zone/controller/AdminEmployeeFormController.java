@@ -99,6 +99,9 @@ public class AdminEmployeeFormController {
     private Label lblInvalidSalary;
 
     @FXML
+    private Label lblInvalidNIC;
+
+    @FXML
     private TextField txtAddress;
 
     @FXML
@@ -227,7 +230,7 @@ public class AdminEmployeeFormController {
         if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty() || txtDob.getEditor().getText().isEmpty()){
             AlertController.errormessage("Employee details not updated.\nPlease make sure to fill out all the required fields.");
         }else {
-            if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
+            if (ValidateController.NICcheck(txtNIC.getText()) || ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
                     || ValidateController.doubleValueCheck(txtSalary.getText())) {
                 if (ValidateController.doubleValueCheck(txtSalary.getText())) {
                     if (ValidateController.contactCheck(txtContactNo.getText())) {
@@ -235,58 +238,61 @@ public class AdminEmployeeFormController {
 
                         if (ValidateController.emailCheck(txtEmail.getText())) {
                             //lblInvalidEmail.setVisible(false);
+                            if(ValidateController.NICcheck(txtNIC.getText())){
+                                boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                                if (result) {
+                                    btnSave.setVisible(true);
 
-                            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-                            if (result) {
-                                btnSave.setVisible(true);
+                                    employee.setEmpId(txtEmpId.getText());
+                                    employee.setEmpName(txtEmpName.getText());
+                                    employee.setAddress(txtAddress.getText());
+                                    employee.setDob(String.valueOf(txtDob.getValue()));
+                                    employee.setContactNo(txtContactNo.getText());
+                                    employee.setSalary(Double.valueOf(txtSalary.getText()));
+                                    employee.setEmail(txtEmail.getText());
+                                    employee.setNic(txtNIC.getText());
+                                    employee.setJobTitle(cmbJobTitle.getValue());
 
-                                employee.setEmpId(txtEmpId.getText());
-                                employee.setEmpName(txtEmpName.getText());
-                                employee.setAddress(txtAddress.getText());
-                                employee.setDob(String.valueOf(txtDob.getValue()));
-                                employee.setContactNo(txtContactNo.getText());
-                                employee.setSalary(Double.valueOf(txtSalary.getText()));
-                                employee.setEmail(txtEmail.getText());
-                                employee.setNic(txtNIC.getText());
-                                employee.setJobTitle(cmbJobTitle.getValue());
+                                    try {
+                                        boolean isUpdated = EmployeeModel.update(employee);
+                                        if (isUpdated) {
+                                            AlertController.okMassage("updated");
+                                            setCellValueFactory();
+                                            getAll();
+                                            clearTxtField();
+                                            addJobRolescmb();
+                                            generateNextEmpId();
+                                            btnSave.setDisable(false);
+                                        } else {
+                                            AlertController.errormessage("Not Updated");
+                                        }
 
-                                try {
-                                    boolean isUpdated = EmployeeModel.update(employee);
-                                    if (isUpdated) {
-                                        AlertController.okMassage("updated");
-                                        setCellValueFactory();
-                                        getAll();
-                                        clearTxtField();
-                                        addJobRolescmb();
-                                        generateNextEmpId();
-                                        btnSave.setDisable(false);
-                                    } else {
-                                        AlertController.errormessage("Not Updated");
+                                    } catch (SQLIntegrityConstraintViolationException e) {
+                                        System.out.println(e);
+                                        AlertController.errormessage(e.getMessage());
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                        AlertController.exceptionMessage("Something went wrong");
                                     }
-
-                                } catch (SQLIntegrityConstraintViolationException e) {
-                                    System.out.println(e);
-                                    AlertController.errormessage(e.getMessage());
-                                } catch (SQLException throwables) {
-                                    throwables.printStackTrace();
-                                    AlertController.exceptionMessage("Something went wrong");
                                 }
-                            }
-                            } else {
-                                lblInvalidEmail.setVisible(true);
+                            }else {
+                                lblInvalidNIC.setVisible(true);
                             }
                         } else {
-                            lblInvalidContacktNo.setVisible(true);
+                            lblInvalidEmail.setVisible(true);
                         }
                     } else {
-                        lblInvalidSalary.setVisible(true);
+                        lblInvalidContacktNo.setVisible(true);
                     }
                 } else {
-                    lblInvalidEmail.setVisible(true);
-                    lblInvalidContacktNo.setVisible(true);
                     lblInvalidSalary.setVisible(true);
                 }
+            } else {
+                lblInvalidEmail.setVisible(true);
+                lblInvalidContacktNo.setVisible(true);
+                lblInvalidSalary.setVisible(true);
             }
+        }
     }
 
 
@@ -461,6 +467,10 @@ public class AdminEmployeeFormController {
         lblInvalidSalary.setVisible(false);
     }
 
+    @FXML
+    void txtNICOnMouseClickedAction(MouseEvent event) {
+        lblInvalidNIC.setVisible(false);
+    }
 
     private void generateNextEmpId() {
         try {
