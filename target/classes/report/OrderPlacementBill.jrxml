@@ -45,24 +45,24 @@ ORDER BY orderdetail.orderId desc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="100" splitType="Stretch">
+		<band height="91" splitType="Stretch">
 			<staticText>
-				<reportElement x="210" y="15" width="170" height="30" uuid="cc2e1cdd-34de-490b-b1cc-23208de9f484"/>
-				<textElement>
-					<font size="22"/>
+				<reportElement x="180" y="0" width="200" height="34" uuid="cc2e1cdd-34de-490b-b1cc-23208de9f484"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SPORTS ZONE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="91" y="44" width="119" height="56" uuid="0e00fe13-a5db-4eb6-903c-94f956e8c270"/>
-				<text><![CDATA[In front of the bus stand,         Galle,                                                   TEL  : 091-2343567          ]]></text>
+				<reportElement x="80" y="34" width="119" height="56" uuid="0e00fe13-a5db-4eb6-903c-94f956e8c270"/>
+				<text><![CDATA[No.240/B,         Dharmapala Mawatha,Galle,                                                   TEL  : 091-2343567          ]]></text>
 			</staticText>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="58" splitType="Stretch">
 			<staticText>
-				<reportElement x="90" y="10" width="70" height="20" uuid="c9ce47d4-5a37-4dcd-98df-9dc9e181ab36"/>
+				<reportElement x="80" y="10" width="70" height="20" uuid="c9ce47d4-5a37-4dcd-98df-9dc9e181ab36"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -113,52 +113,60 @@ ORDER BY orderdetail.orderId desc]]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="97" splitType="Stretch">
+	<summary>
+		<band height="116">
 			<staticText>
-				<reportElement x="80" y="12" width="70" height="20" uuid="7bceabd9-576d-4610-a38a-e6c1c8a11649"/>
+				<reportElement x="80" y="2" width="50" height="20" uuid="7bceabd9-576d-4610-a38a-e6c1c8a11649"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total]]></text>
+				<text><![CDATA[Total   ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="40" width="70" height="20" uuid="35d3976d-9f9e-491b-9d66-16f6c4f0de34"/>
+				<reportElement x="140" y="4" width="20" height="18" uuid="317b96a8-cac3-41cb-b928-a2ac56ea918c"/>
+				<text><![CDATA[Rs.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="5" width="100" height="17" uuid="a4b61775-b65f-435c-90e6-0cdcb119b9f8"/>
+				<textFieldExpression><![CDATA[$F{payment}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="30" width="50" height="20" uuid="35d3976d-9f9e-491b-9d66-16f6c4f0de34"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cash]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="160" y="31" width="100" height="18" uuid="f142456e-d383-47bd-8dda-853f7bd75e0f"/>
+				<textFieldExpression><![CDATA[$P{param1}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="80" y="70" width="70" height="20" uuid="cebfcf87-3a3e-4517-a038-5a27f12ca0a2"/>
+				<reportElement x="140" y="31" width="20" height="18" uuid="fbd5b530-aa0a-4c10-8aa8-007755ead4a1"/>
+				<text><![CDATA[Rs.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="61" width="20" height="18" uuid="5a25b0fb-d43b-4329-a285-5aa341d88657"/>
+				<text><![CDATA[Rs.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="160" y="61" width="100" height="18" uuid="e5474495-b4a8-48ec-9bfc-871f00224144"/>
+				<textFieldExpression><![CDATA[$P{param2}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="60" width="50" height="20" uuid="cebfcf87-3a3e-4517-a038-5a27f12ca0a2"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Balance]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="380" y="16" width="100" height="13" uuid="a4b61775-b65f-435c-90e6-0cdcb119b9f8"/>
-				<textFieldExpression><![CDATA[$F{payment}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="380" y="40" width="100" height="20" uuid="f142456e-d383-47bd-8dda-853f7bd75e0f"/>
-				<textFieldExpression><![CDATA[$P{param1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="380" y="65" width="100" height="15" uuid="e5474495-b4a8-48ec-9bfc-871f00224144"/>
-				<textFieldExpression><![CDATA[$P{param2}]]></textFieldExpression>
-			</textField>
-		</band>
-	</columnFooter>
-	<lastPageFooter>
-		<band height="50">
 			<staticText>
-				<reportElement x="180" y="10" width="190" height="30" uuid="e8611f2b-5b10-4425-8407-ae7d78b1dd30"/>
+				<reportElement x="150" y="80" width="190" height="30" uuid="e8611f2b-5b10-4425-8407-ae7d78b1dd30"/>
 				<textElement>
 					<font size="18"/>
 				</textElement>
 				<text><![CDATA[Thank you come again]]></text>
 			</staticText>
 		</band>
-	</lastPageFooter>
+	</summary>
 </jasperReport>

@@ -522,6 +522,7 @@ public class AdminEmployeeFormController {
         lblInvalidEmail.setVisible(false);
         lblInvalidContacktNo.setVisible(false);
         lblInvalidSalary.setVisible(false);
+        lblInvalidNIC.setVisible(false);
     }
 
     private void setCellValueFactory() {
