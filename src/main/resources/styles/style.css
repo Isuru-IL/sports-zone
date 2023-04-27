@@ -89,15 +89,16 @@
 }
 
 .chart-bar {
-    -fx-bar-fill: #534a4a;
+    -fx-bar-fill: #211e1e;
 }
 
 .chart-pie {
-    -fx-pie-color: #534a4a;
+    -fx-pie-color: #211e1e;
 }
 
 .homeAnchorPane{
     -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
+    -fx-background-radius: 30px;
 }
 
 .btnAddToCart{
@@ -111,5 +112,6 @@
 }
 
 .mainAnchorpane{
-    -fx-background-color:  #e6e6e6;
+    /*-fx-background-color:  #e6e6e6;*/
+    -fx-background-color: linear-gradient(to top right  ,#cccccc ,#e6e6e6);
 }

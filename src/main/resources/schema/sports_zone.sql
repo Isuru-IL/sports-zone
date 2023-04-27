@@ -15,6 +15,7 @@ CREATE TABLE Employee(
                          CONSTRAINT PRIMARY KEY (empId)
 );
 
+INSERT INTO Employee VALUES ('E-001', 'isuru', 'galle', '2021-01-20', '0717236574', 20000, 'isuru@gmail.com', '200134567567', 'Admin');
 
 CREATE TABLE User(
                      userName VARCHAR(20),

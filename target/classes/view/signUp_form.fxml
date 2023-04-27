@@ -66,7 +66,7 @@
             <Font name="System Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="txtEmployeeId" layoutX="281.0" layoutY="206.0" prefHeight="30.0" prefWidth="258.0" styleClass="txtPassword" stylesheets="@../styles/style.css">
+      <TextField fx:id="txtEmployeeId" layoutX="281.0" layoutY="206.0" prefHeight="30.0" prefWidth="258.0" promptText="Ex: E-001" styleClass="txtPassword" stylesheets="@../styles/style.css">
          <font>
             <Font size="14.0" />
          </font>

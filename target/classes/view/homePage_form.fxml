@@ -130,32 +130,45 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpaneAdminHome" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0" style="-fx-background-color: transparent;" styleClass="mainAnchorpane" stylesheets="@../styles/style.css">
+      <AnchorPane fx:id="anchorpaneAdminHome" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0" styleClass="mainAnchorpane" stylesheets="@../styles/style.css">
          <children>
-            <BarChart fx:id="barChart" layoutX="158.0" layoutY="511.0" legendVisible="false" style="-fx-background-color: transparent;" styleClass="chart-bar" stylesheets="@../styles/style.css" title="Low Stock Items">
+            <AnchorPane layoutX="133.0" layoutY="482.0" prefHeight="476.0" prefWidth="654.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30px;" />
+            <AnchorPane layoutX="833.0" layoutY="482.0" prefHeight="476.0" prefWidth="654.0" style="-fx-background-color: #ffffff; -fx-background-radius: 30px;" />
+            <BarChart fx:id="barChart" layoutX="158.0" layoutY="511.0" legendVisible="false" prefHeight="400.0" prefWidth="581.0" style="-fx-background-color: transparent;" styleClass="chart-bar" stylesheets="@../styles/style.css" title="Low Stock Items">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis prefHeight="25.0" prefWidth="524.0" side="BOTTOM">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="14.0" />
+                     </tickLabelFont></CategoryAxis>
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis prefHeight="321.0" prefWidth="36.0" side="LEFT">
+                     <tickLabelFont>
+                        <Font name="System Bold" size="14.0" />
+                     </tickLabelFont></NumberAxis>
               </yAxis>
             </BarChart>
-            <PieChart fx:id="pieChart" layoutX="785.0" layoutY="520.0" style="-fx-background-color: transparent;" styleClass="chart-pie" stylesheets="@../styles/style.css" title="Top 5 Sold Items This Month" />
+            <PieChart fx:id="pieChart" layoutX="904.0" layoutY="520.0" style="-fx-background-color: transparent;" styleClass="chart-pie" stylesheets="@../styles/style.css" title="Top 5 Sold Items This Month" />
             <AnchorPane layoutX="190.0" layoutY="88.0" prefHeight="249.0" prefWidth="290.0" styleClass="homeAnchorPane" stylesheets="@../styles/style.css">
                <effect>
                   <DropShadow />
                </effect>
                <children>
-                  <Label layoutX="67.0" layoutY="100.0" prefHeight="50.0" prefWidth="157.0" text="Total Customers" textFill="WHITE">
+                  <Label layoutX="77.0" layoutY="100.0" prefHeight="50.0" prefWidth="137.0" text="Today Orders" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotCustomer" alignment="TOP_CENTER" layoutX="35.0" layoutY="150.0" prefHeight="55.0" prefWidth="220.0" text="20" textFill="WHITE">
+                  <Label fx:id="lblTodayOrders" alignment="TOP_CENTER" layoutX="35.0" layoutY="150.0" prefHeight="55.0" prefWidth="220.0" text="20" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="38.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="77.0" fitWidth="77.0" layoutX="107.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/homeOrderIcon.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="648.0" layoutY="88.0" prefHeight="249.0" prefWidth="290.0" styleClass="homeAnchorPane" stylesheets="@../styles/style.css">
@@ -163,16 +176,21 @@
                   <DropShadow />
                </effect>
                <children>
-                  <Label layoutX="86.0" layoutY="100.0" prefHeight="50.0" prefWidth="118.0" text="Total Orders" textFill="WHITE">
+                  <Label layoutX="70.0" layoutY="100.0" prefHeight="50.0" prefWidth="151.0" text="Todays' Income" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotOrders" alignment="TOP_CENTER" layoutX="43.0" layoutY="150.0" prefHeight="55.0" prefWidth="205.0" text="20" textFill="WHITE">
+                  <Label fx:id="lblTodayIncome" alignment="TOP_CENTER" layoutX="2.0" layoutY="150.0" prefHeight="55.0" prefWidth="281.0" text="20" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="38.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="77.0" fitWidth="137.0" layoutX="107.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/todayIncomeIcon.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="1114.0" layoutY="88.0" prefHeight="249.0" prefWidth="290.0" styleClass="homeAnchorPane" stylesheets="@../styles/style.css">
@@ -180,16 +198,21 @@
                   <DropShadow />
                </effect>
                <children>
-                  <Label layoutX="86.0" layoutY="100.0" prefHeight="50.0" prefWidth="137.0" text="Today Income" textFill="WHITE">
+                  <Label layoutX="52.0" layoutY="100.0" prefHeight="50.0" prefWidth="205.0" text="This Months' Income" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lblTotIncome" alignment="TOP_CENTER" layoutX="30.0" layoutY="150.0" prefHeight="55.0" prefWidth="249.0" text="Rs.13500" textFill="WHITE">
+                  <Label fx:id="lblMonthlyIncome" alignment="TOP_CENTER" layoutY="150.0" prefHeight="55.0" prefWidth="290.0" text="Rs.13500" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="38.0" />
                      </font>
                   </Label>
+                  <ImageView fitHeight="77.0" fitWidth="137.0" layoutX="116.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../assets/monthlyIncomeIcon.png" />
+                     </image>
+                  </ImageView>
                </children>
             </AnchorPane>
          </children>

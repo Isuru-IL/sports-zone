@@ -76,13 +76,13 @@ public class HomePageFormController {
     private AnchorPane anchorpaneHomeMain;
 
     @FXML
-    private Label lblTotCustomer;
+    private Label lblMonthlyIncome;
 
     @FXML
-    private Label lblTotIncome;
+    private Label lblTodayIncome;
 
     @FXML
-    private Label lblTotOrders;
+    private Label lblTodayOrders;
 
     @FXML
     private Label lblDate;
@@ -90,25 +90,32 @@ public class HomePageFormController {
     @FXML
     private Label lblTime;
 
-    private void countTotalCust(){
+    private void countTodayOrders(){
         try {
-            int count = CustomerModel.getTotCustomers();
-            lblTotCustomer.setText(String.valueOf(count));
+            int count = CashierOrderModel.getTodayOrders();
+            lblTodayOrders.setText(String.valueOf(count));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    private void countTotalOrders(){
+    private void countTodayIncome() {
         try {
-            int count = CashierOrderModel.getTotOrders();
-            lblTotOrders.setText(String.valueOf(count));
+            double count = CashierOrderModel.getTodayIncome();
+            lblTodayIncome.setText("Rs. "+count);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-
+    private void countMonthlyIncome() {
+        try {
+            double count = CashierOrderModel.getMonthlyIncome();
+            lblMonthlyIncome.setText("Rs. "+count);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     @FXML
     void homeOnAction(ActionEvent event) throws IOException {
@@ -213,8 +220,9 @@ public class HomePageFormController {
         btnHome.setStyle("-fx-background-color: #1b0000;" +
                 "-fx-background-radius: 20px;");
 
-        countTotalCust();
-        countTotalOrders();
+        countTodayOrders();
+        countTodayIncome();
+        countMonthlyIncome();
     }
 
     public static void btnHomecolor(Button btn, AnchorPane anchorPane){

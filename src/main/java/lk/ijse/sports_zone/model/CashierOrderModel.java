@@ -81,8 +81,8 @@ public class CashierOrderModel {
         return allData;
     }
 
-    public static int getTotOrders() throws SQLException {
-        String sql="SELECT COUNT(orderId) FROM orders";
+    public static int getTodayOrders() throws SQLException {
+        String sql="SELECT COUNT(orderId) FROM orders WHERE date = CURDATE();";
         ResultSet resultSet= CrudUtil.execute(sql);
         int count=0;
         while (resultSet.next()){
@@ -90,5 +90,27 @@ public class CashierOrderModel {
         }
         return count;
 
+    }
+
+    public static double getTodayIncome() throws SQLException {
+        String sql = "select sum(payment) from orders where date= curdate()";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if(resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
+    }
+
+    public static double getMonthlyIncome() throws SQLException {
+        String sql = "select sum(payment) from orders where MONTH(date)= MONTH(curdate())";
+
+        ResultSet resultSet = CrudUtil.execute(sql);
+
+        if(resultSet.next()) {
+            return resultSet.getInt(1);
+        }
+        return 0;
     }
 }
