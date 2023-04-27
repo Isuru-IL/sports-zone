@@ -122,6 +122,10 @@ public class LoginFormController {
                 String password = user.getPassword();
                 String jobTitle = user.getJobTitle();
 
+                if(user == null){
+                    AlertController.errormessage("User name not found");
+                }
+
                 if(userName.equals(userCheckLogin.getUserName()) && password.equals(userCheckLogin.getPassword()) && jobTitle.equals(userCheckLogin.getJobTitle()) && jobTitle.equals("Admin")){
                     AlertController.animationMesseage("assets/wdoneIcon.png", "Login", "login successful");
                     AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/homePage_form.fxml"));
@@ -152,7 +156,7 @@ public class LoginFormController {
                 //exception.printStackTrace();
                 System.out.println(exception);
                 //new Alert(Alert.AlertType.ERROR,"something went wrong").show();
-                AlertController.exceptionMessage("Something went wrong");
+                AlertController.errormessage("Login unsuccessful");
             }
         }
 

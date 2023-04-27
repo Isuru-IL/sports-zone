@@ -483,7 +483,7 @@ public class CashierCustomerFormController {
         assert lblDate != null : "fx:id=\"lblDate\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
 
-        btnCustomer.setStyle("-fx-background-color: #440000;" +
+        btnCustomer.setStyle("-fx-background-color: #1b0000;" +
                 "-fx-background-radius: 20px;");
 
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();

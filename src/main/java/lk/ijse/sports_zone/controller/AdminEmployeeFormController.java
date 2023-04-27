@@ -165,6 +165,7 @@ public class AdminEmployeeFormController {
 
         System.out.println(ValidateController.NICcheck(txtNIC.getText()));
 
+        txtDob.getEditor().getText().isEmpty();
         if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
             AlertController.errormessage("Employee details not saved.\nPlease make sure to fill out all the required fields.");
         }else {

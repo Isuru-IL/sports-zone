@@ -140,7 +140,7 @@ public class CashierDeliveryFormController {
     void deleteOnAction(ActionEvent event) {
         String id = lblDeliveryId.getText();
 
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
         if(result) {
             try {
                 boolean isDeleted = DeliveryModel.delete(id);
@@ -317,7 +317,7 @@ public class CashierDeliveryFormController {
 
             cmbVehiId.setItems(vehiIds);
         } catch (SQLException throwables) {
-            AlertController.exceptionMessage("Something went wrong");
+            AlertController.errormessage("DeliveryFC loadVehicleIds");
         }
     }
 
@@ -332,7 +332,7 @@ public class CashierDeliveryFormController {
 
             cmbEmpId.setItems(empIds);
         } catch (SQLException throwables) {
-            AlertController.exceptionMessage("Something went wrong");
+            AlertController.errormessage("DeliveryFC loadEmployeeIds");
         }
     }
 

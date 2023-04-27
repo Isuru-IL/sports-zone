@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS sports_zone;
 CREATE DATABASE IF NOT EXISTS sports_zone;
 USE sports_zone;
 
-
 CREATE TABLE Employee(
                          empId VARCHAR(10),
                          empName VARCHAR(30) NOT NULL ,

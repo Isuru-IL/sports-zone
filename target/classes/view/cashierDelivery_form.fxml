@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchrpDelivery" prefHeight="1040.0" prefWidth="1602.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierDeliveryFormController">
+<AnchorPane fx:id="anchrpDelivery" prefHeight="1040.0" prefWidth="1602.0" styleClass="mainAnchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierDeliveryFormController">
    <children>
       <TableView fx:id="tblDelivery" layoutX="81.0" layoutY="433.0" onMouseClicked="#tableOnMouseClicked" prefHeight="562.0" prefWidth="1473.0">
          <columns>

@@ -318,7 +318,7 @@ public class CashierOrderFormController {
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
 
-        if(txtPaidAmount.getText().isEmpty()){
+        if(txtPaidAmount.getText().isEmpty() || !ValidateController.doubleValueCheck(txtPaidAmount.getText())){
             lblEmptyPaidAmount.setVisible(true);
             AlertController.errormessage("Please enter Amount");
         }else {
@@ -329,7 +329,7 @@ public class CashierOrderFormController {
             double netTotal = Double.parseDouble(lblNetTotal.getText());
             double paidAmount = Double.parseDouble(txtPaidAmount.getText());
 
-            if(paidAmount > netTotal){
+            if(paidAmount >= netTotal){
 
                 Calendar calendar = Calendar.getInstance();
                 Date date = new Date(calendar.getTimeInMillis());
@@ -511,23 +511,23 @@ public class CashierOrderFormController {
         //radioBtnYes.setSelected(false);
     }
 
-    @FXML
-    void btnJasperOnAction(ActionEvent event) {
-        String printcash = txtPaidAmount.getText();
-        String balance = lblBalance.getText();
-
-        Map<String, Object> parameters = new HashMap<>();
-            parameters.put("param1", printcash);
-            parameters.put("param2", balance);
-
-        InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
-        try {
-            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, DBConnection.getInstance().getConnection());
-            JasperViewer.viewReport(jasperPrint, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//    @FXML
+//    void btnJasperOnAction(ActionEvent event) {
+//        String printcash = txtPaidAmount.getText();
+//        String balance = lblBalance.getText();
+//
+//        Map<String, Object> parameters = new HashMap<>();
+//            parameters.put("param1", printcash);
+//            parameters.put("param2", balance);
+//
+//        InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
+//        try {
+//            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, DBConnection.getInstance().getConnection());
+//            JasperViewer.viewReport(jasperPrint, false);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 //        InputStream resource = this.getClass().getResourceAsStream("/report/OrderPlacementBill.jrxml");
 //        try {
 //            JasperReport jasperReport = JasperCompileManager.compileReport(resource);
@@ -536,7 +536,7 @@ public class CashierOrderFormController {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-    }
+    //}
 
 
 }

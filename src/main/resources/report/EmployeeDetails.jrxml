@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="EmployeeDetails" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b531d6ca-3857-47ef-ae94-3c0027a3c69a">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrderPlacementBill" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b531d6ca-3857-47ef-ae94-3c0027a3c69a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
 	<queryString language="SQL">
@@ -213,7 +213,7 @@
 				<textFieldExpression><![CDATA[$F{empName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="134" y="4" width="46" height="17" uuid="b405d1c1-2d54-447b-8ac5-967617d3cd33"/>
+				<reportElement x="134" y="4" width="72" height="17" uuid="b405d1c1-2d54-447b-8ac5-967617d3cd33"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>

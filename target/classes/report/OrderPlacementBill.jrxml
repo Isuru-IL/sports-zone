@@ -45,7 +45,7 @@ ORDER BY orderdetail.orderId desc]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="91" splitType="Stretch">
+		<band height="102" splitType="Stretch">
 			<staticText>
 				<reportElement x="180" y="0" width="200" height="34" uuid="cc2e1cdd-34de-490b-b1cc-23208de9f484"/>
 				<textElement textAlignment="Center">
@@ -57,33 +57,43 @@ ORDER BY orderdetail.orderId desc]]>
 				<reportElement x="80" y="34" width="119" height="56" uuid="0e00fe13-a5db-4eb6-903c-94f956e8c270"/>
 				<text><![CDATA[No.240/B,         Dharmapala Mawatha,Galle,                                                   TEL  : 091-2343567          ]]></text>
 			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="353" y="35" width="100" height="20" uuid="c18efeda-535a-497c-bace-b51740615939"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm:ss a">
+				<reportElement x="353" y="53" width="100" height="18" uuid="2ba0443d-971c-42ed-af69-e2a8cd7bd3ac"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="58" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<staticText>
-				<reportElement x="80" y="10" width="70" height="20" uuid="c9ce47d4-5a37-4dcd-98df-9dc9e181ab36"/>
+				<reportElement x="80" y="16" width="70" height="20" uuid="c9ce47d4-5a37-4dcd-98df-9dc9e181ab36"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Item Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="9" width="60" height="40" uuid="bcceb9fd-9cd5-4297-82fc-cdeb8792c945"/>
+				<reportElement x="180" y="16" width="90" height="20" uuid="bcceb9fd-9cd5-4297-82fc-cdeb8792c945"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Unit Price(LKR)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="10" width="50" height="20" uuid="e34f9848-c38d-4b1a-9ca4-a5c1a1a043e6"/>
+				<reportElement x="300" y="16" width="50" height="20" uuid="e34f9848-c38d-4b1a-9ca4-a5c1a1a043e6"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Quantity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="390" y="10" width="70" height="20" uuid="c6192a12-d17c-403b-b0a4-d5c848617d86"/>
+				<reportElement x="390" y="16" width="70" height="20" uuid="c6192a12-d17c-403b-b0a4-d5c848617d86"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -92,81 +102,93 @@ ORDER BY orderdetail.orderId desc]]>
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="47" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="80" y="10" width="100" height="30" uuid="e821e93f-2361-401d-9a7a-c9f081b22138">
+				<reportElement x="80" y="1" width="100" height="20" uuid="e821e93f-2361-401d-9a7a-c9f081b22138">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ec887b6c-ad3f-4892-bfdc-c4f5d75d638f"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{itemName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="10" width="100" height="30" uuid="81893d3b-71e9-4a72-8795-b2e13f3b5848"/>
+				<reportElement x="180" y="1" width="90" height="20" uuid="81893d3b-71e9-4a72-8795-b2e13f3b5848"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="10" width="100" height="30" uuid="261a7f83-d07b-4609-9e98-d216fd948a91"/>
+				<reportElement x="290" y="1" width="60" height="20" uuid="261a7f83-d07b-4609-9e98-d216fd948a91"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="10" width="100" height="30" uuid="2619e916-5c4a-474e-b062-85459d18a8d9"/>
+				<reportElement x="380" y="1" width="70" height="20" uuid="2619e916-5c4a-474e-b062-85459d18a8d9"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="116">
+		<band height="191">
 			<staticText>
-				<reportElement x="80" y="2" width="50" height="20" uuid="7bceabd9-576d-4610-a38a-e6c1c8a11649"/>
+				<reportElement x="320" y="42" width="50" height="20" uuid="7bceabd9-576d-4610-a38a-e6c1c8a11649"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Total   ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="4" width="20" height="18" uuid="317b96a8-cac3-41cb-b928-a2ac56ea918c"/>
+				<reportElement x="380" y="44" width="20" height="18" uuid="317b96a8-cac3-41cb-b928-a2ac56ea918c"/>
 				<text><![CDATA[Rs.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="5" width="100" height="17" uuid="a4b61775-b65f-435c-90e6-0cdcb119b9f8"/>
+				<reportElement x="400" y="45" width="50" height="17" uuid="a4b61775-b65f-435c-90e6-0cdcb119b9f8"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{payment}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="80" y="30" width="50" height="20" uuid="35d3976d-9f9e-491b-9d66-16f6c4f0de34"/>
+				<reportElement x="320" y="70" width="50" height="20" uuid="35d3976d-9f9e-491b-9d66-16f6c4f0de34"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cash]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="31" width="100" height="18" uuid="f142456e-d383-47bd-8dda-853f7bd75e0f"/>
+				<reportElement x="400" y="71" width="50" height="18" uuid="f142456e-d383-47bd-8dda-853f7bd75e0f"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{param1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="140" y="31" width="20" height="18" uuid="fbd5b530-aa0a-4c10-8aa8-007755ead4a1"/>
+				<reportElement x="380" y="70" width="20" height="18" uuid="fbd5b530-aa0a-4c10-8aa8-007755ead4a1"/>
 				<text><![CDATA[Rs.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="61" width="20" height="18" uuid="5a25b0fb-d43b-4329-a285-5aa341d88657"/>
+				<reportElement x="380" y="101" width="20" height="18" uuid="5a25b0fb-d43b-4329-a285-5aa341d88657"/>
 				<text><![CDATA[Rs.]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="160" y="61" width="100" height="18" uuid="e5474495-b4a8-48ec-9bfc-871f00224144"/>
+				<reportElement x="400" y="101" width="50" height="18" uuid="e5474495-b4a8-48ec-9bfc-871f00224144"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{param2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="80" y="60" width="50" height="20" uuid="cebfcf87-3a3e-4517-a038-5a27f12ca0a2"/>
+				<reportElement x="320" y="100" width="50" height="20" uuid="cebfcf87-3a3e-4517-a038-5a27f12ca0a2"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Balance]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="80" width="190" height="30" uuid="e8611f2b-5b10-4425-8407-ae7d78b1dd30"/>
+				<reportElement x="185" y="161" width="190" height="30" uuid="e8611f2b-5b10-4425-8407-ae7d78b1dd30"/>
 				<textElement>
-					<font size="18"/>
+					<font fontName="SansSerif" size="16" isBold="true" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Thank you come again]]></text>
 			</staticText>
+			<line>
+				<reportElement x="80" y="30" width="369" height="3" uuid="c792a8bb-d897-4ed2-ad57-74c97868f231"/>
+			</line>
+			<line>
+				<reportElement x="80" y="127" width="369" height="3" uuid="384ffe6d-8464-412c-ba9a-c5df88003f6b"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

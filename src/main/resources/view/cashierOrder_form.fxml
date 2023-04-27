@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchrpCashierOrder" prefHeight="1040.0" prefWidth="1602.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierOrderFormController">
+<AnchorPane fx:id="anchrpCashierOrder" prefHeight="1040.0" prefWidth="1602.0" styleClass="mainAnchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.CashierOrderFormController">
    <children>
       <Label layoutX="675.0" layoutY="35.0" prefHeight="53.0" prefWidth="198.0" text="Place Order">
          <font>
@@ -35,7 +34,7 @@
          </font>
       </Label>
       <ComboBox fx:id="cmbCustId" layoutX="222.0" layoutY="209.0" onAction="#cmbCustIdOnAction" prefHeight="31.0" prefWidth="219.0" />
-      <JFXButton fx:id="btnAddNewCust" buttonType="RAISED" layoutX="461.0" layoutY="212.0" onAction="#btnAddNewCustOnAction" prefHeight="21.0" prefWidth="74.0" style="-fx-background-color: #2ecc71;" text="NEW" textFill="WHITE">
+      <JFXButton fx:id="btnAddNewCust" buttonType="RAISED" layoutX="461.0" layoutY="212.0" onAction="#btnAddNewCustOnAction" prefHeight="21.0" prefWidth="74.0" styleClass="loginBtn" stylesheets="@../styles/style.css" text="NEW" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -131,7 +130,7 @@
             <TableColumn fx:id="colAction" prefWidth="123.0" text="Action" />
          </columns>
       </TableView>
-      <JFXButton fx:id="btnAddToCart" buttonType="RAISED" layoutX="1433.0" layoutY="461.0" onAction="#btnAddToCartOnAction" prefHeight="33.0" prefWidth="120.0" style="-fx-background-color: #3498db;" text="Add to cart" textFill="WHITE">
+      <JFXButton fx:id="btnAddToCart" buttonType="RAISED" layoutX="1433.0" layoutY="461.0" onAction="#btnAddToCartOnAction" prefHeight="33.0" prefWidth="120.0" styleClass="btnAddToCart" stylesheets="@../styles/style.css" text="Add to cart" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -139,7 +138,7 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btnPlaceOrder" buttonType="RAISED" layoutX="1433.0" layoutY="932.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Place Order" textFill="WHITE">
+      <JFXButton fx:id="btnPlaceOrder" buttonType="RAISED" layoutX="1433.0" layoutY="932.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" styleClass="btnPlaceOrder" stylesheets="@../styles/style.css" text="Place Order" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -186,7 +185,6 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="btnJasper" layoutX="873.0" layoutY="217.0" mnemonicParsing="false" onAction="#btnJasperOnAction" prefHeight="40.0" prefWidth="164.0" text="jasper" />
       <Label fx:id="lblInvalidQuantity" layoutX="1476.0" layoutY="427.0" prefHeight="17.0" prefWidth="80.0" text="Invalid Value" textFill="RED">
          <font>
             <Font name="System Bold Italic" size="12.0" />

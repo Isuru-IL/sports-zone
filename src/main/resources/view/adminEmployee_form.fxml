@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchrpEmployee" prefHeight="1040.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminEmployeeFormController">
+<AnchorPane fx:id="anchrpEmployee" prefHeight="1040.0" prefWidth="1600.0" styleClass="mainAnchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminEmployeeFormController">
    <children>
       <TextField fx:id="txtEmpId" layoutX="70.0" layoutY="172.0" onAction="#empIdSearchOnAction" prefHeight="40.0" prefWidth="400.0">
          <font>

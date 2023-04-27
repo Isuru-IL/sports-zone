@@ -130,9 +130,9 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="anchorpaneAdminHome" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0">
+      <AnchorPane fx:id="anchorpaneAdminHome" layoutX="309.0" prefHeight="1040.0" prefWidth="1602.0" style="-fx-background-color: transparent;" styleClass="mainAnchorpane" stylesheets="@../styles/style.css">
          <children>
-            <BarChart fx:id="barChart" layoutX="158.0" layoutY="511.0" legendVisible="false" title="Low Stock Items">
+            <BarChart fx:id="barChart" layoutX="158.0" layoutY="511.0" legendVisible="false" style="-fx-background-color: transparent;" styleClass="chart-bar" stylesheets="@../styles/style.css" title="Low Stock Items">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
@@ -140,7 +140,7 @@
                 <NumberAxis side="LEFT" />
               </yAxis>
             </BarChart>
-            <PieChart fx:id="pieChart" layoutX="785.0" layoutY="520.0" title="Top 5 Sold Items This Month" />
+            <PieChart fx:id="pieChart" layoutX="785.0" layoutY="520.0" style="-fx-background-color: transparent;" styleClass="chart-pie" stylesheets="@../styles/style.css" title="Top 5 Sold Items This Month" />
             <AnchorPane layoutX="190.0" layoutY="88.0" prefHeight="249.0" prefWidth="290.0" styleClass="homeAnchorPane" stylesheets="@../styles/style.css">
                <effect>
                   <DropShadow />

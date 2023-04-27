@@ -70,15 +70,18 @@
 /*//////////////////////////////////////////////////////admin Employeepage /////////////////////////////////////////////////*/
 
 .btnSave{
-    -fx-background-color:  #2ecc71;
+    -fx-background-color:  #176639;
+    -fx-background-radius: 20px;
 }
 
 .btnDelete{
     -fx-background-color: #000000;
+    -fx-background-radius: 20px;
 }
 
 .btnUpdate{
-    -fx-background-color:  #3498db;
+    -fx-background-color:  #1a4c6e;
+    -fx-background-radius: 20px;
 }
 
 .column{
@@ -89,6 +92,24 @@
     -fx-bar-fill: #534a4a;
 }
 
+.chart-pie {
+    -fx-pie-color: #534a4a;
+}
+
 .homeAnchorPane{
     -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
+}
+
+.btnAddToCart{
+    -fx-background-color:   #246a99;
+    -fx-background-radius: 20px;
+}
+
+.btnPlaceOrder{
+    -fx-background-color: #1f2c38;
+    -fx-background-radius: 20px;
+}
+
+.mainAnchorpane{
+    -fx-background-color:  #e6e6e6;
 }

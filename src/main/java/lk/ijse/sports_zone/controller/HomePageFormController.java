@@ -210,7 +210,7 @@ public class HomePageFormController {
         setDataToBarChart();
         setDataToPieChart();
 
-        btnHome.setStyle("-fx-background-color: #440000;" +
+        btnHome.setStyle("-fx-background-color: #1b0000;" +
                 "-fx-background-radius: 20px;");
 
         countTotalCust();

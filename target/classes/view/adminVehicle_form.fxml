@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancrpVehicle" prefHeight="749.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminVehicleFormController">
+<AnchorPane fx:id="ancrpVehicle" prefHeight="749.0" prefWidth="1124.0" styleClass="mainAnchorpane" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.sports_zone.controller.AdminVehicleFormController">
    <children>
       <TextField fx:id="txtVehiId" layoutX="72.0" layoutY="78.0" onAction="#SearchOnAction" prefHeight="40.0" prefWidth="246.0">
          <font>
