@@ -71,6 +71,16 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
         </dependency>
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.12.35</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -217,7 +217,7 @@ public class HomePageFormController {
         setDataToBarChart();
         setDataToPieChart();
 
-        btnHome.setStyle("-fx-background-color: #1b0000;" +
+        btnHome.setStyle("-fx-background-color: #100000;" +
                 "-fx-background-radius: 20px;");
 
         countTodayOrders();

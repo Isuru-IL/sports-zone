@@ -96,6 +96,12 @@
     -fx-pie-color: #211e1e;
 }
 
+.areaChartAncp {
+    -fx-background-color: linear-gradient(to top right  ,#000000 ,#b3b3b3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 0, 0, 0, 0);
+    -fx-background-radius: 20px;
+}
+
 .homeAnchorPane{
     -fx-background-color: linear-gradient(to top right  ,#000000 ,#808080);
     -fx-background-radius: 30px;

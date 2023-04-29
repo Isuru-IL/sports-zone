@@ -16,11 +16,11 @@ import lk.ijse.sports_zone.dto.tm.CustomerTM;
 import lk.ijse.sports_zone.model.CustomerModel;
 import lk.ijse.sports_zone.util.AlertController;
 import lk.ijse.sports_zone.util.DateAndTimeConntroller;
-import lk.ijse.sports_zone.util.NotificationController;
 import lk.ijse.sports_zone.util.ValidateController;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -232,21 +232,25 @@ public class CashierCustomer02FormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String id = txtCustId.getText();
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result){
-            try {
-                boolean isDelete = CustomerModel.delete(id);
-                if(isDelete){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextCustId();
-                    btnSave.setDisable(false);
-                    AlertController.okMassage("Delete Successful");
+        if(txtCustId.getText().isEmpty() || txtCustName.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
+            String id = txtCustId.getText();
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if (result) {
+                try {
+                    boolean isDelete = CustomerModel.delete(id);
+                    if (isDelete) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextCustId();
+                        btnSave.setDisable(false);
+                        AlertController.okMassage("Delete Successful");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
 
@@ -282,6 +286,9 @@ public class CashierCustomer02FormController {
                             }else{
                                 AlertController.errormessage("Customer Saved Unsuccessfully");
                             }
+                        } catch (SQLIntegrityConstraintViolationException e) {
+                            //System.out.println(e);
+                            AlertController.errormessage("Duplicate Customer ID");
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                             System.out.println(throwables);

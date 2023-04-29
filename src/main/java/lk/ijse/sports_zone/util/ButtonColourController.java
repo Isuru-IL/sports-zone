@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 
 public class ButtonColourController {
     public static void btncolor(Button btn, AnchorPane anchorPane){
-        btn.setStyle("-fx-background-color: #1b0000;" +
+        btn.setStyle("-fx-background-color: #100000;" +
                 "-fx-background-radius: 20px;");
         anchorPane.getChildren().addListener((ListChangeListener<Node>) change -> {
             while (change.next()) {

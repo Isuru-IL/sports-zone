@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -245,22 +246,26 @@ public class CashierCustomerFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String id = txtCustId.getText();
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result){
-            try {
-                boolean isDelete = CustomerModel.delete(id);
-                if(isDelete){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextCustId();
-                    btnSave.setDisable(false);
-                    AlertController.okMassage("Customer Deleted Successfully");
+        if(txtCustId.getText().isEmpty() || txtCustName.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
+            String id = txtCustId.getText();
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if (result) {
+                try {
+                    boolean isDelete = CustomerModel.delete(id);
+                    if (isDelete) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextCustId();
+                        btnSave.setDisable(false);
+                        AlertController.okMassage("Customer Deleted Successfully");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    System.out.println(throwables);
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                System.out.println(throwables);
             }
         }
     }
@@ -295,6 +300,9 @@ public class CashierCustomerFormController {
                                 }else{
                                     AlertController.errormessage("Customer Saved Unsuccessfully");
                                 }
+                            } catch (SQLIntegrityConstraintViolationException e) {
+                                //System.out.println(e);
+                                AlertController.errormessage("Duplicate Customer ID");
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                                 System.out.println(throwables);
@@ -483,7 +491,7 @@ public class CashierCustomerFormController {
         assert lblDate != null : "fx:id=\"lblDate\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
         assert lblTime != null : "fx:id=\"lblTime\" was not injected: check your FXML file 'cashierCustomer_form.fxml'.";
 
-        btnCustomer.setStyle("-fx-background-color: #1b0000;" +
+        btnCustomer.setStyle("-fx-background-color: #100000;" +
                 "-fx-background-radius: 20px;");
 
         DateAndTimeConntroller d1 = new DateAndTimeConntroller();

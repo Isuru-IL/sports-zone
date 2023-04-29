@@ -3,6 +3,7 @@ package lk.ijse.sports_zone.controller;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -24,7 +25,6 @@ import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.InventoryModel;
 import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.util.AlertController;
-import lk.ijse.sports_zone.util.NotificationController;
 import lk.ijse.sports_zone.util.ValidateController;
 
 public class InventoryFormController {
@@ -210,23 +210,27 @@ public class InventoryFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String id = txtItemId.getText();
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result){
-            try {
-                boolean isDeleted= InventoryModel.delete(id);
-                if(isDeleted){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextItemCode();
-                    AlertController.okMassage("Item Deleted Successfully");
+        if(txtItemId.getText().isEmpty() || txtItemName.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
+            String id = txtItemId.getText();
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if (result) {
+                try {
+                    boolean isDeleted = InventoryModel.delete(id);
+                    if (isDeleted) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextItemCode();
+                        AlertController.okMassage("Item Deleted Successfully");
 
-                }else {
-                    AlertController.errormessage("Item Deleted Unsuccessfully");
+                    } else {
+                        AlertController.errormessage("Item Deleted Unsuccessfully");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
     }
@@ -263,6 +267,9 @@ public class InventoryFormController {
                                 AlertController.errormessage("Item Saved Unsuccessfully");
                             }
 
+                        } catch (SQLIntegrityConstraintViolationException e) {
+                            //System.out.println(e);
+                            AlertController.errormessage("Duplicate Item ID");
                         } catch (Exception throwables) {
                             //throwables.printStackTrace();
                             AlertController.errormessage(throwables+"");

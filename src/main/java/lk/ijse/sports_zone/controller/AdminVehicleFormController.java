@@ -3,6 +3,7 @@ package lk.ijse.sports_zone.controller;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
@@ -134,6 +135,9 @@ public class AdminVehicleFormController {
                     generateNextVehiId();
                     AlertController.okMassage("Saved successfully");
                 }
+            } catch (SQLIntegrityConstraintViolationException e) {
+                //System.out.println(e);
+                AlertController.errormessage("Duplicate Vehicle ID");
             } catch (SQLException throwables) {
                 //throwables.printStackTrace();
                 System.out.println("Vehicle save = "+throwables);

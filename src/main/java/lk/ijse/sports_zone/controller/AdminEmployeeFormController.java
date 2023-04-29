@@ -137,25 +137,29 @@ public class AdminEmployeeFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result) {
-            btnSave.setVisible(true);
-            try {
-                String empId = txtEmpId.getText();
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if(result) {
+                btnSave.setVisible(true);
+                try {
+                    String empId = txtEmpId.getText();
 
-                boolean isDeleted = EmployeeModel.delete(empId);
-                if (isDeleted) {
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    addJobRolescmb();
-                    generateNextEmpId();
-                } else {
-                    AlertController.errormessage("Not Deleted");
+                    boolean isDeleted = EmployeeModel.delete(empId);
+                    if (isDeleted) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        addJobRolescmb();
+                        generateNextEmpId();
+                    } else {
+                        AlertController.errormessage("Not Deleted");
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                    AlertController.exceptionMessage("Something went wrong");
                 }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-                AlertController.exceptionMessage("Something went wrong");
             }
         }
     }
@@ -163,49 +167,48 @@ public class AdminEmployeeFormController {
     @FXML
     void saveOnAction(ActionEvent event) {
 
-        System.out.println(ValidateController.NICcheck(txtNIC.getText()));
-
-        txtDob.getEditor().getText().isEmpty();
-        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty()){
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty() || txtDob.getEditor().getText().isEmpty() || cmbJobTitle.getSelectionModel().isEmpty()){
             AlertController.errormessage("Employee details not saved.\nPlease make sure to fill out all the required fields.");
         }else {
             if (ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
-                    || ValidateController.doubleValueCheck(txtSalary.getText())) {
+                    || ValidateController.doubleValueCheck(txtSalary.getText()) || ValidateController.NICcheck(txtNIC.getText())) {
                 if(ValidateController.doubleValueCheck(txtSalary.getText())){
                     if (ValidateController.contactCheck(txtContactNo.getText())) {
                         //lblInvalidContacktNo.setVisible(false);
 
                         if (ValidateController.emailCheck(txtEmail.getText())) {
                             //lblInvalidEmail.setVisible(false);
+                            if(ValidateController.NICcheck(txtNIC.getText())){
+                                try {
+                                    employee.setEmpId(txtEmpId.getText());
+                                    employee.setEmpName(txtEmpName.getText());
+                                    employee.setAddress(txtAddress.getText());
+                                    employee.setDob(String.valueOf(txtDob.getValue()));
+                                    employee.setContactNo(txtContactNo.getText());
+                                    employee.setSalary(Double.valueOf(txtSalary.getText()));
+                                    employee.setEmail(txtEmail.getText());
+                                    employee.setNic(txtNIC.getText());
+                                    employee.setJobTitle(cmbJobTitle.getValue());
 
-                            try {
-                                employee.setEmpId(txtEmpId.getText());
-                                employee.setEmpName(txtEmpName.getText());
-                                employee.setAddress(txtAddress.getText());
-                                employee.setDob(String.valueOf(txtDob.getValue()));
-                                employee.setContactNo(txtContactNo.getText());
-                                employee.setSalary(Double.valueOf(txtSalary.getText()));
-                                employee.setEmail(txtEmail.getText());
-                                employee.setNic(txtNIC.getText());
-                                employee.setJobTitle(cmbJobTitle.getValue());
-
-                                boolean isSaved = EmployeeModel.save(employee);
-                                if(isSaved){
-                                    setCellValueFactory();
-                                    getAll();
-                                    clearTxtField();
-                                    generateNextEmpId();
-                                    addJobRolescmb();
-                                    AlertController.successfulMessage("Saved");
+                                    boolean isSaved = EmployeeModel.save(employee);
+                                    if(isSaved){
+                                        setCellValueFactory();
+                                        getAll();
+                                        clearTxtField();
+                                        generateNextEmpId();
+                                        addJobRolescmb();
+                                        AlertController.successfulMessage("Saved");
+                                    }
+                                } catch (SQLIntegrityConstraintViolationException e) {
+                                    //System.out.println(e);
+                                    AlertController.errormessage("Duplicate Employee ID");
+                                } catch(Exception exception){
+                                    AlertController.errormessage(exception+"");
+                                    System.out.println("EmpSave ="+exception);
                                 }
-                            } catch (SQLIntegrityConstraintViolationException e) {
-                                System.out.println(e);
-                                AlertController.errormessage("Duplicate Employee ID");
-                            } catch(Exception exception){
-                                AlertController.errormessage(exception+"");
-                                System.out.println("EmpSave ="+exception);
+                            } else {
+                                lblInvalidNIC.setVisible(true);
                             }
-
                         } else {
                             lblInvalidEmail.setVisible(true);
                         }
@@ -228,7 +231,7 @@ public class AdminEmployeeFormController {
     void updateOnAction(ActionEvent event) {
         //Employee employee = new Employee();
 
-        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty() || txtDob.getEditor().getText().isEmpty()){
+        if(txtEmpId.getText().isEmpty() || txtEmpName.getText().isEmpty() || txtAddress.getText().isEmpty() || txtDob.getEditor().getText().isEmpty() || cmbJobTitle.getSelectionModel().isEmpty()){
             AlertController.errormessage("Employee details not updated.\nPlease make sure to fill out all the required fields.");
         }else {
             if (ValidateController.NICcheck(txtNIC.getText()) || ValidateController.emailCheck(txtEmail.getText()) || ValidateController.contactCheck(txtContactNo.getText())
@@ -292,6 +295,7 @@ public class AdminEmployeeFormController {
                 lblInvalidEmail.setVisible(true);
                 lblInvalidContacktNo.setVisible(true);
                 lblInvalidSalary.setVisible(true);
+                lblInvalidNIC.setVisible(true);
             }
         }
     }

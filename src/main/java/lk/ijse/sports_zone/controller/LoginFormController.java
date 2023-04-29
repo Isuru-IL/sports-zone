@@ -246,7 +246,7 @@ public class LoginFormController {
     }
 
     public void goToGoogleOnMousePressed(MouseEvent mouseEvent) throws URISyntaxException, IOException {
-        Desktop.getDesktop().browse(new URI("https://www.google.com/webhp?hl=en&sa=X&ved=0ahUKEwjj6fjShOb9AhX9XmwGHc_XAIEQPAgI"));
+        Desktop.getDesktop().browse(new URI("https://www.sportszone.lk/"));
     }
 
     public void goToFacebookOnMousePressed(MouseEvent mouseEvent) throws URISyntaxException, IOException {

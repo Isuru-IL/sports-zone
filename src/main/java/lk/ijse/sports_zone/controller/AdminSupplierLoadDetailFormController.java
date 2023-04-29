@@ -242,7 +242,10 @@ public class AdminSupplierLoadDetailFormController {
                                     btnRemove = new Button("Remove");
                                     btnRemove.setCursor(Cursor.HAND);
 
-                                    //setRemoveBtnOnAction(btnRemove);
+                                    setRemoveBtnOnAction(btnRemove);
+
+                                    calculateNetTotal();
+                                    clearTxtField();
 
                                     if (!obList.isEmpty()) {
                                         for (int i = 0; i < tblPlaceSupply.getItems().size(); i++) {
@@ -264,28 +267,28 @@ public class AdminSupplierLoadDetailFormController {
 
                                     obList.add(tm);
                                     tblPlaceSupply.setItems(obList);
-                                    calculateNetTotal();
-                                    clearTxtField();
+//                                    calculateNetTotal();
+//                                    clearTxtField();
 
-                                    btnRemove.setOnAction(e -> {
-                                        // Get the row that contains the button
-                                        TableRow row = (TableRow) btnRemove.getParent().getParent();
-                                        int index = tblPlaceSupply.getItems().indexOf(row.getItem());
-                                        tblPlaceSupply.getSelectionModel().select(index);
-
-                                        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
-                                        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-                                        Optional<ButtonType> result = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
-
-                                        if (result.orElse(no) == yes) {
-                                            int index1 = tblPlaceSupply.getSelectionModel().getSelectedIndex();
-                                            obList.remove(index1);
-
-                                            tblPlaceSupply.refresh();
-                                        }
-
-                                    });
+//                                    btnRemove.setOnAction(e -> {
+//                                        // Get the row that contains the button
+//                                        TableRow row = (TableRow) btnRemove.getParent().getParent();
+//                                        int index = tblPlaceSupply.getItems().indexOf(row.getItem());
+//                                        tblPlaceSupply.getSelectionModel().select(index);
+//
+//                                        ButtonType yes = new ButtonType("Yes", ButtonBar.ButtonData.OK_DONE);
+//                                        ButtonType no = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+//
+//                                        Optional<ButtonType> result = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+//
+//                                        if (result.orElse(no) == yes) {
+//                                            int index1 = tblPlaceSupply.getSelectionModel().getSelectedIndex();
+//                                            obList.remove(index1);
+//
+//                                            tblPlaceSupply.refresh();
+//                                        }
+//
+//                                    });
                                 }else {
                                     lblInvalidBuyUnitPrice.setVisible(true);
                                 }

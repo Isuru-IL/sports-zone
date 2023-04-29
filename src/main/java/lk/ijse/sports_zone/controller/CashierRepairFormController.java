@@ -3,6 +3,7 @@ package lk.ijse.sports_zone.controller;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -238,21 +239,25 @@ public class CashierRepairFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String id = txtRepairId.getText();
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result){
-            try {
-                boolean isDelete = RepairModel.delete(id);
-                if(isDelete){
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextRepairId();
-                    AlertController.okMassage("Deleted Successfully");
+        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
+            String id = txtRepairId.getText();
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if (result) {
+                try {
+                    boolean isDelete = RepairModel.delete(id);
+                    if (isDelete) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextRepairId();
+                        AlertController.okMassage("Deleted Successfully");
+                    }
+                } catch (SQLException throwables) {
+                    //throwables.printStackTrace();
+                    System.out.println(throwables);
                 }
-            } catch (SQLException throwables) {
-                //throwables.printStackTrace();
-                System.out.println(throwables);
             }
         }
     }
@@ -260,7 +265,7 @@ public class CashierRepairFormController {
     @FXML
     void saveOnAction(ActionEvent event) {
 
-        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getValue().isEmpty()){
+        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getSelectionModel().isEmpty() || txtDate.getEditor().getText().isEmpty()){
             AlertController.errormessage("Repair details not saved.\nPlease make sure to fill out all the required fields.");
         }else{
             if(ValidateController.doubleValueCheck(txtPrice.getText())){
@@ -280,6 +285,9 @@ public class CashierRepairFormController {
                     }else{
                         AlertController.errormessage("Saved Unsuccessfully");
                     }
+                } catch (SQLIntegrityConstraintViolationException e) {
+                    //System.out.println(e);
+                    AlertController.errormessage("Duplicate Repair ID");
                 } catch (Exception throwables) {
                     //throwables.printStackTrace();
                     AlertController.errormessage(throwables+"");
@@ -294,7 +302,7 @@ public class CashierRepairFormController {
     @FXML
     void updateOnAction(ActionEvent event) {
 
-        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getValue().isEmpty()){
+        if(txtRepairId.getText().isEmpty() || txtRepairitem.getText().isEmpty() || cmbCustId.getSelectionModel().isEmpty()){
             AlertController.errormessage("Repair details not updated.\nPlease make sure to fill out all the required fields.");
         }else {
             if (ValidateController.doubleValueCheck(txtPrice.getText())) {

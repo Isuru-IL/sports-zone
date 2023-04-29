@@ -262,6 +262,9 @@ public class CashierOrderFormController {
                     if(qty>inventory.getQtyOnHand()){
                         AlertController.errormessage("Item "+itemName+" out of stock or not enough stock");
                     }else {
+                        clearTxtFields();
+                        txtQty.setText("");
+
                         if (!obList.isEmpty()) {
                             for (int i = 0; i < tblPlaceOrder.getItems().size(); i++) {
                                 if (colCode.getCellData(i).equals(code)) {
@@ -283,8 +286,8 @@ public class CashierOrderFormController {
                         obList.add(tm);
                         tblPlaceOrder.setItems(obList);
                         calculateNetTotal();
-                        clearTxtFields();
-                        txtQty.setText("");
+                        //clearTxtFields();
+                        //txtQty.setText("");
                     }
 
                 }else {

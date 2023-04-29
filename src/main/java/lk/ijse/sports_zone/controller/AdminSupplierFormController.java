@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -28,7 +29,6 @@ import lk.ijse.sports_zone.model.EmployeeModel;
 import lk.ijse.sports_zone.model.RepairModel;
 import lk.ijse.sports_zone.model.SupplierModel;
 import lk.ijse.sports_zone.util.AlertController;
-import lk.ijse.sports_zone.util.NotificationController;
 import lk.ijse.sports_zone.util.ValidateController;
 
 public class AdminSupplierFormController {
@@ -109,25 +109,30 @@ public class AdminSupplierFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-        if(result){
-            try {
-                String supId = txtSupId.getText();
+        if(txtSupId.getText().isEmpty() || txtSupName.getText().isEmpty()){
+            AlertController.errormessage("Invalid Id");
+        }else {
 
-                boolean isDeleted = SupplierModel.delete(supId);
-                if (isDeleted) {
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    genarateNextSupId();
-                    AlertController.okMassage("Delete successful");
-                } else {
-                    AlertController.errormessage("Invalid details");
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+            if (result) {
+                try {
+                    String supId = txtSupId.getText();
+
+                    boolean isDeleted = SupplierModel.delete(supId);
+                    if (isDeleted) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        genarateNextSupId();
+                        AlertController.okMassage("Delete successful");
+                    } else {
+                        AlertController.errormessage("Invalid details");
+                    }
+
+                } catch (Exception exception) {
+                    System.out.println("supDelete = " + exception);                                              //temp
+                    AlertController.exceptionMessage("Something went wrong");
                 }
-
-            } catch (Exception exception) {
-                System.out.println("supDelete = " + exception);                                              //temp
-                AlertController.exceptionMessage("Something went wrong");
             }
         }
     }
@@ -160,6 +165,9 @@ public class AdminSupplierFormController {
                             } else {
                                 AlertController.errormessage("Invalid details");
                             }
+                        } catch (SQLIntegrityConstraintViolationException e) {
+                            //System.out.println(e);
+                            AlertController.errormessage("Duplicate Supplier ID");
                         } catch (Exception throwables) {
                             //throwables.printStackTrace();
                             AlertController.exceptionMessage(throwables+"");

@@ -138,34 +138,41 @@ public class CashierDeliveryFormController {
 
     @FXML
     void deleteOnAction(ActionEvent event) {
-        String id = lblDeliveryId.getText();
+        if(lblDeliveryId.getText().isEmpty()){
+            AlertController.errormessage("Empty fields");
+        }else {
+            String id = lblDeliveryId.getText();
 
-        boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
-        if(result) {
-            try {
-                boolean isDeleted = DeliveryModel.delete(id);
-                if (isDeleted) {
-                    setCellValueFactory();
-                    getAll();
-                    clearTxtField();
-                    AlertController.okMassage("Delete successful");
+            boolean result = AlertController.okconfirmmessage("Are you sure you want to delete ?");
+            if (result) {
+                try {
+                    boolean isDeleted = DeliveryModel.delete(id);
+                    if (isDeleted) {
+                        setCellValueFactory();
+                        getAll();
+                        clearTxtField();
+                        AlertController.okMassage("Delete successful");
+                    }
+
+                } catch (SQLException throwables) {
+                    //throwables.printStackTrace();
+                    System.out.println("delivery delete = " + throwables);
                 }
-
-            } catch (SQLException throwables) {
-                //throwables.printStackTrace();
-                System.out.println("delivery delete = " + throwables);
             }
         }
     }
 
     @FXML
     void updateOnAction(ActionEvent event) {
-        if(radioBtnYes.isSelected() || radioBtnNo.isSelected()){
-            delivery.setDeliveryId(lblDeliveryId.getText());
-            delivery.setEmpId(cmbEmpId.getValue());
-            delivery.setVehiId(cmbVehiId.getValue());
-            delivery.setLocation(txtLocation.getText());
-            delivery.setDeliveryDate(String.valueOf(txtDeliveryDate.getValue()));
+        if(lblDeliveryId.getText().isEmpty()){
+            AlertController.errormessage("Empty fields");
+        }else {
+            if (radioBtnYes.isSelected() || radioBtnNo.isSelected()) {
+                delivery.setDeliveryId(lblDeliveryId.getText());
+                delivery.setEmpId(cmbEmpId.getValue());
+                delivery.setVehiId(cmbVehiId.getValue());
+                delivery.setLocation(txtLocation.getText());
+                delivery.setDeliveryDate(String.valueOf(txtDeliveryDate.getValue()));
 
 //            System.out.println(delivery.getEmpId());
 //            System.out.println(delivery.getVehiId());
@@ -173,25 +180,26 @@ public class CashierDeliveryFormController {
 //            System.out.println(delivery.getDeliveryDate());
 //            System.out.println(delivery.getDeliveryStaus());
 
-            boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
-            if (result) {
-                try {
-                    boolean isUpdated = DeliveryModel.update(delivery);
-                    if (isUpdated) {
-                        setCellValueFactory();
-                        getAll();
-                        clearTxtField();
-                        AlertController.okMassage("Update successful");
-                    }else{
-                        AlertController.errormessage("Update unsuccessful");
+                boolean result = AlertController.okconfirmmessage("Are you sure you want to update ?");
+                if (result) {
+                    try {
+                        boolean isUpdated = DeliveryModel.update(delivery);
+                        if (isUpdated) {
+                            setCellValueFactory();
+                            getAll();
+                            clearTxtField();
+                            AlertController.okMassage("Update successful");
+                        } else {
+                            AlertController.errormessage("Update unsuccessful");
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
                 }
-            }
 
-        }else{
-            AlertController.errormessage("Please select delivery status");
+            } else {
+                AlertController.errormessage("Please select delivery status");
+            }
         }
     }
 

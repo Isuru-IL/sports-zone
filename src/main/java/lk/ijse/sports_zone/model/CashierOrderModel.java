@@ -2,6 +2,7 @@ package lk.ijse.sports_zone.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import lk.ijse.sports_zone.dto.CartDTO;
 import lk.ijse.sports_zone.dto.tm.CashierOrderTM;
 import lk.ijse.sports_zone.dto.tm.VehicleTM;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -112,5 +114,19 @@ public class CashierOrderModel {
             return resultSet.getInt(1);
         }
         return 0;
+    }
+
+    public static List<XYChart.Data<String, Double>> getDataToAreaChart(String year) throws SQLException {
+        String sql= "SELECT MONTHNAME(date) AS month,SUM(payment) AS total_income FROM orders WHERE YEAR(date)=? GROUP BY month ORDER BY month desc";
+
+        List<XYChart.Data<String, Double>> data = new ArrayList<>();
+        ResultSet resultSet = CrudUtil.execute(sql,year);
+
+        while(resultSet.next()){
+            String month = resultSet.getString("month");
+            double income = resultSet.getDouble("total_income");
+            data.add(new XYChart.Data<>(month, income));
+        }
+        return data;
     }
 }
